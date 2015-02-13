@@ -1,0 +1,23 @@
+Authentication:
+    Signing Up:
+            post: sign_up/ params={username,password}
+              returns client_id, client_secret
+    Logging In:
+        get: login/
+        Authorization Header: "Basic " + Base64Encoded("username:password")
+        returns client_id, client_secret
+    Getting a token:
+        o/token params={client_id, client_secret, username, password, grant_type=password}
+        Content-Type Header: application/x-www-form-urlencoded
+        returns token and stuffz
+    Authenticated Requests:
+        Authorization Header: Bearer Access_Token
+
+Next on list:
+    Keep going on serializers.. done: UserProfile, Message, MessageThread
+    Redo views
+    Figure out what depths to include for related fields. Consider reducing response size and minimizing number of requests
+    Get permissions all correct
+    TEST
+    DEPLOY
+    FRONTEND
