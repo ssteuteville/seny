@@ -144,7 +144,7 @@ class ProductViewSet(SenyViewSet):
             duration_metric: units duration is measured in.. can be day week or month
     """
     queryset = Product.objects.all()
-    permission_classes = [SenyAuth]
+    permission_classes = [SenyAuth, ProductPermissions]
     serializer_class = ProductSerializer
     filterable_by = ['tags', 'price__gt', 'price__gte', 'price__lt', 'price__lte', ['description', 'icontains'],
                      'type', ['owner', 'username']]
@@ -198,13 +198,13 @@ class ProductViewSet(SenyViewSet):
         return JsonResponse(recurrences, safe=False)
 
 
-
 class ExistingImageProductWriteViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.UpdateModelMixin):
     """
         ### Specialized endpoint that allows product's to be created using image that was already uploaded as display_image ###
     """
     queryset = Product.objects.all()
     serializer_class = ExistingImageProductCreateSerializer
+    permission_classes = [SenyAuth, ProductPermissions]
 
 
 class AdvertisementResponseViewSet(SenyViewSet):
@@ -220,7 +220,7 @@ class AdvertisementResponseViewSet(SenyViewSet):
         ## No Special Endpoints ##
     """
     queryset = AdvertisementResponse.objects.all()
-    permission_classes = [SenyAuth]
+    permission_classes = [SenyAuth, AdvertisementResponsePermissions]
     serializer_class = AdvertisementResponseSerializer
     filterable_by = [['owner', 'username'], ['advertisement', 'id'], 'accepted', 'reviewed',
                      'deadline__lte', 'deadline__gte']
@@ -234,7 +234,7 @@ class TagViewSet(SenyViewSet):
         ## No Special Endpoints ##
     """
     queryset = Tag.objects.all()
-    permission_classes = [SenyAuth]
+    permission_classes = [SenyAuth, TagPermissions]
     serializer_class = TagSerializer
     filterable_by = [['text', 'icontains']]
 
@@ -253,7 +253,7 @@ class ReviewViewSet(SenyViewSet):
         ## No Specialized Endpoints ##
     """
     queryset = Review.objects.all()
-    permission_classes = [SenyAuth]
+    permission_classes = [SenyAuth, ReviewPermissions]
     serializer_class = ReviewSerializer
     filterable_by = [['owner', 'username'], ['product', 'id'], 'created_at__lte', 'created_at__gte',
                      ['title', 'icontains'], ['content', 'icontains'], ['rating', 'lte']]

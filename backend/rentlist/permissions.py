@@ -75,23 +75,6 @@ class UserProfilePermissions(SenyPermission):
 class MessagePermissions(SenyPermission):
 
     def has_permission(self, request, view):
-        """
-            this convoluted code is because the browsable api makes multiple requests for list view that
-            make this permission fail..
-        """
-        cur_user = request.user.username
-        if request.method == 'POST':
-            thread = request.POST.get('thread', None)
-            if thread:
-                thread = MessageThread.objects.get(id=thread)
-                source = User.objects.get(id=request.POST['source'])
-                destination = User.objects.get(id=request.POST['destination'])
-                self.message = "Messages can only be sent from/to users involved in the message.."
-                if cur_user == thread.creator.username and destination.username == thread.responder.username:
-                    return True
-                if cur_user == thread.responder.username and source.username == thread.creator.username:
-                    return True
-                return False
         if request.method in ["PUT", "PATCH", "DELETE"]:
             self.message = "Messages can't be edited or deleted."
             return False
@@ -106,6 +89,7 @@ class MessagePermissions(SenyPermission):
             return True
         return False
 
+
 class ImagePermissions(SenyPermission):
 
     message = "Only the user who uploaded the image can modify/delete it."
@@ -114,3 +98,44 @@ class ImagePermissions(SenyPermission):
         if request.method == "GET":
             return True
         return request.method in ["PUT", "PATCH", "DELETE"] and obj.owner.username == request.user.username
+
+
+class ProductPermissions(SenyPermission):
+
+    message = "Only the user who created this product may edit or delete it."
+
+    def has_object_permission(self, request, view, obj):
+        if request.method == 'GET':
+            return True
+        return request.method in ['PUT', 'DELETE', 'PATCH'] and request.user.username == obj.owner.username
+
+
+class AdvertisementResponsePermissions(SenyAuth):
+
+    message = "Only the response owner or advertisement owner can access this."
+
+    def has_object_permission(self, request, view, obj):
+        if request.user.username == obj.owner.username:
+            return True
+        if request.user.username == obj.advertisement.product.owner.username:
+            return True
+        return False
+
+
+class TagPermissions(SenyPermission):
+
+    message = "Tags can not be edited or deleted."
+
+    def has_permission(self, request, view):
+        return request.method in ['POST', 'GET']
+
+
+class ReviewPermissions(SenyPermission):
+
+    message = "Only the owner of the review can modify/delete it."
+
+    def has_object_permission(self, request, view, obj):
+        if request.method == "GET":
+            return True
+        return obj.owner.username == request.user.username
+

@@ -5,27 +5,6 @@ from rest_framework import serializers
 from rentlist.models import *
 
 
-
-
-#
-# class ReviewSerializer(serializers.HyperlinkedModelSerializer):
-#
-#     class Meta:
-#         model = Review
-#         fields = ("url", "supplier", "demander", "advertisement", "rating", "title", "content")
-#
-#     def create(self, validated_data):
-#         review = Review(**validated_data)
-#         if review.advertisement.type == 'd->s':
-#             review.source = review.demander.owner
-#             review.destination = review.supplier.owner
-#         else:
-#             review.source = review.supplier.owner
-#             review.destination = review.demander.owner
-#         review.save()
-#         return review
-
-# serializers
 class ImageSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
 
@@ -40,12 +19,13 @@ class ImageSerializer(serializers.ModelSerializer):
         return image
 
 
-
 class AdvertisementResponseSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
+    owner_id = serializers.PrimaryKeyRelatedField(source='owner', queryset=User.objects.all())
 
     class Meta:
         model = AdvertisementResponse
-        fields = ('owner', 'advertisement', 'created_at', 'deadline', 'accepted', 'reviewed')
+        fields = ('id', 'owner', 'owner_id','advertisement', 'created_at', 'deadline', 'accepted', 'reviewed')
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -57,11 +37,21 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
         model = Review
-        fields = ("owner", "product", "rating", "title", "content", "created_at")
+        fields = ("id", "owner", "product", "rating", "title", "content", "created_at")
         extra_kwargs = {}
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        review = Review(**validated_data)
+        if user.username == review.product.owner.username:
+            raise serializers.ValidationError("Cannot review your own product.")
+        review.owner = user
+        review.save()
+        return review
 
 
 class ExistingImageProductCreateSerializer(serializers.ModelSerializer):
@@ -82,6 +72,7 @@ class ProductSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
     display_image = ImageSerializer()
+    owner = serializers.ReadOnlyField(source='owner.username')
 
 
     class Meta:
@@ -91,19 +82,17 @@ class ProductSerializer(serializers.ModelSerializer):
         extra_kwargs = {}
 
     def create(self, validated_data):
-        image_ref = validated_data.get('display_image_ref', None)
-        del validated_data['display_image_ref']
         image = validated_data.get('display_image', None)
         del validated_data['display_image']
+        user = self.context['request'].user
         prod = Product(**validated_data)
+        prod.owner = user
         prod.save()
         prod.collect_tags()
         if image:
-            if image_ref:
-                image = Image.objects.filter(id=image_ref)
-            else:
-                image = Image(**image)
-                image.save()
+            image = Image(**image)
+            image.owner = user
+            image.save()
             image.products_displaying_image.add(prod)
             image.products.add(prod)
         return prod
@@ -166,21 +155,56 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
+
+
 class MessageSerializer(serializers.ModelSerializer):
     images = ImageSerializer(read_only=True, many=True)
+    # image_id = serializers.IntegerField(write_only=True, required=False)
+    destination = serializers.ReadOnlyField(source='destination.username')
+    destination_id = serializers.PrimaryKeyRelatedField(source='destination', queryset=User.objects.all())
+    source = serializers.ReadOnlyField(source='source.username')
+    source_id = serializers.PrimaryKeyRelatedField(source='source', queryset=User.objects.all())
+    thread = serializers.PrimaryKeyRelatedField(required=False, queryset=MessageThread.objects.all())
+    # thread_title = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = Message
-        fields = ('id', 'created_at', 'thread', 'destination', 'source', 'content', 'new', 'images')
+        fields = ('id', 'created_at', 'thread', 'destination', 'destination_id', 'source', 'source_id',
+                  'content', 'new', 'images', ) # 'image_id', 'thread_title'
         extra_kwargs = {'is_new': {'read_only': True}, 'created_at': {'read_only': True}}
+
+    def create(self, validated_data):
+        # thread = validated_data.get('thread_title', False)
+        # del validated_data['thread_title']
+        # if thread:
+        #     thread = MessageThread(creator=validated_data['source'], responder=validated_data['destination'], title=thread)
+        #     thread.save()
+        # else:
+        #     thread = MessageThread.objects.get(validated_data['thread'])
+        #     del validated_data['thread']
+        message = Message(**validated_data)
+        # message.thread = thread
+        user = self.context['request'].user.username
+        if self.validUsers(user, message):
+            message.save()
+            return message
+        raise serializers.ValidationError('Messages can only be created by users active on thread.')
+
+    def validUsers(self, user, message):
+        return (user == message.thread.creator.username and message.destination.username == message.thread.responder.username
+            or user == message.thread.responder.username and message.destination == message.thread.creator.username)
 
 
 class MessageThreadSerializer(serializers.ModelSerializer):
     messages = MessageSerializer(many=True, read_only=True)
+    creator = serializers.ReadOnlyField(source='creator.username')
+    responder = serializers.ReadOnlyField(source='responder.username')
+    creator_id = serializers.PrimaryKeyRelatedField(source='creator', queryset=User.objects.all())
+    responder_id = serializers.PrimaryKeyRelatedField(source='responder', queryset=User.objects.all())
 
     class Meta:
         model = MessageThread
-        fields = ("created_at", "creator", "responder", "title", "messages")
+        fields = ("id", "created_at", "creator", "creator_id", "responder", "responder_id", "title", "messages")
         extra_kwargs = {}
 
 
@@ -219,32 +243,6 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         return instance
 
 
-#
-#
-# class AdvertisementResponseSerializer(serializers.HyperlinkedModelSerializer):
-#
-#     class Meta:
-#         model = AdvertisementResponse
-#         fields = ("url",'supplier', 'demander', 'advertisement', 'accepted', 'acceptance_deadline', 'type')
-#
-#     def create(self, validated_data):
-#         response = AdvertisementResponse(**validated_data)
-#         if response.advertisement.type == 'd->s':
-#             response.source = response.demander.owner
-#             response.destination = response.supplier.owner
-#         else:
-#             response.source = response.supplier.owner
-#             response.destination = response.demander.owner
-#         response.save()
-#         return response
-
-
-
-#
-#
-
-
-
 class SignUpSerializer(serializers.ModelSerializer):
     client_id = serializers.SerializerMethodField()
     client_secret = serializers.SerializerMethodField()
@@ -267,10 +265,7 @@ class SignUpSerializer(serializers.ModelSerializer):
         return user
 
 
-
 class LoginSerializer(SignUpSerializer):
     class Meta:
         model = User
         fields = ('client_id', 'client_secret')
-
-
