@@ -14,10 +14,7 @@ Authentication:
         Authorization Header: Bearer Access_Token
 
 Next on list:
-    Keep going on serializers.. done: UserProfile, Message, MessageThread
-    Redo views
-    Figure out what depths to include for related fields. Consider reducing response size and minimizing number of requests
-    Get permissions all correct
+    Get permissions all correct -- product next
     TEST
     DEPLOY
     FRONTEND
