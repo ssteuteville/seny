@@ -173,7 +173,7 @@ class MessageSerializer(serializers.ModelSerializer):
                   'content', 'new', 'images', ) # 'image_id', 'thread_title'
         extra_kwargs = {'is_new': {'read_only': True}, 'created_at': {'read_only': True}}
 
-    def create(self, validated_data):
+    def create(self, validated_data):# todo implement a serializer that can create a thread and a message at same time
         # thread = validated_data.get('thread_title', False)
         # del validated_data['thread_title']
         # if thread:

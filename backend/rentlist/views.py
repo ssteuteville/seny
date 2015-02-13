@@ -88,6 +88,8 @@ class MessageViewSet(SenyViewSet):
     serializer_class = MessageSerializer
     filterable_by = ['new']
 
+# todo implement a @list_route function called with_thread. it should use the MessageWithThread serializer instead.
+
 
 class ImageViewSet(SenyViewSet):
     """
