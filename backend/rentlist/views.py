@@ -1,4 +1,4 @@
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import detail_route, list_route
 from rentlist.serializers import *
 from rentlist.models import *
 from django.contrib.auth.models import User
@@ -9,18 +9,33 @@ from rest_framework import generics
 from rest_framework.authentication import BasicAuthentication
 from django.http import JsonResponse
 from rest_framework import mixins, viewsets
+from rest_framework import status
+from django.db.models import Q
+
 
 class UserProfileViewSet(SenyViewSet):
     """
         ## Filterable By: ##
             owner - query by user
-        ### No Special Endpoints ###
+        ## Special Endpoints ##
+        ### User ###
+            /api/version/user-profiles/user
+            returns profile of current user
+
 
     """
     queryset = UserProfile.objects.all()
     permission_classes = [SenyAuth, UserProfilePermissions]
     serializer_class = UserProfileSerializer
     filterable_by = [['owner', 'username', 'iexact']]
+
+    @list_route(methods=['GET'], permission_classes=permission_classes)
+    def user(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(Q(owner=request.user))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
 
 
 class AdvertisementViewSet(SenyViewSet):
@@ -41,6 +56,9 @@ class AdvertisementViewSet(SenyViewSet):
         ## Special Endpoints: ##
         ### Toggle ###
             PUT /advertisements/pk/toggle - activates or deactives advertisement based on current state
+        ### User ###
+            /api/version/advertisements/user
+            Returns all advertisements of current user
 
     """
     queryset = Advertisement.objects.all()
@@ -75,18 +93,48 @@ class AdvertisementViewSet(SenyViewSet):
         serializer = AdvertisementSerializer(ads, many=True, context={'request': request})
         return Response(serializer.data)
 
+    @list_route(methods=['GET'], permission_classes=permission_classes)
+    def user(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(Q(product__owner=request.user))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
 
 class MessageViewSet(SenyViewSet):
     """
         ## Filterable by: ##
         + new - 1 for true 0 for false
 
-        ## No Special Endpoints ##
+        ## Special Endpoints ##
+        ### new ###
+            /api/version/messages/new
+            Creates a new thread and message at same time.
+        ### User ###
+            /api/version/messages/user
+            Return all message the current user is involved in.
     """
     queryset = Message.objects.all()
     permission_classes = [SenyAuth, MessagePermissions]
     serializer_class = MessageSerializer
     filterable_by = ['new']
+
+    def get_serializer_class(self):
+        if self.action == 'new':
+            return MessageWithThreadSerializer
+        return self.serializer_class
+
+    @list_route(methods=['POST'], permission_classes=permission_classes)
+    def new(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    @list_route(methods=['GET'], permission_classes=permission_classes)
+    def user(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(Q(source=request.user) | Q(destination=request.user))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
 
 # todo implement a @list_route function called with_thread. it should use the MessageWithThread serializer instead.
 
@@ -94,12 +142,31 @@ class MessageViewSet(SenyViewSet):
 class ImageViewSet(SenyViewSet):
     """
         ## Not Filterable ##
-        ## No Special Endpoints ##
+        ## Special Endpoints ##
+            /api/version/images/user
+            returns all images of current user
     """
     queryset = Image.objects.all()
     permission_classes = [SenyAuth, ImagePermissions]
     serializer_class = ImageSerializer
     filterable_by = []
+
+    def get_serializer_class(self):
+        if self.action in ['product']:
+            return ImageForProductSerializer
+        return self.serializer_class
+
+    @list_route(methods=['POST'], permission_classes=permission_classes)
+    def product(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    @list_route(methods=['GET'], permission_classes=permission_classes)
+    def user(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(Q(owner=request.user))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
 
 
 class ProductViewSet(SenyViewSet):
@@ -113,11 +180,15 @@ class ProductViewSet(SenyViewSet):
         + owner = search by owner's username
 
         ## Special EndPoints: ##
-        ### /api/alpha/products-img-ref/ ###
-            allows you to add/update a product using an existing image as display_image
+        ### /api/version/products/new###
+            allows you to add a product using an existing image as display_image
+
+        ### User ###
+            /api/version/products/user
+            return all products owned by current user
 
         ### Recurring Advertisements ###
-            POST /api/alpha/products/<pk>/recurringAdvertisement/ -- this endpoint will create multiple advertisements for a product
+            POST /api/version/products/<pk>/recurringAdvertisement/ -- this endpoint will create multiple advertisements for a product
 
             Parameters:
 
@@ -150,6 +221,11 @@ class ProductViewSet(SenyViewSet):
     serializer_class = ProductSerializer
     filterable_by = ['tags', 'price__gt', 'price__gte', 'price__lt', 'price__lte', ['description', 'icontains'],
                      'type', ['owner', 'username']]
+
+    def get_serializer_class(self):
+        if self.action in ['new']:
+            return ProductWithImageSerializer
+        return self.serializer_class
 
     @detail_route(methods=['POST'])
     def recurringAdvertisement(self, request, pk=None):
@@ -199,14 +275,17 @@ class ProductViewSet(SenyViewSet):
                           active=1, lat=geo[0], lon=geo[1]).save()
         return JsonResponse(recurrences, safe=False)
 
+    @list_route(methods=['PUT', 'GET'])
+    def new(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
-class ExistingImageProductWriteViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin, mixins.UpdateModelMixin):
-    """
-        ### Specialized endpoint that allows product's to be created using image that was already uploaded as display_image ###
-    """
-    queryset = Product.objects.all()
-    serializer_class = ExistingImageProductCreateSerializer
-    permission_classes = [SenyAuth, ProductPermissions]
+    @list_route(methods=['GET'], permission_classes=permission_classes)
+    def user(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(Q(owner=request.user))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
 
 
 class AdvertisementResponseViewSet(SenyViewSet):
@@ -219,13 +298,25 @@ class AdvertisementResponseViewSet(SenyViewSet):
         + deadline__lte -- query such that supplied value is less than or equal to response's deadline
         + deadline__gte -- query such that supplied value is greater than or equal to response's deadline
 
-        ## No Special Endpoints ##
+        ## Special Endpoints ##
+        ### User ###
+            /api/version/advertisement-responses/user
+            returns all responses to and from current user
     """
     queryset = AdvertisementResponse.objects.all()
     permission_classes = [SenyAuth, AdvertisementResponsePermissions]
     serializer_class = AdvertisementResponseSerializer
     filterable_by = [['owner', 'username'], ['advertisement', 'id'], 'accepted', 'reviewed',
                      'deadline__lte', 'deadline__gte']
+
+    @list_route(methods=['GET'], permission_classes=permission_classes)
+    def user(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(Q(owner=request.user) | Q(advertisement__product__owner=request.user)
+        | Q(deadline__gte=datetime.now()))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
 
 
 class TagViewSet(SenyViewSet):
@@ -252,13 +343,40 @@ class ReviewViewSet(SenyViewSet):
         + content -- query based on whether content contains supplied text
         + rating -- query for reviews with a rating greater than or equal to supplied values
 
-        ## No Specialized Endpoints ##
+        ## Specialized Endpoints ##
+        ### User ###
+            /api/version/reviews/user
+            returns all reviews to/from this user
     """
     queryset = Review.objects.all()
     permission_classes = [SenyAuth, ReviewPermissions]
     serializer_class = ReviewSerializer
     filterable_by = [['owner', 'username'], ['product', 'id'], 'created_at__lte', 'created_at__gte',
-                     ['title', 'icontains'], ['content', 'icontains'], ['rating', 'lte']]
+                     ['title', 'icontains'], ['content', 'icontains'], ['rating', 'lte'], ['product__owner', 'username']]
+
+    @list_route(methods=['GET'], permission_classes=permission_classes)
+    def user(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(Q(owner=request.user) | Q(product__owner=request.user))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
+    @list_route(methods=['GET'], permission_classes=permission_classes)
+    def user_supply(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter((Q(owner=request.user) | Q(product__owner=request.user) )
+        & Q(product__type=0))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
+    @list_route(methods=['GET'], permission_classes=permission_classes)
+    def user_demand(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter((Q(owner=request.user) | Q(product__owner=request.user))
+            & Q(product__type=2))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
 
 
 class MessageThreadViewSet(SenyViewSet):
@@ -270,14 +388,23 @@ class MessageThreadViewSet(SenyViewSet):
         + title -- query for threads with a title that contains supplied value
         + creator -- query based on creator's username
 
-        ## No Special Endpoints ##
-        ## No Special Endpoints ##
+        ## Special Endpoints ##
+        ### User ###
+            /api/version/threads/user
+            return all threads that the current user is involved in
     """
     queryset = MessageThread.objects.all()
     permission_classes = [SenyAuth]
     serializer_class = MessageThreadSerializer
     filterable_by = ['created_at__lte', 'created_at__gte', ['responder', 'username'], ['title', 'icontains'],
                     ['creator', 'username']]
+
+    @list_route(methods=['GET'], permission_classes=permission_classes)
+    def user(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(Q(creator=request.user) | Q(responder=request.user))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
 
 
 class SignUp(generics.CreateAPIView):

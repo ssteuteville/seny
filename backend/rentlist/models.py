@@ -85,10 +85,10 @@ class UserProfile(models.Model):
         return 'n/a'
 
     def get_supply_reviews(self):
-        return self.owner.reviews.filter(product__type=0)
+        return self.owner.reviews.filter(product__type=0)[0:5]
 
     def get_demand_reviews(self):
-        return self.owner.reviews.filter(product__type=2)
+        return self.owner.reviews.filter(product__type=2)[0:5]
 
     def __str__(self):
         return self.owner.username

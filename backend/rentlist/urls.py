@@ -10,7 +10,6 @@ router.register(r'user-profiles', views.UserProfileViewSet)
 router.register(r'messages', views.MessageViewSet)
 router.register(r'threads', views.MessageThreadViewSet)
 router.register(r'products', views.ProductViewSet)
-router.register(r'products-img-ref', views.ExistingImageProductWriteViewSet)
 router.register(r'advertisements', views.AdvertisementViewSet)
 router.register(r'advertisement-responses', views.AdvertisementResponseViewSet)
 router.register(r'reviews', views.ReviewViewSet)
@@ -25,5 +24,4 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/$', views.Login.as_view(), name="login"),
     url(r'sign_up/$', views.SignUp.as_view(), name="sign_up"),
-    # url(r'recurringAdvertisement/', views.recurringAdvertisement)
 ]
