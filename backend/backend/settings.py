@@ -21,9 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '#04-85seq5w3#jomn713nr14v+)(kr@k$l%$9i@i9$+br*3na*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
+# DEBUG = True
+#
+# TEMPLATE_DEBUG = True
 
 TEMPLATE_CONTEXT_PROCESSORS = (
  'django.core.context_processors.request',

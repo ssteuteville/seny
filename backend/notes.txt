@@ -16,5 +16,5 @@ Authentication:
 Next on list:
     Get permissions all correct -- product next
     TEST
-    DEPLOY
+    DEPLOY -- ssh -i shane-asus.pem  ubuntu@52.10.7.252
     FRONTEND
