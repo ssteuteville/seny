@@ -31,7 +31,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 )
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['172.31.8.203']
 
 
 # Application definition
