@@ -21,9 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '#04-85seq5w3#jomn713nr14v+)(kr@k$l%$9i@i9$+br*3na*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = False
 #
-# TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 TEMPLATE_CONTEXT_PROCESSORS = (
  'django.core.context_processors.request',
@@ -31,8 +31,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 )
 
-ALLOWED_HOSTS = ['172.31.8.203']
-
+ALLOWED_HOSTS = [
+    '52.10.64.129',
+]
+ 
 
 # Application definition
 
@@ -82,9 +84,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'rentlist',
-        'USER': 'rentlist',
-        'PASSWORD': 'rentlist',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'USER': 'root',
+        'PASSWORD': '######',
+        'HOST': '127.0.0.1',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
@@ -110,7 +112,11 @@ AUTH_PROFILE_MODULE = 'rentlist.models.UserProfile'
 
 if settings.DEBUG:
     MEDIA_ROOT = "C:/Users/shane/Documents/GitHub/senior_project/backend/media/"
-    MEDIA_URL = "/media/"
 
     STATIC_ROOT = "C:/Users/shane/Documents/GitHub/senior_project/backend/static/"
-    STATIC_URL = '/static/'
+else:
+   MEDIA_ROOT = "~/seny.com/seny/backend/media"
+   STATIC_ROOT = "~/seny.com/seny/backend/static"
+
+STATIC_URL = r'/static/'
+MEDIA_URL = r'/media/'

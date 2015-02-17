@@ -11,7 +11,10 @@ from django.http import JsonResponse
 from rest_framework import mixins, viewsets
 from rest_framework import status
 from django.db.models import Q
+from django.http import HttpResponse
 
+def test(request, *args, **kwargs):
+    return HttpResponse("Test")
 
 class UserProfileViewSet(SenyViewSet):
     """
