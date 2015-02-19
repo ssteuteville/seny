@@ -68,8 +68,8 @@ class UserProfile(models.Model):
     title = models.TextField(blank=True)
     description = models.TextField(blank=True)
     owner = models.ForeignKey(User, related_name='profile')
-    lat = models.FloatField(default=0)
-    long = models.FloatField(default=0)
+    lat = models.FloatField(blank=True)
+    long = models.FloatField(blank=True)
     profile_type = models.IntegerField(default=0, choices=PROFILE_TYPES)
 
     def average_demand_rating(self):
