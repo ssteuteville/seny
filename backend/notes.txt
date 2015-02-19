@@ -13,14 +13,13 @@ Authentication:
     Authenticated Requests:
         Authorization Header: Bearer Access_Token
 
-Next on list:
-    Get permissions all correct -- product next
-    TEST
-    DEPLOY -- ssh -i shane-asus.pem  ubuntu@52.10.7.252
-    FRONTEND
+    #TODO forgot password
 
 
-Getting SSL working in production. There is a bookmark on chrome.
+Problem in production with switching serializers in views... #TODO
+DEPLOY -- ssh -i shane-asus.pem  ubuntu@52.10.7.252
+FRONTEND
+
 
 
 test users:
