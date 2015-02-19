@@ -61,12 +61,14 @@ MIDDLEWARE_CLASSES = (
 )
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.BasicAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
             'oauth2_provider.ext.rest_framework.OAuth2Authentication',
-    ),
+    ],
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
+
+if DEBUG:
+    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] += 'rest_framework.authentication.BasicAuthentication'
 
 # SWAGGER_SETTINGS = {
 #     'is_authenticated': True,
@@ -80,13 +82,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'rentlist',
-        'USER': 'root',
-        'PASSWORD': '56Fuck89',
+        'USER': 'rentlist',
+        'PASSWORD': 'rentlist',
         'HOST': '127.0.0.1',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
