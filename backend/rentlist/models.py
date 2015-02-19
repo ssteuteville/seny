@@ -42,6 +42,7 @@ class Product(models.Model):
     tags = models.ManyToManyField(Tag, related_name='products')
     images = models.ManyToManyField(Image, related_name='products', blank=True)
     display_image = models.ForeignKey(Image, related_name='products_displaying_image')
+    deposit = models.FloatField(default=0)
 
     def __str__(self):
         return self.title

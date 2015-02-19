@@ -21,3 +21,14 @@ Next on list:
 
 
 Getting SSL working in production. There is a bookmark on chrome.
+
+
+test users:
+sam/sam
+BackPackFanatic/hikeallday
+SwagGear/ballin
+PrettyPrincess/Aurora
+HerpDerp/derp
+TextBooksForRent/bookworm
+CowBoyHats/honkeytonk
+NerdMachines/icode

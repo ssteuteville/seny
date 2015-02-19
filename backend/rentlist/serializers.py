@@ -111,11 +111,12 @@ class ProductSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
     owner = serializers.ReadOnlyField(source='owner.username')
+    deposit = serializers.FloatField(default=0)
 
     class Meta:
         model = Product
         fields = ("id", "price_metric", "price", "description", "title", "type", "owner", "tags", "rating", "images",
-                  "reviews", "display_image")
+                  "reviews", "display_image", "deposit")
         extra_kwargs = {}
 
     def create(self, validated_data):
