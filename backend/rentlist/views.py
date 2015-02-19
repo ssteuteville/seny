@@ -426,8 +426,7 @@ def Login(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:
-            serialzer = LoginSerializer(user)
-            return Response(serialzer.data)
+            return Response(str(user.application_set().first().client_id))
     #         # Redirect to a success page.
     #     else:
     #         # Return a 'disabled account' error message
