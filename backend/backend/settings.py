@@ -63,7 +63,7 @@ MIDDLEWARE_CLASSES = (
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.BasicAuthentication',
-        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+            'oauth2_provider.ext.rest_framework.OAuth2Authentication',
     ),
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
@@ -113,7 +113,6 @@ AUTH_PROFILE_MODULE = 'rentlist.models.UserProfile'
 
 if settings.DEBUG:
     MEDIA_ROOT = "C:/Users/shane/Documents/GitHub/senior_project/backend/media/"
-
     STATIC_ROOT = "C:/Users/shane/Documents/GitHub/senior_project/backend/static/"
 else:
    #MEDIA_ROOT = "~/seny.com/seny/backend/media"

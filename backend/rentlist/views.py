@@ -13,6 +13,8 @@ from rest_framework import status
 from django.db.models import Q
 from django.http import HttpResponse
 
+from django.contrib.auth import authenticate, login
+
 def test(request, *args, **kwargs):
     return HttpResponse("Test")
 
@@ -416,10 +418,24 @@ class SignUp(generics.CreateAPIView):
     permission_classes = ()
 
 
-class Login(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = LoginSerializer
-    authentication_classes = (BasicAuthentication,)
+def Login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            serialzer = LoginSerializer(user)
+            return Response(serialzer.data)
+    #         # Redirect to a success page.
+    #     else:
+    #         # Return a 'disabled account' error message
+    # else:
+    #     # Return an 'invalid login' error message
 
-    def get_queryset(self):
-        return [self.request.user]
+# class Login(generics.ListAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = LoginSerializer
+#     authentication_classes = (BasicAuthentication,)
+#
+#     def get_queryset(self):
+#         return [self.request.user]

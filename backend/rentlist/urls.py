@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     url(r'admin/', include(admin.site.urls)),
-    url(r'login/$', views.Login.as_view(), name="login"),
+    url(r'login/$', views.Login, name="login"),
     url(r'sign_up/$', views.SignUp.as_view(), name="sign_up"),
     url(r'test', views.test),
 ]
