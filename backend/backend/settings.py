@@ -61,14 +61,12 @@ MIDDLEWARE_CLASSES = (
 )
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework.authentication.BasicAuthentication',
             'oauth2_provider.ext.rest_framework.OAuth2Authentication',
-    ],
+    ),
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
-
-if DEBUG:
-    REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] += 'rest_framework.authentication.BasicAuthentication'
 
 # SWAGGER_SETTINGS = {
 #     'is_authenticated': True,
