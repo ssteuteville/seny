@@ -13,7 +13,8 @@ from rest_framework import status
 from django.db.models import Q
 from django.http import HttpResponse
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
+from django.views.decorators.csrf import csrf_exempt
 
 def test(request, *args, **kwargs):
     return HttpResponse("Test")
@@ -418,6 +419,7 @@ class SignUp(generics.CreateAPIView):
     permission_classes = ()
 
 
+@csrf_exempt
 def Login(request):
     username = request.POST['username']
     password = request.POST['password']
