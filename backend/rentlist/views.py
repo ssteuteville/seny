@@ -413,7 +413,7 @@ class MessageThreadViewSet(SenyViewSet):
 class SignUp(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = SignUpSerializer
-    permission_classes = (IsAuthenticatedOrCreate,)
+    permission_classes = ()
 
 
 class Login(generics.ListAPIView):

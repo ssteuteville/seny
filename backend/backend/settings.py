@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '#04-85seq5w3#jomn713nr14v+)(kr@k$l%$9i@i9$+br*3na*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 #
 TEMPLATE_DEBUG = DEBUG
 
@@ -62,7 +62,7 @@ MIDDLEWARE_CLASSES = (
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
     ),
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
@@ -80,12 +80,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'rentlist',
         'USER': 'root',
-        'PASSWORD': '######',
+        'PASSWORD': '56Fuck89',
         'HOST': '127.0.0.1',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
@@ -115,8 +116,9 @@ if settings.DEBUG:
 
     STATIC_ROOT = "C:/Users/shane/Documents/GitHub/senior_project/backend/static/"
 else:
-   MEDIA_ROOT = "~/seny.com/seny/backend/media"
-   STATIC_ROOT = "~/seny.com/seny/backend/static"
+   #MEDIA_ROOT = "~/seny.com/seny/backend/media"
+   #STATIC_ROOT = "~/seny.com/seny/backend/static"
+    pass
 
 STATIC_URL = r'/static/'
 MEDIA_URL = r'/media/'
