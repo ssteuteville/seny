@@ -150,8 +150,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     demand_rating = serializers.ReadOnlyField(source="average_demand_rating")
     owner_id = serializers.ReadOnlyField(source="owner.id")
     profile_type = serializers.ReadOnlyField()
-    lat = serializers.FloatField(required=False)
-    long = serializers.FloatField(required=False)
+    lat = serializers.FloatField(allow_null=True)
+    long = serializers.FloatField(allow_null=True)
 
     class Meta:
         model = UserProfile
@@ -194,7 +194,7 @@ class MessageSerializer(serializers.ModelSerializer):
     destination_id = serializers.PrimaryKeyRelatedField(source='destination', read_only=True)
     source = serializers.ReadOnlyField(source='source.username')
     source_id = serializers.PrimaryKeyRelatedField(source='source', read_only=True)
-    thread = serializers.PrimaryKeyRelatedField(required=False, queryset=MessageThread.objects.all())
+    thread = serializers.PrimaryKeyRelatedField(allow_null=True, queryset=MessageThread.objects.all())
     # thread_title = serializers.CharField(write_only=True, required=False)
 
     class Meta:
