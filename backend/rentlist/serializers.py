@@ -230,7 +230,7 @@ class MessageWithThreadSerializer(serializers.ModelSerializer):
         fields = ('destination',
                   'content', 'thread_title') # 'image_id',
 
-    def create(self, validated_data):# todo implement a serializer that can create a thread and a message at same time
+    def create(self, validated_data):
         user = self.context['request'].user
         thread = validated_data['thread_title']
         del validated_data['thread_title']

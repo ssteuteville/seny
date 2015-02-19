@@ -132,7 +132,10 @@ class MessageViewSet(SenyViewSet):
 
     @list_route(methods=['POST'], permission_classes=permission_classes)
     def new(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+        self.serializer_class = MessageWithThreadSerializer
+        message = self.create(request, *args, **kwargs)
+        self.serializer_class = MessageSerializer
+        return message
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
