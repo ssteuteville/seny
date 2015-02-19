@@ -18,3 +18,6 @@ Next on list:
     TEST
     DEPLOY -- ssh -i shane-asus.pem  ubuntu@52.10.7.252
     FRONTEND
+
+
+Getting SSL working in production. There is a bookmark on chrome.
