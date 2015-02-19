@@ -150,6 +150,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     demand_rating = serializers.ReadOnlyField(source="average_demand_rating")
     owner_id = serializers.ReadOnlyField(source="owner.id")
     profile_type = serializers.ReadOnlyField()
+    # lat = serializers.FloatField(required=False)
 
     class Meta:
         model = UserProfile
@@ -158,11 +159,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
         extra_kwargs = {"profile_type": {"read_only": True}}
 
     def update(self, instance, validated_data):
-        zip_code = validated_data.get('zip', None)
-        if zip_code:
-            instance.lat, instance.long = get_geo(validated_data['zip'])
         for key in validated_data.keys():
             setattr(instance, key, validated_data[key])
+        lat, long = validated_data.get('lat', None), validated_data.get('long', None)
+        if not lat or not long:
+            instance.lat, instance.long = get_geo(instance.zip)
         instance.save()
         return instance
 
