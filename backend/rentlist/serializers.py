@@ -112,6 +112,7 @@ class ProductSerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer(many=True, read_only=True)
     owner = serializers.ReadOnlyField(source='owner.username')
     deposit = serializers.FloatField(default=0)
+    display_image = serializers.PrimaryKeyRelatedField(queryset=Image.objects.all(), allow_null=True)
 
     class Meta:
         model = Product
