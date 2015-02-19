@@ -269,7 +269,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     distance = serializers.FloatField(read_only=True)
     owner = serializers.ReadOnlyField(source='product.owner.username')
     lat = serializers.FloatField(allow_null=True)
-    lon = serializers.Field(allow_null=True)
+    lon = serializers.FloatField(allow_null=True)
 
     class Meta:
         model = Advertisement
