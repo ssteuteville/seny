@@ -58,7 +58,7 @@ class AdvertisementPermissions(SenyPermission):
 
     def has_permission(self, request, view):
         self.message = "You must set up your profile before viewing advertisements.."
-        return request.user.profile.lat is not None and request.user.profile is not None
+        return request.user.profile.lat is not None and request.user.profile.long is not None
 
     def has_object_permission(self, request, view, obj):
         if request.method in ['PUT', 'PATCH', 'DELETE']:
