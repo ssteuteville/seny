@@ -419,25 +419,24 @@ class SignUp(generics.CreateAPIView):
     permission_classes = ()
 
 
-# @csrf_exempt
-# def Login(request):
-#     username = request.POST['username']
-#     password = request.POST['password']
-#     user = authenticate(username=username, password=password)
-#     if user is not None:
-#         if user.is_active:
-#             return Response(str(user.application_set.first().client_id))
+@csrf_exempt
+def Login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+            return JsonResponse(str(user.application_set().first().client_id), safe=False)
     #         # Redirect to a success page.
     #     else:
     #         # Return a 'disabled account' error message
     # else:
     #     # Return an 'invalid login' error message
 
-class Login(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = LoginSerializer
-    authentication_classes = (BasicAuthentication,)
-
-    def get_queryset(self):
-        user = authenticate(self.request.POST['username'], self.request.POST['password'])
-        return [user]
+# class Login(generics.ListAPIView):
+#     queryset = User.objects.all()
+#     serializer_class = LoginSerializer
+#     authentication_classes = (BasicAuthentication,)
+#
+#     def get_queryset(self):
+#         return [self.request.user]
