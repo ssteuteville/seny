@@ -135,7 +135,6 @@ class ProductSerializer(serializers.ModelSerializer):
         instance.save()
         instance.collect_tags()
         if image:
-            image = Image(**image)
             image.products_displaying_image.add(instance)
             image.save()
             image.products.add(instance)
