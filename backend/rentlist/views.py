@@ -426,8 +426,8 @@ def Login(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:
-            return JsonResponse("{ client_id: '" + user.application_set.first().client_id + ",\n client_secret: '"
-                                + user.application_set.first().client_secret + "'\n}", safe=False)
+            return JsonResponse({'client_id': user.application_set.first().client_id,
+                                 'client_secret': user.application_set.first().client_secret}, safe=False)
     #         # Redirect to a success page.
     #     else:
     #         # Return a 'disabled account' error message
