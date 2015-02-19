@@ -150,7 +150,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
     demand_rating = serializers.ReadOnlyField(source="average_demand_rating")
     owner_id = serializers.ReadOnlyField(source="owner.id")
     profile_type = serializers.ReadOnlyField()
-    # lat = serializers.FloatField(required=False)
+    lat = serializers.FloatField(required=False)
+    long = serializers.FloatField(required=False)
 
     class Meta:
         model = UserProfile
