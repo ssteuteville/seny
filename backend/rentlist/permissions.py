@@ -56,6 +56,10 @@ class SenyPermission(permissions.BasePermission):
 
 class AdvertisementPermissions(SenyPermission):
 
+    def has_permission(self, request, view):
+        self.message = "You must set up your profile before viewing advertisements.."
+        return request.user.profile.lat is not None and request.user.profile is not None
+
     def has_object_permission(self, request, view, obj):
         if request.method in ['PUT', 'PATCH', 'DELETE']:
             self.message = "Only the owner can edit this advertisement.."
@@ -113,10 +117,6 @@ class ProductPermissions(SenyPermission):
 class AdvertisementResponsePermissions(SenyAuth):
 
     message = "Only the response owner or advertisement owner can access this."
-
-    def has_permission(self, request, view):
-        self.message = "You must set up your profile before viewing advertisements.."
-        return request.user.profile.lat is not None and request.user.profile is not None
 
     def has_object_permission(self, request, view, obj):
         if request.user.username == obj.owner.username:
