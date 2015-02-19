@@ -156,7 +156,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ("zip", "title", "description", "owner", "owner_id", "lat", "long", "profile_type",
+        fields = ("id", "zip", "title", "description", "owner", "owner_id", "lat", "long", "profile_type",
                   "supply_reviews", "demand_reviews", "supply_rating", "demand_rating")
         extra_kwargs = {"profile_type": {"read_only": True}}
 
