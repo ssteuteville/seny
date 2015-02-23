@@ -126,11 +126,11 @@ class MessageViewSet(SenyViewSet):
     filterable_by = ['new']
 
     def get_serializer_class(self):
-        if self.action == 'new':
+        if self.action in ['new']:
             return MessageWithThreadSerializer
         return self.serializer_class
 
-    @list_route(methods=['POST'], permission_classes=permission_classes)
+    @list_route(methods=['POST', 'GET'], permission_classes=permission_classes)
     def new(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
@@ -187,7 +187,7 @@ class ProductViewSet(SenyViewSet):
 
         ## Special EndPoints: ##
         ### /api/version/products/new###
-            allows you to add a product using an existing image as display_image
+            allows you to add a product and upload an image as display_image
 
         ### User ###
             /api/version/products/user
