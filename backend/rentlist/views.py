@@ -53,6 +53,7 @@ class AdvertisementViewSet(SenyViewSet):
         + tags - will search to see if ay of this ad's product's tags have a text field equal to this parameter
         + product - search product by id
         + product__owner - search by owner
+        + product__type - search by product type: 0 = supply, 2 = demand
         + active - 1 for true 0 for false
         + zip - query by zip code
         + zip_query  (lat_lon is preferred over this) - this will order results based on distance from supplied value. If not provided the results will be
@@ -70,7 +71,7 @@ class AdvertisementViewSet(SenyViewSet):
     queryset = Advertisement.objects.all()
     permission_classes = [SenyAuth, AdvertisementPermissions]
     serializer_class = AdvertisementSerializer
-    filterable_by = ['tags', ['product', 'id'], ['product__owner', 'username'], 'active', 'zip']
+    filterable_by = ['tags', ['product', 'id'], ['product__owner', 'username'], 'product__type','active', 'zip']
 
     @detail_route(methods=['PUT'], permission_classes=permission_classes)
     def toggle(self, request, pk=None):

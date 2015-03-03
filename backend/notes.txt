@@ -17,7 +17,7 @@ Authentication:
 
 
 Problem in production with switching serializers in views... #TODO
-DEPLOY -- ssh -i shane-asus.pem  ubuntu@52.10.7.252
+DEPLOY -- ssh -i shane-asus.pem  ubuntu@52.10.64.129
 FRONTEND
 
 
