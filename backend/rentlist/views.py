@@ -152,6 +152,9 @@ class ImageViewSet(SenyViewSet):
         ## Special Endpoints ##
             /api/version/images/user
             returns all images of current user
+
+            /api/version/images/product
+            Add an image to an existing product
     """
     queryset = Image.objects.all()
     permission_classes = [SenyAuth, ImagePermissions]
@@ -163,7 +166,7 @@ class ImageViewSet(SenyViewSet):
             return ImageForProductSerializer
         return self.serializer_class
 
-    @list_route(methods=['POST'], permission_classes=permission_classes)
+    @list_route(methods=['POST', 'GET'], permission_classes=permission_classes)
     def product(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
 
