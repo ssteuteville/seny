@@ -1,0 +1,40 @@
+<div ng-include="advertisement/modal.html"></div>
+
+<diV class="col-lg-12 col-lg-offset-0 container-fluid">
+    <div class="btn-group col-lg-12 col-lg-offset-0" role="group" style="margin-bottom: 10px;">
+        <div class="col-sm-3 col-sm-offset-2">
+            <form ng-submit="update()">
+                <input type="text" class="form-control" placeholder="Search By Tag" ng-model="tag_query">
+                <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+            </form>
+        </div>
+        <div class="col-sm-3 col-sm-offset-2">
+            <button ng-click="setType('all')" type="button" class="btn-lg btn-success" onclick="swapActive(this)">All</button>
+            <button ng-click="setType(0)" type="button" class="btn-lg btn-primary" onclick="swapActive(this)">Supply</button>
+            <button ng-click="setType(2)" type="button" class="btn-lg btn-primary" onclick="swapActive(this)">Demand</button>
+        </div>
+    </div>
+    <div class="col-lg-8 col-lg-offset-2 seny-panel">
+        <div class="container-fluid content list-group">
+            <div  ng-repeat="ad in advertisements" class="list-group-item">
+                <div class="list-group-item advertisement_element" style="position: relative">
+                    <div ng-click="openAdDetail(ad)" class="col-lg-3 col-lg-offset-0">
+                        <img ng-if="hasImage(ad)" ng-src="{{ad.product.display_image.image}}" width="75px" height="75px">
+                    </div>
+                    <div class="col-lg-5 col-lg-offset-0">
+                        <h4 ng-click="openAdDetail(ad)" >{{ad.product.title}}</h4>
+                        <span class="">
+                            <b>By:</b> <a href="#/user/{{ad.owner}}"> {{ad.owner}} </a>
+                        </span>
+                    </div>
+
+                    <div class="right-ad col-lg-4">
+                        <div><b>From:</b> {{convertDate(ad.start)}}</div>
+                        <div><b>To:</b> {{convertDate(ad.end)}}</div>
+                        <div><b>Distance: </b>{{ad.distance | number : 2}} mi.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</diV>

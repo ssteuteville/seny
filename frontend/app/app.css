@@ -1,0 +1,178 @@
+/* app css stylesheet */
+
+.signup, .topnav
+{
+    background-color: rgba(30, 44, 44, 0.8);
+}
+
+.seny-panel
+{
+    background-color: rgba(30, 44, 44, 0.9);
+    border-radius: 5px;
+    /*margin-top: 10px;*/
+    /*min-height: 500px;*/
+    font-family: 'Gloria Hallelujah', cursive;
+    padding-bottom: 10px;
+}
+
+.share
+{
+    float: right;
+}
+
+.seny-panel h1, h2, h3, h4, h5
+{
+    color: lime;
+}
+
+.seny-panel p, span, div, ul, li
+{
+    color:cadetblue;
+}
+
+.list-group-item
+{
+    overflow:hidden;
+    position: relative;
+    display: block;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+.row
+{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.content
+{
+    /*background-color: darkslategrey;*/
+    margin: 20px;
+    height: 90%;
+    color: #000000;
+    font-family: 'Gloria Hallelujah', cursive;
+}
+.authorized
+{
+    background-color: darkslategray;
+}
+
+.not_authorized
+{
+    background-image: url('img/collage.jpg');
+    background-size: 50%;
+}
+.lime
+{
+    color: lime;
+    font-family: 'Gloria Hallelujah', cursive;
+}
+
+.bottom-margin
+{
+    margin-bottom: 20px;
+}
+
+.right-ad
+{
+    position: absolute;
+    right:0px;
+    font-size: 12px;
+}
+
+.left
+{
+    float: left;
+}
+
+.advertisement_element
+{
+    border: 0px;
+    /*margin-top: 10px;*/
+    min-height: 75px;
+}
+
+.title
+{
+    font-family: 'Gloria Hallelujah', cursive;
+    color: lime;
+    font-size: 20px;
+}
+
+.collage
+{
+    background-image: url('img/collage.jpg');background-size:50%;
+}
+
+.brand
+{
+    color: lime;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 45px;
+    /*margin-bottom: -20%;*/
+}
+
+.btn-logout
+{
+    position: absolute;
+    top: 99%;
+    right: 1%;
+}
+
+.layout-icon
+{
+    font-size: 60px;
+}
+
+.signup h2
+{
+    color: lime;
+    font-family: 'Gloria Hallelujah', cursive;
+}
+
+.username
+{
+    position: absolute;
+    top: 1%;
+    right: 1%;
+}
+.signup, .login
+{
+    color: darkgray;
+}
+
+
+
+.menu {
+  list-style: none;
+  border-bottom: 0.1em solid black;
+  margin-bottom: 2em;
+  padding: 0 0 0.5em;
+}
+
+.menu:before {
+  content: "[";
+}
+
+.menu:after {
+  content: "]";
+}
+
+.menu > li {
+  display: inline;
+}
+
+.menu > li:before {
+  content: "|";
+  padding-right: 0.3em;
+}
+
+.menu > li:nth-child(1):before {
+  content: "";
+  padding: 0;
+}

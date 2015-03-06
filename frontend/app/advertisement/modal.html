@@ -1,0 +1,55 @@
+<div class="seny-panel lime">
+    <div class="modal-header">
+        <h2>{{ad.product.title}}</h2>
+        <rating value="rate" max="max_rating" readonly="isReadOnly" stateOff="'glyphicon-star-empty'"></rating>
+        {{ad.distance | number : 1}} mi.
+        <button type="button" class="close" aria-label="Close" style="margin-top: -15%;" ng-click="close()"><h1>X</h1></button>
+        <div class="share">
+            <label class="title lime">Share Url: </label>
+            <input value="{{share_url + ad.id}}"/>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <div>
+            <h3> <u>Price</u></h3>
+            {{ad.product.price | currency}} per {{getMetric(ad)}}
+        </div>
+        <div>
+            <h3> <u>Description</u> </h3>
+            {{ad.product.description}}
+        </div>
+
+        <div>
+            <h3><u>Availability</u></h3>
+            {{ ad.start | date : 'medium'}} to {{ad.end | date : 'medium'}}
+        </div>
+        <div ng-show="ad.product.reviews.length > 0">
+            <h3><u>Reviews</u></h3>
+            <accordion close-others="oneAtATime">
+                <accordion-group ng-repeat="group in groups">
+                    <accordion-heading>
+                        {{group.title}}
+                    </accordion-heading>
+                    <div>{{group.content}}</div>
+                    <a class="pull-right" ng-href="{{profile_url + group.owner + '/'}}">- {{group.owner}}</a>
+                </accordion-group>
+            </accordion>
+        </div>
+        <div ng-show="ad.product.images.length > 0">
+            <h3> <u>Images</u></h3>
+            <carousel interval="interval">
+                <slide ng-repeat="slide in slides" active="slide.active" style="height: 350px">
+                    <img ng-src="{{slide.image}}" style="margin: auto;" width="300px" height="300px">
+                    <div class="carousel-caption lime">
+                        <h3> {{slide.title}} </h3>
+                    </div>
+                </slide>
+            </carousel>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="brand" style="float:left">SENY</div>
+        <label class="title lime">Share Url: </label> <input class="share" value="{{share_url + ad.id}}"/>
+    </div>
+</div>

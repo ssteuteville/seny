@@ -1,0 +1,20 @@
+<div class="container-fluid col-sm-12">
+    <div class="col-sm-4 seny-panel">
+        <h3>Thank you!</h3>
+        <div>
+            We appreciate that you would like to hurry up and join our sharing community
+            but first we need a little bit of information from you...
+        </div>
+    </div>
+    <div class="col-sm-6 col-sm-offset-4 seny-panel">
+        <h3>Set Up Your Profile!</h3>
+        <form ng-submit="update()">
+            <div class="form-group">
+                Zip Code: <input type="text" ng-model="zip" ng-required="true" class="form-control">
+                Title: <input type="text" ng-model="title" ng-required="true" class="form-control">
+                Description: <input type="textbox" ng-model="description" class="form-control">
+            </div>
+            <input type="submit">
+        </form>
+    </div>
+</div>

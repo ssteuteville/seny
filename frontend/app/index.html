@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="SENY" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="SENY" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="SENY" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="SENY" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>SENY</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+</head>
+<body ng-class="{'not_authorized': !$root.authorized, 'authorized': $root.authorized}">
+    <nav class="navbar navbar-default topnav">
+        <div class="container-fluid col-lg-12">
+            <div class="navbar-header col-lg-2">
+                <a class="" href="#">
+                    <h1 class="brand">SENY</h1>
+                </a>
+            </div>
+            <div class="col-lg-2">
+                <a ng-href="#/inbox">
+                    <div class="glyphicon-envelope layout-icon" aria-hidden="true"></div>
+                </a>
+            </div>
+            <div class="navbar-right">
+                <div ng-if="!$root.authorized" ng-include="'LoginView/LoginView.html'"></div>
+                <div ng-if="$root.authorized" class="title username" ng-controller="logoutController">
+                    Logged in: <a ng-href="#/profile/{{$root.user.owner}}">{{ $root.user.owner }}</a>
+                    <button class="btn btn-primary btn-logout" ng-click="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <div ng-if="$root.authorized" ng-view></div>
+  <div ng-if="!$root.authorized" class="col-md-4 col-md-offset-4 signup">
+      <h2>SENY<small>(Sharing Econemy Near You)</small></h2>
+      <p>Please login or sign up to start sharing!!</p>
+      <div ng-include="'signup/signup.html'"></div>
+  </div>
+
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="app.js"></script>
+  <script src="LoginView/LoginView.js"></script>
+  <script src="services.js"></script>
+  <script src="home/home.js"></script>
+  <script src="signup/signup.js"></script>
+  <script src="profile/profile.js"></script>
+  <script src="advertisement/advertisement.js"></script>
+  <script src="components/version/version.js"></script>
+  <script src="components/version/version-directive.js"></script>
+  <script src="components/version/interpolate-filter.js"></script>
+  <script src="bower_components/angular-cookie/angular-cookie.min.js"></script>
+  <script src="bower_components/angular-local-storage/dist/angular-local-storage.min.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+  <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
+
+</body>
+</html>
