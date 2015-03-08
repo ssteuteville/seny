@@ -310,7 +310,7 @@ class SignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'client_id', 'client_secret')
+        fields = ('username', 'password', 'email', 'client_id', 'client_secret')
         write_only_fields = ('password',)
 
     def get_client_id(self, obj):
@@ -320,7 +320,7 @@ class SignUpSerializer(serializers.ModelSerializer):
         return obj.application_set.first().client_secret
 
     def create(self, validated_data):
-        user = User(username=validated_data['username'])
+        user = User(username=validated_data['username'], email=validated_data['email'])
         user.set_password(validated_data['password'])
         user.save()
         return user
