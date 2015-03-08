@@ -58,8 +58,8 @@ INSTALLED_APPS = (
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -68,8 +68,8 @@ MIDDLEWARE_CLASSES = (
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-            'rest_framework.authentication.BasicAuthentication',
-            'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
     ),
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
@@ -119,10 +119,6 @@ AUTH_PROFILE_MODULE = 'rentlist.models.UserProfile'
 if settings.DEBUG:
     MEDIA_ROOT = "C:/Users/shane/Documents/GitHub/senior_project/backend/media/"
     STATIC_ROOT = "C:/Users/shane/Documents/GitHub/senior_project/backend/static/"
-else:
-   #MEDIA_ROOT = "~/seny.com/seny/backend/media"
-   #STATIC_ROOT = "~/seny.com/seny/backend/static"
-    pass
 
 STATIC_URL = r'/static/'
 MEDIA_URL = r'/media/'
