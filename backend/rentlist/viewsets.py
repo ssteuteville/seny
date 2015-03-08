@@ -53,6 +53,8 @@ class SenyViewSet(viewsets.ModelViewSet):
                 else:
                     val = self.request.QUERY_PARAMS.get(kw, None)
                 if val:
+                    if kw in ['start__lte', 'end__lte']:
+                        val = datetime(val)
                     filters[kw] = val
 
             queryset = queryset.filter(**filters)
