@@ -153,10 +153,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
     profile_type = serializers.ReadOnlyField()
     lat = serializers.FloatField(allow_null=True)
     long = serializers.FloatField(allow_null=True)
+    email = serializers.ReadOnlyField(source='owner.email', allow_null=True)
 
     class Meta:
         model = UserProfile
-        fields = ("id", "zip", "title", "description", "owner", "owner_id", "lat", "long", "profile_type",
+        fields = ("id", "zip", "title", "description", "owner", "owner_id", "email", "lat", "long", "profile_type",
                   "supply_reviews", "demand_reviews", "supply_rating", "demand_rating")
         extra_kwargs = {"profile_type": {"read_only": True}}
 
