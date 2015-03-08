@@ -59,6 +59,8 @@ class AdvertisementViewSet(SenyViewSet):
         + zip_query  (lat_lon is preferred over this) - this will order results based on distance from supplied value. If not provided the results will be
           ordered by distance from the current user's lat, long
         + lat_lon - comma separated lat long used for ordering (similar to zip_query but preferred over it)
+        + start - check if the date being queried is greater or equal to start
+        + end - check if the date being queried is greater or equal to end
 
         ## Special Endpoints: ##
         ### Toggle ###
@@ -71,7 +73,7 @@ class AdvertisementViewSet(SenyViewSet):
     queryset = Advertisement.objects.all()
     permission_classes = [SenyAuth, AdvertisementPermissions]
     serializer_class = AdvertisementSerializer
-    filterable_by = ['tags', ['product', 'id'], ['product__owner', 'username'], 'product__type','active', 'zip']
+    filterable_by = ['tags', ['product', 'id'], ['product__owner', 'username'], ['start', 'lte'], ['end', 'lte'], 'product__type','active', 'zip']
 
     @detail_route(methods=['PUT'], permission_classes=permission_classes)
     def toggle(self, request, pk=None):
