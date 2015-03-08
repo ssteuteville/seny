@@ -32,8 +32,8 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
             }
         };
 
-        this.signup = function(username, password){
-            return $http.post(baseURL + "sign_up/", encode({username: username, password: password}))
+        this.signup = function(username, email, password){
+            return $http.post(baseURL + "sign_up/", encode({username: username, password: password, email: email}))
                 .success(function (data, status, headers, config){
                     client_id = data['client_id'];
                     client_secret = data['client_secret'];
@@ -90,7 +90,7 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
 
         // HELPER FUNCTIONS \\
 
-        function getToken(username, password)
+        function getToken(username, password, user)
         {
             var params = {username: username,
                 password: password,
@@ -111,6 +111,11 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
                     ipCookie('SENY-scope', data['scope'], {expires: 1});
                     $http.defaults.headers.common['Authorization'] = "Bearer " + data['access_token'];
                     $rootScope.authorized = true;
+                    if(user)
+                    {
+                        $rootScope.user = user;
+                        return status;
+                    }
                     return getUser()
 
                 })
