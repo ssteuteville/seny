@@ -7,6 +7,7 @@ angular.module('SENY', [
   'SENY.home',
   'SENY.signup',
   'SENY.advertisement',
+  'SENY.product',
   'SENY.profile',
   'SENY.version',
   'SenyData',

@@ -1,0 +1,18 @@
+<div class="seny-panel col-sm-6 col-sm-offset-3">
+    <form class="form-inline" style="margin-top: 10px;">
+        <div class="form-group">
+            <label class="title" style="margin-right: 100px;">Products</label>
+            <input type="search" class="form-control" placeholder="Search By Tag"/>
+        </div>
+        <a href="#/products/create" class="pull-right">Create</a>
+    </form>
+    <hr/>
+    <accordion close-others="oneAtATime">
+        <accordion-group ng-repeat="product in products">
+            <accordion-heading>
+                {{product.title}}
+            </accordion-heading>
+            <div>{{product.description}}</div>
+        </accordion-group>
+    </accordion>
+</div>

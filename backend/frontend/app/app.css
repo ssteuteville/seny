@@ -13,6 +13,9 @@
     /*min-height: 500px;*/
     font-family: 'Gloria Hallelujah', cursive;
     padding-bottom: 10px;
+    -webkit-box-shadow: 5px 5px 15px -6px limegreen;
+    -moz-box-shadow: 5px 5px 15px -6px limegreen;
+    box-shadow: 5px 5px 15px -6px limegreen;
 }
 
 .share
@@ -113,7 +116,7 @@
 {
     color: lime;
     font-family: 'Gloria Hallelujah', cursive;
-    font-size: 45px;
+    font-size: 30px;
     /*margin-bottom: -20%;*/
 }
 
@@ -126,7 +129,38 @@
 
 .layout-icon
 {
-    font-size: 60px;
+    font-size: 20px;
+    color: #888888;
+}
+
+.drop-down{
+    background-color: darkslategray;
+    font-family: 'Gloria Hallelujah', cursive;
+
+}
+
+.drop-down>li>a
+{
+    color: #ffffff;
+}
+
+.navbar
+{
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 20px;
+    border: 0px solid transparent;
+    box-shadow: 0 4px 4px -4px lime;
+}
+
+.dropdown-header
+{
+    display: block;
+    padding: 3px 20px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    color: lime;
+    white-space: nowrap;
 }
 
 .signup h2

@@ -90,7 +90,7 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
 
         // HELPER FUNCTIONS \\
 
-        function getToken(username, password, user)
+        function getToken(username, password)
         {
             var params = {username: username,
                 password: password,
@@ -111,11 +111,6 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
                     ipCookie('SENY-scope', data['scope'], {expires: 1});
                     $http.defaults.headers.common['Authorization'] = "Bearer " + data['access_token'];
                     $rootScope.authorized = true;
-                    if(user)
-                    {
-                        $rootScope.user = user;
-                        return status;
-                    }
                     return getUser()
 
                 })

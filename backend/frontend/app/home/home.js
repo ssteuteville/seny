@@ -30,7 +30,7 @@ angular.module('SENY.home', ['ngRoute', 'SenyData'])
     };
 
     $scope.update = function(){
-        var query = {};
+        var query = {'active': 1, start: new Date().toISOString()};
         if($scope.tag_query != "")
         {
             query.tags = $scope.tag_query.split(' ').join();

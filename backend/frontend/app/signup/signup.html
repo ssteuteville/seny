@@ -4,7 +4,7 @@
             <label>
                 Username
             </label>
-            <input type="text" ng-model="username" class="form-control">
+            <input ng-required="true" type="text" ng-model="username" class="form-control">
         </div>
     </div>
     <div class="form-group row">
@@ -12,13 +12,13 @@
             <label>
                 Email
             </label>
-            <input type="text" ng-model="email" class="form-control">
+            <input ng-required="true" type="email" ng-model="email" class="form-control">
         </div>
     </div>
     <div class="form-group row">
         <div class="col-md-8 col-md-offset-2">
             <label>Password</label>
-            <input type="password" ng-model="password" class="form-control">
+            <input ng-required="true" type="password" ng-model="password" class="form-control">
         </div>
     </div>
     <div class="row bottom-margin">
