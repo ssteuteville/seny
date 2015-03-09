@@ -4,7 +4,7 @@ from django.db.models.query import QuerySet
 from rentlist.models import *
 from django.shortcuts import get_object_or_404
 from rest_framework import exceptions
-
+import dateutil
 
 class SenyViewSet(viewsets.ModelViewSet):
     """
@@ -54,7 +54,7 @@ class SenyViewSet(viewsets.ModelViewSet):
                     val = self.request.QUERY_PARAMS.get(kw, None)
                 if val:
                     if kw in ['start__lte', 'end__lte']:
-                        val = datetime(val)
+                        val = dateutil.parser.parse(val, fuzzy=True)
                     filters[kw] = val
 
             queryset = queryset.filter(**filters)

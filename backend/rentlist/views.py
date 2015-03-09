@@ -73,7 +73,7 @@ class AdvertisementViewSet(SenyViewSet):
     queryset = Advertisement.objects.all()
     permission_classes = [SenyAuth, AdvertisementPermissions]
     serializer_class = AdvertisementSerializer
-    filterable_by = ['tags', ['product', 'id'], ['product__owner', 'username'], ['start', 'lte'], ['end', 'lte'], 'product__type','active', 'zip']
+    filterable_by = ['tags', ['product', 'id'], ['product__owner', 'username'], ['start', 'gte'], ['end', 'gte'], 'product__type','active', 'zip']
 
     @detail_route(methods=['PUT'], permission_classes=permission_classes)
     def toggle(self, request, pk=None):
