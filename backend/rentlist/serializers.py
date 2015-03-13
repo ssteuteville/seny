@@ -62,11 +62,13 @@ class ProductWithImageSerializer(serializers.ModelSerializer):
     display_image = ImageSerializer()
     owner = serializers.ReadOnlyField(source='owner.username')
     deposit = serializers.FloatField(default=0)
+    tags = TagSerializer(many=True, read_only=True)
+
 
 
     class Meta:
         model = Product
-        fields = ("id", "price_metric", "price", "description", "title", "type", "owner", "display_image", "deposit")
+        fields = ("id", "price_metric", "price", "description", "title", "type", "owner", "display_image", "deposit", "tags")
         extra_kwargs = {}
 
     def create(self, validated_data):
