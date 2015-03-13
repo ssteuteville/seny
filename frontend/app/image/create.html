@@ -1,0 +1,5 @@
+<div class="button" ng-file-select ng-model="file">Upload File</div>
+<div ng-file-drop ng-model="file" class="upload-drop-zone" allow-dir="false" accept=".jpg,.png,.gif">Drop Images Here</div>
+<div>{{file}}</div>
+<input type="text" ng-model="title">
+<button ng-click="upload()">Create</button>

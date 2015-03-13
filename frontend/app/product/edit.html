@@ -1,0 +1,47 @@
+<form>
+    <div class="seny-panel col-sm-6 col-sm-offset-3">
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" ng-model="model.title" class="form-control select" placeholder="Make your title count!" required>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control select" ng-model="model.description" rows="6" required placeholder="Put as many details here as you want."></textarea>
+        </div>
+
+        <div class="form-group col-sm-12">
+            <div class="col-sm-3">
+                <label>Price:</label>
+                $<input type="number" ng-model="model.price" class="form-control select" required>
+            </div>
+            <div class="col-sm-3">
+                <label>Price Metric:</label>
+                <select ng-init="model.price_metric = metrics[0].val" ng-options="metric.val as metric.name for metric in metrics" ng-model="model.price_metric" class="form-control select" required></select>
+            </div>
+            <div class="col-sm-3">
+                <label>Product Type:</label>
+                <select ng-init="model.type = types[0].val" ng-options="type.val as type.name for type in types" ng-model="model.type" class="form-control select" required   ></select>
+            </div>
+            <div class="col-sm-3">
+                <label>Deposit:</label>
+                $<input type="number" ng-model="model.deposit" class="form-control select">
+            </div>
+        </div>
+
+        <hr class="col-sm-11"/>
+
+        <h3> Image: </h3>
+        <div ng-controller="imageListController" class="col-sm-6 col-sm-offset-3">
+            <select ng-options="image as image.title for image in images" ng-model="model.display_image" class="form-control select"></select>
+            <div ng-if="model.display_image">
+                <h3>Preview:</h3>
+                <img ng-src="{{model.display_image.image}}" height="150px" width="150px" class="col-sm-offset-2">
+            </div>
+        </div>
+
+        <hr class="col-sm-11"/>
+        <div class="col-sm-8 col-sm-offset-5">
+            <button type="submit" ng-click="put()" class="btn btn-lg btn-primary">Update</button>
+        </div>
+    </div>
+</form>

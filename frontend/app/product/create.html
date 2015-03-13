@@ -1,0 +1,85 @@
+<form>
+    <div class="seny-panel col-sm-6 col-sm-offset-3">
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" ng-model="model.title" class="form-control select" placeholder="Make your title count!" required>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control select" ng-model="model.description" rows="6" required placeholder="Put as many details here as you want."></textarea>
+        </div>
+
+        <div class="form-group col-sm-12">
+            <div class="col-sm-3">
+                <label>Price:</label>
+                $<input type="number" ng-model="model.price" class="form-control select" required>
+            </div>
+            <div class="col-sm-3">
+                <label>Price Metric:</label>
+                <select ng-init="model.price_metric = metrics[0].val" ng-options="metric.val as metric.name for metric in metrics" ng-model="model.price_metric" class="form-control select" required></select>
+            </div>
+            <div class="col-sm-3">
+                <label>Product Type:</label>
+                <select ng-init="model.type = types[0].val" ng-options="type.val as type.name for type in types" ng-model="model.type" class="form-control select" required   ></select>
+            </div>
+            <div class="col-sm-3">
+                <label>Deposit:</label>
+                $<input type="number" ng-model="model.deposit" class="form-control select">
+            </div>
+        </div>
+
+        <hr class="col-sm-11"/>
+
+        <h3> Image: </h3>
+        <div class="btn-group col-sm-offset-3" role="group">
+            <button ng-class="{'btn btn-success': image_type == 'upload', 'btn btn-primary': image_type != 'upload'}" ng-click="image_type = 'upload'">
+                New Image
+            </button>
+            <button ng-class="{'btn btn-success': image_type == 'exist', 'btn btn-primary': image_type != 'exist'}" ng-click="image_type = 'exist'">
+                Existing Image
+            </button>
+            <button ng-class="{'btn btn-success': image_type == 'none', 'btn btn-primary': image_type != 'none'}" ng-click="image_type = 'none'">
+                No Image
+            </button>
+        </div>
+
+        <hr class="col-sm-8 col-sm-offset-2"/>
+
+        <div ng-if="image_type=='upload'">
+            <div class="col-sm-12 bottom-margin">
+                <div  class="col-sm-4 col-sm-offset-4">
+                    <label>Image Title:</label>
+                    <input type="text" class="form-control select" ng-model="$parent.display_image_title" required>
+                </div>
+            </div>
+
+            <div ng-file-drop ng-model="$parent.file" class="upload-drop-zone col-sm-4 col-sm-offset-2" allow-dir="false" accept=".jpg,.png,.gif">
+                Drop Image Here
+            </div>
+            <span class="title col-sm-1"> OR </span>
+            <div class="col-sm-4 bottom-margin">
+                <button class="btn btn-md btn-primary" ng-file-select ng-model="$parent.file">Browse</button>
+                <p ng-if="$parent.file">File: {{$parent.file[0].name}}</p>
+                <p ng-if="!$parent.file">File: </p>
+                <div ng-if="in_progress">Uploading..</div>
+            </div>
+        </div>
+        <div ng-if="image_type=='exist'" ng-controller="imageListController" class="col-sm-6 col-sm-offset-3">
+            <select ng-options="image.id as image.title for image in images" ng-model="model.display_image" class="form-control select"></select>
+            <div ng-if="display_image">
+                <h3>Preview:</h3>
+                <img ng-src="{{model.display_image.image}}" height="150px" width="150px" class="col-sm-offset-2">
+            </div>
+        </div>
+        <div ng-if="image_type=='none'" class="col-sm-8 col-sm-offset-2 title">
+            <p>Products are much more effective with a display image.</p>
+            <p>But don't worry you can add one later!</p>
+        </div>
+
+        <hr class="col-sm-11"/>
+        <div class="col-sm-8 col-sm-offset-5">
+            <button type="submit" ng-click="upload()" ng-if="image_type=='upload'" class="btn btn-lg btn-primary">Create</button>
+            <button type="submit" ng-click="create()" ng-if="image_type!='upload'" class="btn btn-lg btn-primary">Create</button>
+        </div>
+    </div>
+</form>

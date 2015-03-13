@@ -7,11 +7,13 @@ angular.module('SENY', [
   'SENY.home',
   'SENY.signup',
   'SENY.advertisement',
+  'SENY.image',
   'SENY.product',
   'SENY.profile',
   'SENY.version',
   'SenyData',
   'ui.bootstrap',
+  'angularFileUpload'
 
 ])
 

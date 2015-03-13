@@ -1,0 +1,24 @@
+<div class="seny-panel col-sm-6 col-sm-offset-3">
+    <form class="form-inline" style="margin-top: 10px;">
+        <div class="form-group">
+            <label class="title" style="margin-right: 100px;">Products</label>
+            <input type="search" class="form-control" placeholder="Search By Tag"/>
+        </div>
+        <a href="#/product/create" class="pull-right">Create</a>
+    </form>
+    <hr/>
+    <accordion close-others="true" class="select">
+        <accordion-group ng-repeat="product in products">
+            <accordion-heading>
+                {{product.title}}
+            </accordion-heading>
+            <div class="well">
+                <div><label>Description:</label>{{product.description}}</div>
+                <div><label>Price:</label>{{product.price | currency}} PER {{SenyData.get_deposit(product.deposit)}}</div>
+            </div>
+            <a class="pull-left panel-link" ng-href="#/product/{{product.id}}">More Details</a>|
+            <a class="panel-link" ng-href="#/product/edit/{{product.id}}">Edit</a>|
+            <span ng-controller="ProductDeleteController" class="panel-link" href="#" ng-click="del(product.id);$parent.update()">Delete</span>
+        </accordion-group>
+    </accordion>
+</div>

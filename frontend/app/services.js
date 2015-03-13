@@ -7,6 +7,7 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
         var baseURL = 'https://52.10.64.129/';
         var apiVersion = "alpha";
          var apiURL = baseURL + "api/" + apiVersion + "/";
+        this.apiURL = apiURL;
 
         this.login = function (username, password){
             if(localStorageService.keys().indexOf('client_id') > -1
@@ -70,6 +71,7 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
                 if(date < exp)
                 {
                     $http.defaults.headers.common['Authorization'] = "Bearer " + access;
+                    this.header = "Bearer " + access;
                     getUser();
                     $rootScope.authorized = true;
                 }
@@ -110,6 +112,7 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
                     ipCookie('SENY-expiration', new Date(+(new Date()) + parseInt(data['expires_in'] * 1000)), {expires: 1});
                     ipCookie('SENY-scope', data['scope'], {expires: 1});
                     $http.defaults.headers.common['Authorization'] = "Bearer " + data['access_token'];
+                    this.header = "Bearer " + data['access_token'];
                     $rootScope.authorized = true;
                     return getUser()
 
@@ -136,5 +139,36 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
             for(var p in obj)
                 str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
             return str.join("&");
+        }
+
+        this.get_metric = function(metric)
+        {
+            switch (metric){
+                case 0:
+                    return 'hour';
+                    break;
+                case 2:
+                    return 'day';
+                    break;
+                case 4:
+                    return 'week';
+                    break;
+                case 8:
+                    return 'month';
+                    break;
+            }
+        }
+
+        this.get_deposit = function(deposit)
+        {
+            if(deposit)
+                return '$' + deposit + ' deposit';
+            return 'no deposit';
+        };
+
+        this.get_type = function(type){
+                if(type==0)
+                return 'supply';
+            return 'demand'
         }
     });

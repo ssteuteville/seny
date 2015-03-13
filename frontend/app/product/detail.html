@@ -1,0 +1,34 @@
+<div ng-if="!error" class="col-sm-6 col-sm-offset-3 seny-panel">
+    <div class="col-sm-12">
+        <h2 class="col-sm-10">{{model.title}} ({{SenyData.get_type(model.type)}})</h2>
+        <a class="col-sm-2" ng-href="#/product/edit/{{model.id}}" ng-if="model.owner == $root.user.owner"><h3 style="color:dodgerblue;">Edit</h3></a>
+    </div>
+    <label>Description:</label>
+    <div class="well">{{model.description}}</div>
+    <label>Price:</label>
+    <div class="well"> {{model.price | currency}} PER {{SenyData.get_metric(model.price_metric)}} w/ {{SenyData.get_deposit(model.deposit)}} </div>
+    <label>Tags:</label>
+    <div class="well">
+        <span ng-repeat="tag in model.tags" class="tag-container">
+                <span ng-class="{'label label-default': true, 'tag-blue': $index % 3 == 0, 'tag-red': $index % 3 == 1, 'tag-purple': $index % 3 == 2}">
+                    {{tag.text}}
+                </span>,
+        </span>
+    </div>
+    <div class="col-sm-6 col-sm-offset-3" ng-if="model.display_image">
+        <label>Display Image:</label>
+        <div>
+            <img ng-src="{{model.display_image.image}}" height="150px" width="150px">
+        </div>
+    </div>
+</div>
+
+<div ng-if="error" class="col-sm-6 col-sm-offset-3 seny-panel">
+    <h1>Error:</h1>
+    <h3>Your on this page for one of two reasons:</h3>
+    <div class="well">
+        <h5>This isn't your product.</h5>
+        <h5>This product doesn't exist.</h5>
+    </div>
+    <a ng-href="#/products">Your Products</a>
+</div>
