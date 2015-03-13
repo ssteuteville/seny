@@ -60,6 +60,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class ProductWithImageSerializer(serializers.ModelSerializer):
     display_image = ImageSerializer()
+    owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
         model = Product
