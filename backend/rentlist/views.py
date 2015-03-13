@@ -235,7 +235,7 @@ class ProductViewSet(SenyViewSet):
                      'type', ['owner', 'username']]
 
     def get_serializer_class(self):
-        if self.action in ['new']:
+        if self.action in ['new'] or self.request.method in ['GET']:
             return ProductWithImageSerializer
         return self.serializer_class
 
