@@ -1,0 +1,30 @@
+<div style="margin-top: 10px;" class="col-sm-12 form-group">
+    <label class="col-sm-1">Product</label>
+    <div class="col-sm-5" ng-controller="ProductListController">
+        <select class="form-control select" ng-options="product.id as product.title for product in products" ng-model="model.product"></select>
+    </div>
+
+    <label class="col-sm-1"> Zip</label>
+    <div class="col-sm-3">
+        <input class="form-control select" type="text" ng-model="model.zip" required>
+    </div>
+
+</div>
+
+<div class="form-group col-sm-12">
+    <label class="col-sm-1">Start</label>
+    <div class="col-sm-5">
+        <input class="form-control select" type="datetime-local" placeholder="Date product is available" ng-model="model.start">
+    </div>
+    <label class="col-sm-1">End</label>
+    <div class="col-sm-5">
+        <input class="form-control select" type="datetime-local" placeholder="Date product is available" ng-model="model.end">
+    </div>
+</div>
+
+
+
+
+
+
+

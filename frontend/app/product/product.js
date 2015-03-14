@@ -28,12 +28,19 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
     .controller('ProductListController', ['$scope', 'SenyData', '$rootScope', function($scope, SenyData, $rootScope, $){
         $scope.products = [];
         $scope.SenyData = SenyData;
+        $scope.tag_query = "";
+        var query = {};
         $scope.update = function () {
-            SenyData.senyRequest('products/user/', 'get', {}).then(function(promise){
+            SenyData.senyRequest('products/user/', 'get', query).then(function(promise){
                 $scope.products = promise.data;
             })
         }
         $scope.update()
+
+        $scope.query = function(){
+            query.tags = $scope.tag_query.split(' ').join()
+            $scope.update();
+        }
     }])
 
     .controller('ProductCreateController', ['$scope', 'SenyData', '$upload', '$location', '$rootScope',
@@ -148,7 +155,7 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
                     delete $scope.model.display_image;
                 SenyData.senyRequest('products/' + $routeParams.id + '/', 'put', {}, $scope.model)
                     .success(function(data, status, headers, config){
-                        $location.path('/product/' + data.id)
+                        $location.path('/products')
                     })
                     .error(function(data, statu, headers, config){
                         $scope.model.display_image = temp;
@@ -163,11 +170,9 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
         $scope.del = function(id){
             SenyData.senyRequest('products/' + id + '/', 'DELETE', {})
                 .success(function(data, status, headers, config){
-                    console.log('success');
-                    $scope.$parent.update();
                 })
                 .error(function(data, status, headers, config){
-                    console.log('ohhhhh')
+
                 })
         }
     }])

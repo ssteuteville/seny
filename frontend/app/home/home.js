@@ -37,9 +37,9 @@ angular.module('SENY.home', ['ngRoute', 'SenyData'])
         }
         if($scope.type == 'all')
         {
-            SenyData.senyRequest('advertisements/', 'get', query).then(function (promise) {
-                $scope.advertisements = promise.data;
-            })
+                SenyData.senyRequest('advertisements/', 'get', query).then(function (promise) {
+                    $scope.advertisements = promise.data;
+                })
         }
         else
         {

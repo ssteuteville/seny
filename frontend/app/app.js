@@ -13,7 +13,8 @@ angular.module('SENY', [
   'SENY.version',
   'SenyData',
   'ui.bootstrap',
-  'angularFileUpload'
+  'angularFileUpload',
+  'angularjs-dropdown-multiselect'
 
 ])
 

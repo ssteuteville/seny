@@ -1,7 +1,10 @@
 <div ng-if="!error" class="col-sm-6 col-sm-offset-3 seny-panel">
+    <div class="col-sm-5 col-sm-offset-8">
+        <a class=" panel-link" ng-href="#/products"><h4 style="color:dodgerblue;display: inline;">Back to List</h4></a>|
+        <a class="panel-link" ng-href="#/product/edit/{{model.id}}" ng-if="model.owner == $root.user.owner"><h4 style="color:dodgerblue;display: inline;">Edit</h4></a>
+    </div>
     <div class="col-sm-12">
         <h2 class="col-sm-10">{{model.title}} ({{SenyData.get_type(model.type)}})</h2>
-        <a class="col-sm-2" ng-href="#/product/edit/{{model.id}}" ng-if="model.owner == $root.user.owner"><h3 style="color:dodgerblue;">Edit</h3></a>
     </div>
     <label>Description:</label>
     <div class="well">{{model.description}}</div>

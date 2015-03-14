@@ -1,8 +1,9 @@
 <div class="seny-panel col-sm-6 col-sm-offset-3">
-    <form class="form-inline" style="margin-top: 10px;">
+    <form class="form-inline" style="margin-top: 10px;" ng-submit="query()">
         <div class="form-group">
             <label class="title" style="margin-right: 100px;">Products</label>
-            <input type="search" class="form-control" placeholder="Search By Tag"/>
+            <input type="search" class="form-control" placeholder="Search By Tag" ng-model="tag_query"/>
+            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
         </div>
         <a href="#/product/create" class="pull-right">Create</a>
     </form>

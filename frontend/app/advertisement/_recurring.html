@@ -1,0 +1,69 @@
+<div ng-include="'advertisement/_create.html'"></div>
+<hr class="col-sm-11">
+<h4>Recurrence Options:</h4>
+<div class="col-sm-12 form-group">
+    <label class="col-sm-2" title="Required. This field says to make this recurrence once every day, week, or month">Frequency</label>
+    <div class="col-sm-4">
+        <select ng-init="frequency = frequencys[0]" class="form-control select" ng-options="freq for freq in frequencys"
+                ng-model="frequency" required></select>
+    </div>
+    <label class="col-sm-2" title="What weekdays should this apply to? If left blank it will apply to all.">Days of week</label>
+    <div class="col-sm-4">
+        <ng-dropdown-multiselect options="weekdays" selected-model="dow" extra-settings="settings"></ng-dropdown-multiselect>
+    </div>
+</div>
+
+
+<div class="col-sm-12 form-group">
+    <div ng-class="{'col-sm-4': months.length != 0, 'col-sm-6': months.length == 0}">
+        <label class="col-sm-4" title="What time(s) of day should these advertisements start?">Times</label>
+        <div class="col-sm-4">
+            <ng-dropdown-multiselect options="hour_choices" selected-model="hours" extra-settings="settings"></ng-dropdown-multiselect>
+        </div>
+    </div>
+    <div ng-class="{'col-sm-4': months.length != 0, 'col-sm-6': months.length == 0}">
+        <label class="col-sm-4" title="What month(s) should this reccurence apply to? If left blank assume all months.">Months</label>
+        <div class="col-sm-4">
+            <ng-dropdown-multiselect options="month_choices" selected-model="months" extra-settings="settings"></ng-dropdown-multiselect>
+        </div>
+    </div>
+    <div class="col-sm-4" ng-if="months.length != 0">
+        <label class="col-sm-4" title="What days of month should this apply to? If left blank assume all.">Dates</label>
+        <div class="col-sm-4">
+            <ng-dropdown-multiselect options="date_choices" selected-model="dates" extra-settings="settings"></ng-dropdown-multiselect>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-12 form-group">
+    <label class="col-sm-2" title="How long should this last?">Duration</label>
+    <div class="col-sm-4">
+        <input class="form-control select" type="number" ng-model="duration">
+    </div>
+    <div class="col-sm-4">
+        <select ng-init="dur_metric = duration_metrics[0].id" class="form-control select" ng-options="metric.id as metric.label for metric in duration_metrics"
+                ng-model="dur_metric" required></select>
+    </div>
+
+    <div class="col-sm-12" ng-if="model.start">
+        <h4> Preview </h4>
+        <ul></ul>
+        <p>Starting on {{model.start}} create ads {{frequency}}
+            <span ng-if="dow.length != 0">on days: <span ng-repeat="day in dow"> {{day.id}},</span></span>
+        </p>
+        <p>
+            <span ng-if="months.length != 0">during the months: <span ng-repeat="month in months">{{month.id}},</span></span>
+        </p>
+        <p>
+            <span ng-if="hours.length != 0">at these times: <span ng-repeat="hour in hours">{{hour.id}},</span></span>
+        </p>
+        <p>
+            <span ng-if="duration!=0">
+                for the next {{duration}} {{dur_metric}} or until {{model.end}}
+            </span>
+        </p>
+
+    </div>
+</div>
+
+
