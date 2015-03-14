@@ -58,36 +58,6 @@ class TagSerializer(serializers.ModelSerializer):
         extra_kwargs = {}
 
 
-class ProductWithImageSerializer(serializers.ModelSerializer):
-    display_image = ImageSerializer()
-    owner = serializers.ReadOnlyField(source='owner.username')
-    deposit = serializers.FloatField(default=0)
-    tags = TagSerializer(many=True, read_only=True)
-
-
-
-    class Meta:
-        model = Product
-        fields = ("id", "price_metric", "price", "description", "title", "type", "owner", "display_image", "deposit", "tags")
-        extra_kwargs = {}
-
-    def create(self, validated_data):
-        image = validated_data.get('display_image', None)
-        del validated_data['display_image']
-        user = self.context['request'].user
-        prod = Product(**validated_data)
-        prod.owner = user
-        prod.save()
-        prod.collect_tags()
-        if image:
-            image = Image(**image)
-            image.owner = user
-            image.save()
-            image.products_displaying_image.add(prod)
-            image.products.add(prod)
-        return prod
-
-
 class ReviewSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
 
@@ -108,6 +78,37 @@ class ReviewSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("You have already reviewed this product.")
         review.save()
         return review
+
+class ProductWithImageSerializer(serializers.ModelSerializer):
+    display_image = ImageSerializer()
+    owner = serializers.ReadOnlyField(source='owner.username')
+    deposit = serializers.FloatField(default=0)
+    tags = TagSerializer(many=True, read_only=True)
+    rating = serializers.ReadOnlyField()
+    images = ImageSerializer(many=True, read_only=True)
+    reviews = ReviewSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Product
+        fields = ("id", "price_metric", "price", "description", "title", "type", "owner", "display_image",
+                  "deposit", "tags", 'tags', 'rating', 'images', 'reviews')
+        extra_kwargs = {}
+
+    def create(self, validated_data):
+        image = validated_data.get('display_image', None)
+        del validated_data['display_image']
+        user = self.context['request'].user
+        prod = Product(**validated_data)
+        prod.owner = user
+        prod.save()
+        prod.collect_tags()
+        if image:
+            image = Image(**image)
+            image.owner = user
+            image.save()
+            image.products_displaying_image.add(prod)
+            image.products.add(prod)
+        return prod
 
 
 class ProductSerializer(serializers.ModelSerializer):
