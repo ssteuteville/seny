@@ -110,6 +110,7 @@ class ProductWithImageSerializer(serializers.ModelSerializer):
             image.save()
             image.products_displaying_image.add(prod)
             image.products.add(prod)
+            prod.images.add(image)
         return prod
 
 
@@ -147,6 +148,7 @@ class ProductSerializer(serializers.ModelSerializer):
             image.products_displaying_image.add(instance)
             image.save()
             image.products.add(instance)
+            instance.images.add(image)
 
         return instance
 
