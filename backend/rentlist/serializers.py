@@ -32,6 +32,7 @@ class ImageForProductSerializer(serializers.ModelSerializer):
         image.owner = self.context['request'].user
         image.save()
         image.products.add(product)
+        product.images.add(image)
         return image
 
 
@@ -78,6 +79,7 @@ class ReviewSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("You have already reviewed this product.")
         review.save()
         return review
+
 
 class ProductWithImageSerializer(serializers.ModelSerializer):
     display_image = ImageSerializer()
