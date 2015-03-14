@@ -269,7 +269,7 @@ class MessageThreadSerializer(serializers.ModelSerializer):
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
-    product = ProductSerializer(read_only=True)
+    product = ProductWithImageSerializer(read_only=True)
     responses = AdvertisementResponseSerializer(many=True, read_only=True)
     product_id = serializers.PrimaryKeyRelatedField(write_only=True, queryset=Product.objects.all())
     distance = serializers.FloatField(read_only=True)
