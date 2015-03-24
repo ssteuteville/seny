@@ -275,7 +275,6 @@ class ProductViewSet(SenyViewSet):
         geo = None
         zip_cde = request.POST.get('zip', None)
         if zip_cde:
-            del request.POST['zip']
             geo = get_geo(zip_cde)
         else:
             geo = request.POST['lat'], request.POST['long']
