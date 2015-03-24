@@ -24,8 +24,9 @@ angular.module('SENY.home', ['ngRoute', 'SenyData'])
                 }
             }
         });
-        modalInstance.result.then(function(){
-
+        modalInstance.result.then(function(result){
+            if(result == 'delete')
+                $scope.update();
         })
     };
 

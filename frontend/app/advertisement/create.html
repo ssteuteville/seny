@@ -1,5 +1,6 @@
 <form>
     <div class="seny-panel col-sm-6 col-sm-offset-3">
+        <h2>Create an Advertisement!</h2>
         <div class="btn-group col-sm-offset-4" role="group">
             <button ng-class="{'btn btn-success': ad_type == 'individual', 'btn btn-primary': ad_type != 'individual'}" ng-click="ad_type = 'individual'">
                 Individual
@@ -12,7 +13,6 @@
         <div ng-if="ad_type=='recurring'" ng-include="'advertisement/_recurring.html'"></div>
         <div class="form-group pull-right">
             <button type="submit" ng-click="create()" class="btn btn-primary">Create</button>
-
         </div>
     </div>
 </form>

@@ -11,6 +11,9 @@
     </div>
 
     <div class="modal-body">
+        <div class="pull-right" ng-if="ad.product.owner == $root.user.owner">
+            <a ng-click="remove();">delete</a>
+        </div>
         <div>
             <h3> <u>Price</u></h3>
             {{ad.product.price | currency}} per {{getMetric(ad)}}

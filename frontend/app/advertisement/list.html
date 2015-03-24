@@ -15,7 +15,11 @@
         </div>
     </div>
     <div class="col-lg-8 col-lg-offset-2 seny-panel">
-        <div class="container-fluid content list-group">
+        <div class="row">
+            <span class="title">Your Advertisements</span>
+            <h3 class="pull-right"><a href='#/advertisement/create'>Create</a></h3>
+        </div>
+        <div class="container-fluid content list-group row">
             <div  ng-repeat="ad in advertisements" class="list-group-item">
                 <div class="list-group-item advertisement_element" style="position: relative">
                     <div ng-click="openAdDetail(ad);" class="col-lg-3 col-lg-offset-0">
