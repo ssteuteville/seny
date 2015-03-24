@@ -279,8 +279,6 @@ class ProductViewSet(SenyViewSet):
             geo = get_geo(zip_cde)
         else:
             geo = request.POST['lat'], request.POST['long']
-            del request.POST['lat']
-            del request.POST['long']
         recurrences = getRecurrenceDates(request)
         for recurrence in recurrences:
             Advertisement(product_id=pk, zip=zip_cde, start=recurrence[0], end=recurrence[1],
