@@ -62,6 +62,8 @@ class Product(models.Model):
                 self.tags.create(text=tag)
         self.save()
 
+    def has_reviewed(self, username):
+        return any(review.product.owner == username for review in self.reviews.all())
 
 
 class UserProfile(models.Model):
@@ -69,8 +71,8 @@ class UserProfile(models.Model):
     title = models.TextField(blank=True)
     description = models.TextField(blank=True)
     owner = models.ForeignKey(User, related_name='profile')
-    lat = models.FloatField(blank=True)
-    long = models.FloatField(blank=True)
+    lat = models.FloatField(blank=True, null=True)
+    long = models.FloatField(blank=True, null=True)
     profile_type = models.IntegerField(default=0, choices=PROFILE_TYPES)
 
     def average_demand_rating(self):
@@ -102,8 +104,8 @@ class Advertisement(models.Model):
     end = models.DateTimeField(default=datetime.now())
     active = models.BooleanField(default='1')
     zip = models.CharField(max_length=5, blank=True)
-    lat = models.FloatField(blank=True)
-    lon = models.FloatField(blank=True)
+    lat = models.FloatField(blank=True, null=True)
+    lon = models.FloatField(blank=True, null=True)
     distance = None
 
     def __str__(self):
@@ -132,7 +134,6 @@ class AdvertisementResponse(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, default=datetime.now())
     deadline = models.DateTimeField(blank=True)
     accepted = models.BooleanField(default=False)
-    reviewed = models.BooleanField(default=False)
 
     def type(self):
         return self.advertisement.product.type
@@ -159,6 +160,7 @@ class Message(models.Model):
     content = models.TextField(blank=True)
     new = models.BooleanField(default=True)
     images = models.ManyToManyField(Image, related_name='messages', blank=True)
+    response = models.ForeignKey(AdvertisementResponse, related_name='response', blank=True, null=True);
 
     class Meta:
         ordering = ('created_at',)

@@ -89,11 +89,13 @@ class ProductWithImageSerializer(serializers.ModelSerializer):
     rating = serializers.ReadOnlyField()
     images = ImageSerializer(many=True, read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
+    can_review = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Product
         fields = ("id", "price_metric", "price", "description", "title", "type", "owner", "display_image",
-                  "deposit", "tags", 'tags', 'rating', 'images', 'reviews')
+                  "deposit", "tags", 'tags', 'rating', 'images', 'reviews', 'can_review')
         extra_kwargs = {}
 
     def create(self, validated_data):
@@ -113,6 +115,12 @@ class ProductWithImageSerializer(serializers.ModelSerializer):
             prod.images.add(image)
         return prod
 
+    def get_can_review(self, obj):
+        user = self.context['request'].user
+        if not obj.has_reviewed(user):
+            return len(AdvertisementResponse.objects.filter(advertisement__product_id=obj.pk, owner=user, accepted=1)) != 0
+        return False
+
 
 class ProductSerializer(serializers.ModelSerializer):
     rating = serializers.ReadOnlyField()
@@ -122,11 +130,13 @@ class ProductSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     deposit = serializers.FloatField(default=0)
     display_image = serializers.PrimaryKeyRelatedField(queryset=Image.objects.all(), allow_null=True, default=None)
+    can_review = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Product
         fields = ("id", "price_metric", "price", "description", "title", "type", "owner", "tags", "rating", "images",
-                  "reviews", "display_image", "deposit")
+                  "reviews", "display_image", "deposit", 'can_review')
         extra_kwargs = {}
 
     def create(self, validated_data):
@@ -149,8 +159,15 @@ class ProductSerializer(serializers.ModelSerializer):
             image.save()
             image.products.add(instance)
             instance.images.add(image)
-
         return instance
+
+    def get_can_review(self, obj):
+        user = self.context['request'].user
+        if not obj.has_reviewed(user):
+            return len(AdvertisementResponse.objects.filter(advertisement__product_id=obj.pk, owner=user, accepted=1)) != 0
+        return False
+
+
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -201,18 +218,17 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class MessageSerializer(serializers.ModelSerializer):
     images = ImageSerializer(read_only=True, many=True)
-    # image_id = serializers.IntegerField(write_only=True, required=False)
     destination = serializers.ReadOnlyField(source='destination.username')
     destination_id = serializers.PrimaryKeyRelatedField(source='destination', read_only=True)
     source = serializers.ReadOnlyField(source='source.username')
     source_id = serializers.PrimaryKeyRelatedField(source='source', read_only=True)
     thread = serializers.PrimaryKeyRelatedField(allow_null=True, queryset=MessageThread.objects.all())
-    # thread_title = serializers.CharField(write_only=True, required=False)
+    response = AdvertisementResponseSerializer(read_only=True, allow_null=True)
 
     class Meta:
         model = Message
         fields = ('id', 'created_at', 'thread', 'destination', 'destination_id', 'source', 'source_id',
-                  'content', 'new', 'images', ) # 'image_id', 'thread_title'
+                  'content', 'new', 'images', 'response')
         extra_kwargs = {'new': {'read_only': True}, 'created_at': {'read_only': True}}
 
     def create(self, validated_data):# todo implement a serializer that can create a thread and a message at same time
@@ -254,6 +270,54 @@ class MessageWithThreadSerializer(serializers.ModelSerializer):
             message.save()
             return message
         raise serializers.ValidationError('Messages can only be created by users active on thread.')
+
+    def validUsers(self, user, message):
+        return (user == message.thread.creator.username and message.destination.username == message.thread.responder.username
+            or user == message.thread.responder.username and message.destination == message.thread.creator.username)
+
+
+class MessageWithThreadAndResponseSerializer(serializers.ModelSerializer):
+    thread_title = serializers.CharField(write_only=True)
+    advertisement = serializers.IntegerField(write_only=True)
+    deadline = serializers.DateTimeField(write_only=True)
+    accepted = serializers.BooleanField(write_only=True)
+    thread = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Message
+        fields = ('destination',
+                  'content', 'thread_title', 'advertisement', 'deadline', 'accepted', 'thread') # 'image_id',
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        thread = validated_data['thread_title']
+        del validated_data['thread_title']
+        thread = MessageThread(creator=user, responder=validated_data['destination'], title=thread)
+        ad = Advertisement.objects.get(pk=validated_data['advertisement'])
+        response = AdvertisementResponse(owner=user, advertisement=ad,
+                                         deadline=validated_data['deadline'], accepted=validated_data['accepted'])
+        del validated_data['advertisement']
+        del validated_data['deadline']
+        del validated_data['accepted']
+        message = Message(**validated_data)
+        message.source = user
+        try:
+            thread.save()
+            message.thread = thread
+            if self.validUsers(user.username, message):
+                response.save()
+                message.response = response
+                message.save()
+                return message
+            raise serializers.ValidationError('Messages can only be created by users active on thread.')
+        except:
+            if thread.pk:
+                thread.delete()
+            if response.pk:
+                response.delete()
+            if message.pk:
+                message.delete()
+                raise serializers.ValidationError('Something went wrong creating this message.')
 
     def validUsers(self, user, message):
         return (user == message.thread.creator.username and message.destination.username == message.thread.responder.username

@@ -131,6 +131,8 @@ class MessageViewSet(SenyViewSet):
     def get_serializer_class(self):
         if self.action in ['new']:
             return MessageWithThreadSerializer
+        if self.action in ['response']:
+            return MessageWithThreadAndResponseSerializer
         return self.serializer_class
 
     @list_route(methods=['POST', 'GET'], permission_classes=permission_classes)
@@ -143,6 +145,10 @@ class MessageViewSet(SenyViewSet):
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
         return Response(serializer.data)
+
+    @list_route(methods=['POST', 'GET'])
+    def response(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
 # todo implement a @list_route function called with_thread. it should use the MessageWithThread serializer instead.
