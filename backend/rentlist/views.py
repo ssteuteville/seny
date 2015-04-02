@@ -417,6 +417,9 @@ class MessageThreadViewSet(SenyViewSet):
         ### User ###
             /api/version/threads/user
             return all threads that the current user is involved in
+        ### Read ###
+            /api/version/threads/id/read
+            marks all messsages in the thread as read then returns the thread
     """
     queryset = MessageThread.objects.all()
     permission_classes = [SenyAuth]
