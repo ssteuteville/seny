@@ -1,22 +1,22 @@
 <div ng-include="advertisement/modal.html"></div>
 
 <diV class="col-lg-12 col-lg-offset-0 container-fluid">
-    <div class="btn-group col-lg-12 col-lg-offset-0" role="group" style="margin-bottom: 10px;">
-        <div class="col-sm-3 col-sm-offset-2">
-            <form ng-submit="update()">
-                <input type="text" class="form-control" placeholder="Search By Tag" ng-model="tag_query">
-                <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
-            </form>
-        </div>
-        <div class="col-sm-3 col-sm-offset-2">
-            <button ng-click="setType('all')" type="button" class="btn-lg btn-success" onclick="swapActive(this)">All</button>
-            <button ng-click="setType(0)" type="button" class="btn-lg btn-primary" onclick="swapActive(this)">Supply</button>
-            <button ng-click="setType(2)" type="button" class="btn-lg btn-primary" onclick="swapActive(this)">Demand</button>
-        </div>
-    </div>
     <div class="col-lg-8 col-lg-offset-2 seny-panel">
+        <div class="btn-group col-lg-12 col-lg-offset-0 row" role="group" style="margin-bottom: 10px;">
+            <div class="col-sm-3">
+                <form ng-submit="update()">
+                    <input type="text" class="form-control" placeholder="Search By Tag" ng-model="tag_query">
+                    <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+                </form>
+            </div>
+            <div class="col-sm-6 col-sm-offset-3">
+                <button ng-click="setType('all')" type="button" class="btn-lg btn-success" onclick="swapActive(this)">All</button>
+                <button ng-click="setType(0)" type="button" class="btn-lg btn-primary" onclick="swapActive(this)">Supply</button>
+                <button ng-click="setType(2)" type="button" class="btn-lg btn-primary" onclick="swapActive(this)">Demand</button>
+            </div>
+        </div>
         <div class="row">
-            <span class="title">Your Advertisements</span>
+            <h3 class="title col-lg-4">Your Advertisements</h3>
             <h3 class="pull-right"><a href='#/advertisement/create'>Create</a></h3>
         </div>
         <div class="container-fluid content list-group row">

@@ -36,7 +36,7 @@ angular.module('SENY.advertisement', ['ngRoute', 'SenyData', 'ui.bootstrap'])
             {
                 SenyData.senyRequest('advertisements/' + ad.id + '/', 'DELETE', {})
                     .success(function (data) {
-                        $modalInstance.close('delete');
+                        $dInstance.close('delete');
                     })
             }
         }
@@ -52,6 +52,7 @@ angular.module('SENY.advertisement', ['ngRoute', 'SenyData', 'ui.bootstrap'])
         $scope.max_rating = 5.0;
         $scope.isReadOnly = true;
         $scope.profile_url = $location.absUrl().split('#')[0] + '#/profile/';
+        $scope.SenyData = SenyData;
         $scope.ratingStates = [
             {stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
         ];
@@ -64,6 +65,17 @@ angular.module('SENY.advertisement', ['ngRoute', 'SenyData', 'ui.bootstrap'])
                 $scope.groups = getGroups($scope.ad);
 
             });
+
+        $scope.remove = function(){
+            if(confirm("Do you really want to delete your advertisement?"))
+            {
+                SenyData.senyRequest('advertisements/' + ad.id + '/', 'DELETE', {})
+                    .success(function (data) {
+                        $location.path('#/advertisements')
+                    })
+            }
+        };
+
         $scope.getMetric = function(ad){ return price_metrics[parseInt(ad.price_metric)]};
     }])
 

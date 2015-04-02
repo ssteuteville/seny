@@ -1,34 +1,77 @@
-<div class="seny-panel col-sm-6 col-sm-offset-3">
-    <h2>{{ad.product.title}}</h2>
-    <rating value="rate" max="max_rating" readonly="isReadOnly" stateOff="'glyphicon-star-empty'"></rating>
+<!--<div class="seny-panel col-sm-6 col-sm-offset-3">-->
 
+    <!--<h2>{{ad.product.title}}</h2>-->
+    <!--<rating value="rate" max="max_rating" readonly="isReadOnly" stateOff="'glyphicon-star-empty'"></rating>-->
+    <!--<div>-->
+        <!--<h3> <u>Description</u> </h3>-->
+        <!--{{ad.product.description}}-->
+    <!--</div>-->
 
-    <div>
-        <h3> <u>Description</u> </h3>
-        {{ad.product.description}}
+    <!--<div>-->
+        <!--<h3><u>Availability</u></h3>-->
+        <!--{{ ad.start | date : 'medium'}} to {{ad.end | date : 'medium'}}-->
+    <!--</div>-->
+
+    <!--<div ng-show="ad.product.reviews.length > 0">-->
+        <!--<h3><u>Reviews</u></h3>-->
+        <!--<accordion close-others="oneAtATime">-->
+            <!--<accordion-group ng-repeat="group in groups">-->
+                <!--<accordion-heading>-->
+                    <!--{{group.title}}-->
+                <!--</accordion-heading>-->
+                <!--<div>{{group.content}}</div>-->
+                <!--<a class="pull-right" ng-href="{{profile_url + group.owner + '/'}}">- {{group.owner}}</a>-->
+            <!--</accordion-group>-->
+        <!--</accordion>-->
+    <!--</div>-->
+
+    <!--<div ng-show="ad.product.images.length > 0">-->
+        <!--<h3> <u>Images</u></h3>-->
+        <!--<carousel interval="interval">-->
+            <!--<slide ng-repeat="slide in slides" active="slide.active" style="height: 350px">-->
+                <!--<img ng-src="{{slide.image}}" style="margin: auto;" width="300px" height="300px">-->
+                <!--<div class="carousel-caption lime">-->
+                    <!--<h3> {{slide.title}} </h3>-->
+                <!--</div>-->
+            <!--</slide>-->
+        <!--</carousel>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div class="col-sm-6 col-sm-offset-3 seny-panel">
+    <div class="col-sm-8 col-sm-offset-8">
+        <a class=" panel-link" ng-if="ad.product.owner == $root.user.owner" ng-href="#/advertisements"><h4 style="color:dodgerblue;display: inline;">Back to List</h4></a>|
+        <a class=" panel-link" ng-if="ad.product.owner != $root.user.owner" ng-href="#/home"><h4 style="color:dodgerblue;display: inline;">Back to List</h4></a>|
+        <a class="panel-link" ng-if="ad.product.owner == $root.user.owner" ng-click="remove();">
+            <h4 style="color:dodgerblue;display: inline;">Delete</h4>
+        </a>
+        <a class="panel-link" ng-href="#/response/{{ad.id}}" ng-if="ad.product.owner != $root.user.owner">
+            <h4 style="color:dodgerblue;display: inline;">Respond</h4>
+        </a>
     </div>
-
-    <div>
-        <h3><u>Availability</u></h3>
-        {{ ad.start | date : 'medium'}} to {{ad.end | date : 'medium'}}
+    <div class="col-sm-12">
+        <h2 class="col-sm-10">{{ad.product.title}} ({{SenyData.get_type(ad.type)}})</h2>
     </div>
-
-    <div ng-show="ad.product.reviews.length > 0">
-        <h3><u>Reviews</u></h3>
-        <accordion close-others="oneAtATime">
-            <accordion-group ng-repeat="group in groups">
-                <accordion-heading>
-                    {{group.title}}
-                </accordion-heading>
-                <div>{{group.content}}</div>
-                <a class="pull-right" ng-href="{{profile_url + group.owner + '/'}}">- {{group.owner}}</a>
-            </accordion-group>
-        </accordion>
+    <label>Price:</label>
+    <div class="well"> {{ad.product.price | currency}} PER {{SenyData.get_metric(ad.product.price_metric)}} w/ {{SenyData.get_deposit(ad.product.deposit)}} </div>
+    <label>When:</label>
+    <div class="well">
+        <span class="col-sm-6">start: {{ad.start | date : 'MM/dd/yyyy @ h:mma'}}</span>
+        <span class="col-sm-6">end: {{ad.end | date : 'MM/dd/yyyy @ h:mma'}}</span>
     </div>
-
+    <label>Description:</label>
+    <div class="well white-space">{{ad.product.description}}</div>
+    <label>Tags:</label>
+    <div class="well">
+        <span ng-repeat="tag in ad.product.tags" class="tag-container">
+                <span ng-class="{'label label-default': true, 'tag-blue': $index % 3 == 0, 'tag-red': $index % 3 == 1, 'tag-purple': $index % 3 == 2}">
+                    {{tag.text}}
+                </span>,
+        </span>
+    </div>
     <div ng-show="ad.product.images.length > 0">
         <h3> <u>Images</u></h3>
-        <carousel interval="interval">
+        <carousel interval="5000">
             <slide ng-repeat="slide in slides" active="slide.active" style="height: 350px">
                 <img ng-src="{{slide.image}}" style="margin: auto;" width="300px" height="300px">
                 <div class="carousel-caption lime">

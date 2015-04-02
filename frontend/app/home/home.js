@@ -17,6 +17,7 @@ angular.module('SENY.home', ['ngRoute', 'SenyData'])
         var modalInstance = $modal.open({
             templateUrl: 'advertisement/modal.html',
             controller: 'adModalController',
+            backDropClass: 'seny-panel',
             size: 'lg',
             resolve: {
                 ad: function(){

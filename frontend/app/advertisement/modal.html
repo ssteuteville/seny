@@ -1,12 +1,13 @@
 <div class="seny-panel lime">
     <div class="modal-header">
-        <h2>{{ad.product.title}}</h2>
+        <div class="row">
+            <h2>{{ad.product.title}}</h2>
+            <button type="button" class="close" aria-label="Close" style="margin-top: -20%;" ng-click="close()"><h1>X</h1></button>
+        </div>
         <rating value="rate" max="max_rating" readonly="isReadOnly" stateOff="'glyphicon-star-empty'"></rating>
         {{ad.distance | number : 1}} mi.
-        <button type="button" class="close" aria-label="Close" style="margin-top: -15%;" ng-click="close()"><h1>X</h1></button>
         <div class="share">
-            <label class="title lime">Share Url: </label>
-            <input value="{{share_url + ad.id}}"/>
+            <a ng-click="cancel()" ng-href="{{share_url + ad.id}}" class="title lime">Share Url: </a> <input class="share" value="{{share_url + ad.id}}"/>
         </div>
     </div>
 
@@ -53,6 +54,6 @@
     </div>
     <div class="modal-footer">
         <div class="brand" style="float:left">SENY</div>
-        <label class="title lime">Share Url: </label> <input class="share" value="{{share_url + ad.id}}"/>
+        <a ng-href="{{share_url + ad.id}}" class="title lime">Share Url: </a> <input class="share" value="{{share_url + ad.id}}"/>
     </div>
 </div>
