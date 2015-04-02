@@ -431,6 +431,13 @@ class MessageThreadViewSet(SenyViewSet):
         serializer.is_valid()
         return Response(serializer.data)
 
+    @detail_route(methods=['GET', 'PUT'])
+    def read(self, request, pk=None):
+        thread = self.get_object()
+        for message in thread.messages.all():
+            message.new = False
+            message.save()
+        return Response(self.get_serializer_class()(thread).data)
 
 class SignUp(generics.CreateAPIView):
     queryset = User.objects.all()

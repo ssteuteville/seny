@@ -152,7 +152,7 @@ class MessageThread(models.Model):
         return self.title
 
     def new_messages(self):
-        return len([message for message in self.messages.all() if message])
+        return len([message for message in self.messages.all() if message.new])
 
 
 class Message(models.Model):
