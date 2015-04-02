@@ -154,6 +154,9 @@ class MessageThread(models.Model):
     def new_messages(self):
         return len([message for message in self.messages.all() if message.new])
 
+    class Meta:
+        ordering = ('-created_at',)
+
 
 class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, default=datetime.now())
