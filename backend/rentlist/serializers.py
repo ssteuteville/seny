@@ -325,6 +325,7 @@ class MessageWithThreadAndResponseSerializer(serializers.ModelSerializer):
 
 
 class MessageThreadSerializer(serializers.ModelSerializer):
+    new_messages = serializers.ReadOnlyField()
     messages = MessageSerializer(many=True, read_only=True)
     creator = serializers.ReadOnlyField(source='creator.username')
     responder = serializers.ReadOnlyField(source='responder.username')
@@ -333,7 +334,7 @@ class MessageThreadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MessageThread
-        fields = ("id", "created_at", "creator", "creator_id", "responder", "responder_id", "title", "messages")
+        fields = ("id", "created_at", "creator", "creator_id", "responder", "responder_id", "title", "messages", 'new_messages')
         extra_kwargs = {}
 
 

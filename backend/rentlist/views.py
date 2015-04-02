@@ -122,6 +122,9 @@ class MessageViewSet(SenyViewSet):
         ### User ###
             /api/version/messages/user
             Return all message the current user is involved in.
+        ### Read ###
+            get /api/version/messages/user/id/read
+            Marks message as not new and returns the new object.
     """
     queryset = Message.objects.all()
     permission_classes = [SenyAuth, MessagePermissions]
@@ -149,6 +152,13 @@ class MessageViewSet(SenyViewSet):
     @list_route(methods=['POST', 'GET'])
     def response(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+    @detail_route(methods=['GET'])
+    def read(self, request, pk=None):
+        message = self.get_object()
+        message.new = False
+        message.save()
+        return Response(self.get_serializer_class()(message).data)
 
 
 # todo implement a @list_route function called with_thread. it should use the MessageWithThread serializer instead.
