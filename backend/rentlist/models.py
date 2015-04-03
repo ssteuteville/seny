@@ -144,6 +144,7 @@ class AdvertisementResponse(models.Model):
 
 class MessageThread(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, default=datetime.now())
+    updated_at = models.DateTimeField(auto_now_add=True, default=datetime.now())
     creator = models.ForeignKey(User, related_name='threads')
     responder = models.ForeignKey(User, related_name='incoming_threads')
     title = models.TextField(blank=True)
@@ -155,7 +156,7 @@ class MessageThread(models.Model):
         return len([message for message in self.messages.all() if message.new])
 
     class Meta:
-        ordering = ('-created_at',)
+        ordering = ('-updated_at',)
 
 
 class Message(models.Model):

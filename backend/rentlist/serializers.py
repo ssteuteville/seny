@@ -231,7 +231,7 @@ class MessageSerializer(serializers.ModelSerializer):
                   'content', 'new', 'images', 'response')
         extra_kwargs = {'new': {'read_only': True}, 'created_at': {'read_only': True}}
 
-    def create(self, validated_data):# todo implement a serializer that can create a thread and a message at same time
+    def create(self, validated_data):
         message = Message(**validated_data)
         user = self.context['request'].user
         if user == message.thread.creator:
@@ -241,6 +241,8 @@ class MessageSerializer(serializers.ModelSerializer):
         message.source = user
         if self.validUsers(user.username, message):
             message.save()
+            message.thread.updated_at = datetime.now()
+            message.thread.save()
             return message
         raise serializers.ValidationError('Messages can only be created by users active on thread.')
 
