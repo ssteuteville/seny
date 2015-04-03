@@ -1,0 +1,23 @@
+<form>
+    <div class="seny-panel col-sm-8 col-sm-offset-2">
+        <div class="form-group">
+            <label>
+                To:
+            </label>
+            <input class="form-control select" type="text" ng-model="destination" placeholder="Type a username here." required>
+        </div>
+        <div class="form-group">
+            <label>
+                Title:
+            </label>
+            <input class="form-control select" required type="text" ng-model="model.thread_title" placeholder="Title of message.  ">
+        </div>
+        <div class="form-group">
+            <label>
+                Content:
+            </label>
+            <textarea class="form-control select" required rows=6 type="text" ng-model="model.content" placeholder="What do you want to say?  "></textarea>
+        </div>
+        <button type="submit" ng-click="send()" class="pull-right btn btn-lg btn-primary">Send</button>
+    </div>
+</form>
