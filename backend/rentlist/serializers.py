@@ -285,12 +285,11 @@ class MessageWithThreadAndResponseSerializer(serializers.ModelSerializer):
     advertisement = serializers.IntegerField(write_only=True)
     deadline = serializers.DateTimeField(write_only=True)
     accepted = serializers.BooleanField(write_only=True)
-    thread = serializers.ReadOnlyField()
 
     class Meta:
         model = Message
         fields = ('destination',
-                  'content', 'thread_title', 'advertisement', 'deadline', 'accepted', 'thread') # 'image_id',
+                  'content', 'thread_title', 'advertisement', 'deadline', 'accepted') # 'image_id',
 
     def create(self, validated_data):
         user = self.context['request'].user
