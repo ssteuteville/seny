@@ -84,6 +84,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 class ProductWithImageSerializer(serializers.ModelSerializer):
     display_image = ImageSerializer()
     owner = serializers.ReadOnlyField(source='owner.username')
+    owner_id = serializers.PrimaryKeyRelatedField(read_only=True, source='owner')
     deposit = serializers.FloatField(default=0)
     tags = TagSerializer(many=True, read_only=True)
     rating = serializers.ReadOnlyField()
@@ -94,7 +95,7 @@ class ProductWithImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ("id", "price_metric", "price", "description", "title", "type", "owner", "display_image",
+        fields = ("id", "price_metric", "price", "description", "title", "type", "owner", "owner_id", "display_image",
                   "deposit", "tags", 'tags', 'rating', 'images', 'reviews', 'can_review')
         extra_kwargs = {}
 
@@ -128,6 +129,7 @@ class ProductSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
     owner = serializers.ReadOnlyField(source='owner.username')
+    owner_id = serializers.PrimaryKeyRelatedField(read_only=True, source='owner')
     deposit = serializers.FloatField(default=0)
     display_image = serializers.PrimaryKeyRelatedField(queryset=Image.objects.all(), allow_null=True, default=None)
     can_review = serializers.SerializerMethodField()
@@ -135,7 +137,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ("id", "price_metric", "price", "description", "title", "type", "owner", "tags", "rating", "images",
+        fields = ("id", "price_metric", "price", "description", "title", "type", "owner", "owner_id", "tags", "rating", "images",
                   "reviews", "display_image", "deposit", 'can_review')
         extra_kwargs = {}
 
