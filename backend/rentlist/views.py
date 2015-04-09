@@ -129,7 +129,7 @@ class MessageViewSet(SenyViewSet):
     queryset = Message.objects.all()
     permission_classes = [SenyAuth, MessagePermissions]
     serializer_class = MessageSerializer
-    filterable_by = ['new']
+    filterable_by = ['new', ['destination', 'username'], ['source', 'username']]
 
     def get_serializer_class(self):
         if self.action in ['new']:
