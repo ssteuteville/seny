@@ -15,7 +15,10 @@ angular.module('SENY.LoginView', ['ngRoute', 'SenyData'])
         $scope.password = "";
         $scope.login = function()
         {
-            SenyData.login($scope.username, $scope.password);
+            SenyData.login($scope.username, $scope.password)
+                .success(function(){
+                    $location.path('/home');
+                });
         }
     }])
 .controller('logoutController', ['$scope', 'SenyData', function ($scope, SenyData) {

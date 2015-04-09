@@ -10,6 +10,7 @@ angular.module('SENY', [
   'SENY.image',
   'SENY.product',
   'SENY.profile',
+  'SENY.response',
   'SENY.message',
   'SENY.version',
   'SenyData',

@@ -89,7 +89,7 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
                         $scope.in_progress = true;
                     })
             }
-        }
+        };
 
         $scope.create = function(){
             if($scope.image_type=="none")
@@ -128,10 +128,17 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
 
     }])
 
-    .controller('ProductEditController', ['$scope', 'SenyData', '$routeParams', '$rootScope', '$location',
-        function ($scope, SenyData, $routeParams, $rootScope, $location) {
+    .controller('ProductEditController', ['$scope', 'SenyData', '$routeParams', '$rootScope', '$location', '$upload',
+        function ($scope, SenyData, $routeParams, $rootScope, $location, $upload) {
             $scope.model = {};
             $scope.error = false;
+            $scope.image_type = "upload";
+            $scope.alert = {msg: 'Image Added! Feel free to upload another.', active: false };
+
+            $scope.closeAlert = function(){
+                $scope.alert.active = false;
+            };
+
             $scope.update = function(){
                 SenyData.senyRequest('products/' + $routeParams.id + '/', 'GET', {})
                     .success(function (data, status, headers, config) {
@@ -143,7 +150,36 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
                     .error(function(data, status, headers, config){
                         $scope.error = true;
                     })
-            }
+            };
+
+            $scope.upload  = function()
+            {
+                if($scope.file != null)
+                {
+                    $upload.upload({
+                        method: 'POST',
+                        url: SenyData.apiURL + 'images/product/',
+                        file: $scope.file,
+                        fields: {
+                            'title': $scope.upload_title,
+                            'product': $scope.model.id
+                        },
+                        headers: {'Authorization': SenyData.header},
+                        fileFormDataName: 'image'
+
+                    })
+                        .success(function(data, status, headers, config){
+                            $scope.in_progress = false;
+                            $scope.upload_title = "";
+                            $scope.image = null;
+                            $scope.alert.active = true;
+                        })
+
+                        .progress(function(event){
+                            $scope.in_progress = true;
+                        })
+                }
+            };
 
             $scope.update();
 

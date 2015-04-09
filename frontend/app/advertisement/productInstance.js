@@ -36,10 +36,14 @@ angular.module('SENY.advertisement', ['ngRoute', 'SenyData', 'ui.bootstrap'])
             {
                 SenyData.senyRequest('advertisements/' + ad.id + '/', 'DELETE', {})
                     .success(function (data) {
-                        $dInstance.close('delete');
+                        $modalInstance.close('delete');
                     })
             }
-        }
+        };
+
+        $scope.respond = function(){
+            $location.path('response/' + ad.id);
+        };
         $scope.share_url = $location.absUrl().split('#')[0] + '#/advertisement/';
         $scope.profile_url = $location.absUrl().split('#')[0] + '#/profile/';
         $scope.getMetric = function(ad){ return price_metrics[parseInt(ad.product.price_metric)]};
@@ -237,11 +241,6 @@ angular.module('SENY.advertisement', ['ngRoute', 'SenyData', 'ui.bootstrap'])
             $scope.type = type;
             $scope.update();
         };
-
-        //$scope.$watch("tag_query", function(old_val, new_val){
-        //    $scope.tag_query = new_val;
-        //    $scope.update();
-        //});
 
         $scope.hasImage = function(ad){
             if(ad.product.display_image)

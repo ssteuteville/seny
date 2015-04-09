@@ -12,13 +12,13 @@
         <accordion close-others="true" class="threads">
             <accordion-group ng-repeat="thread in threads">
                 <accordion-heading>
-                    <span ng-click="opened($index)">
+                    <span ng-click="opened($index)" class="message-heading">
                         <span class="pull-left">
-                            <span ng-if="thread.new_messages > 0" class="badge label label-success">{{thread.new_messages}}</span>
+                            <span ng-if="thread.new_messages > 0 && thread.messages[thread.messages.length - 1].source != $root.user.owner" class="badge label label-success">{{thread.new_messages}}</span>
                             <span ng-if="thread.creator == $root.user.owner">{{thread.responder}}</span>
                             <span ng-if="thread.creator != $root.user.owner">{{thread.creator}}</span>
                         </span>
-                        <span class="" style="margin-left:25%">{{thread.title.slice(0, 75)}}</span>
+                        <span class="" style="margin-left:25%">{{thread.title.slice(0, 40)}}</span>
                         <span class="pull-right" ng-if="thread.messages.length > 0">
                             {{convertDate(thread.messages[thread.messages.length - 1].created_at)}}
                         </span>
@@ -30,9 +30,12 @@
                 <accordion close-others="false" class="messages">
                     <accordion-group ng-repeat="message in thread.messages">
                         <accordion-heading>
-                            <span>{{message.source}}</span>
-                            <span style="margin-left: 25%">{{message.content.slice(0,50)}}</span>
-                            <span class="pull-right">{{convertDate(message.created_at)}}</span>
+                            <span class="message-heading">
+                                <span>{{message.source}}</span>
+                                <span style="margin-left: 25%">{{message.content.slice(0,30)}}...</span>
+                                <span class="pull-right">{{convertDate(message.created_at)}}</span>
+                            </span>
+
                         </accordion-heading>
                         <div class="well">
                             <div>

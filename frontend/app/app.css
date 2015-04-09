@@ -100,7 +100,11 @@
 }
 
 .threads span{
-    font-size: 12px;
+    font-size: 15px;
+}
+
+.message-heading{
+    cursor: pointer;
 }
 
 .badge

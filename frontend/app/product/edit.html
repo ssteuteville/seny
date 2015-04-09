@@ -30,14 +30,57 @@
 
         <hr class="col-sm-11"/>
 
-        <h3> Image: </h3>
-        <div ng-controller="imageListController" class="col-sm-6 col-sm-offset-3">
-            <select ng-options="image as image.title for image in images" ng-model="model.display_image" class="form-control select"></select>
-            <div ng-if="model.display_image">
-                <h3>Preview:</h3>
-                <img ng-src="{{model.display_image.image}}" height="150px" width="150px" class="col-sm-offset-2">
+        <div class="col-sm-12">
+            <h3>Display Image: </h3>
+            <div ng-controller="imageListController" class="col-sm-6 col-sm-offset-3">
+                <select ng-options="image as image.title for image in images" ng-model="model.display_image" class="form-control select"></select>
+                <div ng-if="model.display_image">
+                    <h3>Preview:</h3>
+                    <img ng-src="{{model.display_image.image}}" height="150px" width="150px" class="col-sm-offset-2">
+                </div>
             </div>
         </div>
+
+
+        <hr class="col-sm-11"/>
+
+        <div class="col-sm-12">
+            <div ng-repeat="alert in alerts">
+                {{alert.msg}}
+            </div>
+
+            <div ng-if="alert.active" class="alert alert-success alert-dismissible" role="alert">
+                <button type="button" class="close" ng-click="closeAlert()">
+                    <strong><span aria-hidden="true">X</span></strong>
+                </button>
+                {{alert.msg}}
+            </div>
+
+            <h3>Add Image:</h3> <!-- todo -->
+            <div>
+                <div class="col-sm-12 bottom-margin">
+                    <div  class="col-sm-4 col-sm-offset-4">
+                        <label>Image Title:</label>
+                        <input type="text" class="form-control select" ng-model="upload_title">
+                    </div>
+                </div>
+
+                <div ng-file-drop ng-model="$parent.file" class="upload-drop-zone col-sm-4 col-sm-offset-2" allow-dir="false" accept=".jpg,.png,.gif">
+                    Drop Image Here
+                </div>
+                <span class="title col-sm-1"> OR </span>
+                <div class="col-sm-4 bottom-margin">
+                    <button class="btn btn-md btn-primary" ng-file-select ng-model="$parent.file">Browse</button>
+                    <p ng-if="$parent.file">File: {{$parent.file[0].name}}</p>
+                    <p ng-if="!$parent.file">File: </p>
+                    <div ng-if="in_progress">Uploading..</div>
+                </div>
+                <div class="col-sm-4 col-sm-offset-1">
+                    <button class="btn btn-primary" ng-click="upload()">Upload</button>
+                </div>
+            </div>
+        </div>
+
 
         <hr class="col-sm-11"/>
         <div class="col-sm-8 col-sm-offset-5">
