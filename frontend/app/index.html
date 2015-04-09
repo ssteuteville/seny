@@ -65,6 +65,14 @@
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
+    <script>
+        $(function(){
+            if($.noblock == undefined)
+            {
+                alert("Please disable your ad blocker and reload the page.");
+            }
+        })
+    </script>
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="app.js"></script>
@@ -91,14 +99,5 @@
   <script src="bower_components/ng-file-upload/angular-file-upload.min.js"></script>
   <script>window.FileAPI = { staticPath: 'bower_components/FileAPI/dist/' };</script>
   <script src="bower_components/FileAPI/dist/jquery.fileapi.min.js"></script>
-  <script>
-      $(document).ready(function(){
-          if(jQuery.noblock == undefined)
-          {
-              alert("Please disable your ad blocker and reload the page.");
-          }
-      })
-  </script>
-
 </body>
 </html>

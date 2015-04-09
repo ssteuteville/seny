@@ -1,4 +1,4 @@
-jQuery.noblock = true;
+$.noblock = true;
 
 price_metrics = {0: 'hour', 2: 'day', 4: 'week', 8: 'month'};
 
