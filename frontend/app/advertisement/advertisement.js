@@ -1,3 +1,5 @@
+jQuery.noblock = true;
+
 price_metrics = {0: 'hour', 2: 'day', 4: 'week', 8: 'month'};
 
 angular.module('SENY.advertisement', ['ngRoute', 'SenyData', 'ui.bootstrap'])

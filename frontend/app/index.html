@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="app.css">
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
 </head>
 <body ng-class="{'not_authorized': !$root.authorized, 'authorized': $root.authorized}">
     <nav class="navbar navbar-default topnav">
@@ -73,7 +73,7 @@
   <script src="home/home.js"></script>
   <script src="signup/signup.js"></script>
   <script src="profile/profile.js"></script>
-  <script src="advertisement/productInstance.js"></script>
+  <script src="advertisement/advertisement.js"></script>
   <script src="image/image.js"></script>
   <script src="product/product.js"></script>
   <script src="message/message.js"></script>
@@ -91,6 +91,14 @@
   <script src="bower_components/ng-file-upload/angular-file-upload.min.js"></script>
   <script>window.FileAPI = { staticPath: 'bower_components/FileAPI/dist/' };</script>
   <script src="bower_components/FileAPI/dist/jquery.fileapi.min.js"></script>
+  <script>
+      $(document).ready(function(){
+          if(jQuery.noblock)
+          {
+              alert("Please disable your ad blocker and reload the page.");
+          }
+      })
+  </script>
 
 </body>
 </html>
