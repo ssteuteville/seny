@@ -93,7 +93,7 @@
   <script src="bower_components/FileAPI/dist/jquery.fileapi.min.js"></script>
   <script>
       $(document).ready(function(){
-          if(jQuery.noblock)
+          if(jQuery.noblock == undefined)
           {
               alert("Please disable your ad blocker and reload the page.");
           }
