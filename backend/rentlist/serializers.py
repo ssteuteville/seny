@@ -249,8 +249,8 @@ class MessageSerializer(serializers.ModelSerializer):
         raise serializers.ValidationError('Messages can only be created by users active on thread.')
 
     def validUsers(self, user, message):
-        return (user == message.thread.creator.username and message.destination.username == message.thread.responder.username
-            or user == message.thread.responder.username and message.destination == message.thread.creator.username)
+        return (user == message.thread.creator.username and message.destination.username == message.thread.responder.username) or\
+               (user == message.thread.responder.username and message.destination.username == message.thread.creator.username)
 
 
 class MessageWithThreadSerializer(serializers.ModelSerializer):
@@ -276,8 +276,8 @@ class MessageWithThreadSerializer(serializers.ModelSerializer):
         raise serializers.ValidationError('Messages can only be created by users active on thread.')
 
     def validUsers(self, user, message):
-        return (user == message.thread.creator.username and message.destination.username == message.thread.responder.username
-            or user == message.thread.responder.username and message.destination == message.thread.creator.username)
+        return (user == message.thread.creator.username and message.destination.username == message.thread.responder.username) or\
+               (user == message.thread.responder.username and message.destination.username == message.thread.creator.username)
 
 
 class MessageWithThreadAndResponseSerializer(serializers.ModelSerializer):
@@ -323,8 +323,8 @@ class MessageWithThreadAndResponseSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError('Something went wrong creating this message.')
 
     def validUsers(self, user, message):
-        return (user == message.thread.creator.username and message.destination.username == message.thread.responder.username
-            or user == message.thread.responder.username and message.destination == message.thread.creator.username)
+        return (user == message.thread.creator.username and message.destination.username == message.thread.responder.username) or\
+               (user == message.thread.responder.username and message.destination.username == message.thread.creator.username)
 
 
 class MessageThreadSerializer(serializers.ModelSerializer):
