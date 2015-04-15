@@ -215,6 +215,10 @@ class ProductViewSet(SenyViewSet):
             /api/version/products/user
             return all products owned by current user
 
+        ### Reviewable ###
+            /api/version/products/reviewable
+            return products reviewable by current user
+
         ### Recurring Advertisements ###
             POST /api/version/products/<pk>/recurringAdvertisement/ -- this endpoint will create multiple advertisements for a product
 
@@ -311,7 +315,20 @@ class ProductViewSet(SenyViewSet):
         serializer.is_valid()
         return Response(serializer.data)
 
-
+    @list_route(methods=['GET'], permission_classes=permission_classes)
+    def reviewable(self, request, *Args, **kwargs):
+        query_set = Product.objects.raw("""
+        select product.* from rentlist_product as product
+        join rentlist_advertisement as ad on product.id = ad.product_id
+        join rentlist_advertisementresponse as response on response.advertisement_id = ad.id
+        where response.accepted=1 and response.owner_id = {0}
+        and (select count(*) from rentlist_product
+	         join rentlist_review on rentlist_product.id = rentlist_review.product_id
+             where rentlist_product.owner_id = {0}) = 0
+        """.format(request.user.id))
+        serializer = self.get_serializer(data=query_set, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
 
 class AdvertisementResponseViewSet(SenyViewSet):
     """
