@@ -39,10 +39,11 @@ class ImageForProductSerializer(serializers.ModelSerializer):
 class AdvertisementResponseSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     advertisement_owner = serializers.ReadOnlyField(source='advertisement.product.owner.username')
+    advertisement_title = serializers.ReadOnlyField(source='advertisement.product.title')
 
     class Meta:
         model = AdvertisementResponse
-        fields = ('id', 'owner', 'advertisement', 'advertisement_owner', 'created_at', 'deadline', 'accepted') #'reviewed'
+        fields = ('id', 'owner', 'advertisement', 'advertisement_owner', 'created_at', 'deadline', 'accepted', 'advertisement_title') #'reviewed'
 
     def create(self, validated_data):
         response = AdvertisementResponse(**validated_data)
