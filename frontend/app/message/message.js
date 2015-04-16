@@ -49,8 +49,14 @@ angular.module('SENY.message', ['ngRoute', 'SenyData'])
             $location.path('/advertisement/' + id);
         };
 
-        $scope.accept_response = function(id) {
-            $location.path('/accept-response/' + id); //todo implement accept-response
+        $scope.accept_response = function(message) {
+            if(confirm("Are you sure you want to accept this response?"))
+            {
+                SenyData.senyRequest('advertisement-responses/' + message.response.id + '/', 'PATCH', {}, {accepted: 1})
+                    .success(function(data){
+                        $scope.reply(message.thread);
+                    })
+            }
         };
 
         $scope.reply = function(id){

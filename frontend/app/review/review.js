@@ -7,6 +7,10 @@ angular.module('SENY.review', ['ngRoute', 'SenyData'])
             templateUrl: 'review/reviewable-products.html',
             controller: 'reviewableController'
         })
+            .when('/reviews', {
+                templateUrl: 'review/reviews.html',
+                controller: 'reviewListController'
+            })
     }])
 .controller('reviewableController', ['$scope', 'SenyData', function($scope, SenyData){
         $scope.products = {};
@@ -18,4 +22,14 @@ angular.module('SENY.review', ['ngRoute', 'SenyData'])
         }
         getReviewable();
 
+    }])
+.controller('reviewListController', ['$scope', 'SenyData', function($scope, SenyData){
+        $scope.reviews = {};
+        function getReviews(){
+            SenyData.senyRequest('reviews/user/', 'GET', {})
+                .success(function(data){
+                    $scope.reviews = data;
+                })
+        }
+        getReviews();
     }])

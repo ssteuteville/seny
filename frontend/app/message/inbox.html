@@ -52,7 +52,7 @@
                                     </label>
                                     <div class="col-sm-8">
                                         <button class="btn btn-sm btn-primary" ng-click="view_ad(message.response.advertisement)">View Advertisement</button>
-                                        <button class="btn btn-sm btn-success" ng-if="message.response.advertisement_owner == $root.user.owner" ng-click="accept_response(message.response.id)">
+                                        <button class="btn btn-sm btn-success" ng-if="message.response.advertisement_owner == $root.user.owner" ng-click="accept_response(message)">
                                             Accept
                                         </button>
                                     </div>

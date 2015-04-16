@@ -1,0 +1,28 @@
+<div class="col-sm-8 col-sm-offset-2 seny-panel main-panel">
+    <div ng-if="responses.length == 0" style="margin-top:10%; margin-left: 10%;">
+        <h2>You have no pending responses..</h2>
+        <p>When a user responds to one of your ads you can accept it here or in your inbox.</p>
+    </div>
+    <table ng-if="responses.length" class="table table-striped">
+        <thead>
+        <tr>
+            <td><h3>From</h3></td>
+            <td><h3>Title</h3></td>
+            <td><h3>Deadline</h3></td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="response in responses">
+            <td><a ng-href="#/user/{{response.owner}}">{{response.owner}}</a></td>
+            <td>{{response.advertisement_title}}</td>
+            <td>{{convertDate(response.deadline)}}</td>
+            <td>
+                <div class="btn-group">
+                    <button class="btn btn-primary btn-small" ng-click="accept(response)">Accept</button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

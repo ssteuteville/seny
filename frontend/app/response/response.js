@@ -7,6 +7,10 @@ angular.module('SENY.response', ['ngRoute', 'SenyData'])
             templateUrl: 'response/create.html',
             controller: 'ResponseCreateController'
         })
+            .when('/responses', {
+                templateUrl: 'response/pending.html',
+                controller: 'pendingResponseController'
+            })
     }])
     .controller('ResponseCreateController', ['$scope', '$location', 'SenyData', '$routeParams',
         function($scope, $location, SenyData, $routeParams){
@@ -26,4 +30,30 @@ angular.module('SENY.response', ['ngRoute', 'SenyData'])
                     })
             }
 
+    }])
+.controller('pendingResponseController', ['$scope', 'SenyData', '$location', function($scope, SenyData, $location){
+        $scope.responses = {};
+        function getResponses(){
+            SenyData.senyRequest('advertisement-responses/user/', 'GET', {})
+                .success(function(data){
+                    $scope.responses = data;
+                })
+        }
+        $scope.accept = function(response)
+        {
+            if(confirm("Are you sure you want to accept this request?"))
+            {
+                SenyData.senyRequest('advertisement-responses/' + response.id + '/', 'PATCH', {}, {accepted: 1})
+                    .success(function(data){
+                        //todo: refresh data here -- backend should only return responses for advertisements that haven't had an accepted response
+                    })
+            }
+        };
+        getResponses();
+
+        $scope.convertDate = function(date){
+            var d = new Date(date);
+
+            return d.toDateString() + " " + d.toLocaleTimeString();
+        };
     }])

@@ -1,5 +1,9 @@
 <div class="col-sm-8 col-sm-offset-2 seny-panel main-panel">
-    <table class="table table-striped">
+    <div ng-if="products.length == 0" style="margin-top:10%; margin-left: 10%;">
+        <h2>You have no pending reviews..</h2>
+        <p>You can review other user's products once they have accepted a response from you.</p>
+    </div>
+    <table ng-if="products.length" class="table table-striped">
         <thead>
         <tr>
             <td><h3>User</h3></td>
