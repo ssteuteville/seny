@@ -20,7 +20,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class ImageForProductSerializer(serializers.ModelSerializer):
-    product = serializers.PrimaryKeyRelatedField(source='products',queryset=Product.objects.all(), write_only=True)
+    product = serializers.PrimaryKeyRelatedField(source='products', queryset=Product.objects.all(), write_only=True)
 
     class Meta:
         model = Image
@@ -61,11 +61,13 @@ class TagSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
+    product_id = serializers.PrimaryKeyRelatedField(source='product', queryset=Product.objects.all(), write_only=True)
     product_title = serializers.ReadOnlyField(source='product.title')
+    product_owner = serializers.ReadOnlyField(source='product.owner.username')
 
     class Meta:
         model = Review
-        fields = ("id", "owner", "product", "rating", "title", "content", "created_at", "product", "product_title")
+        fields = ("id", "owner", "product", "rating", "title", "content", "created_at", "product_id", "product_title", "product_owner")
         extra_kwargs = {}
 
     def create(self, validated_data):
@@ -171,6 +173,7 @@ class ProductSerializer(serializers.ModelSerializer):
         return False
 
 
+ReviewSerializer
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
