@@ -318,13 +318,13 @@ class ProductViewSet(SenyViewSet):
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def reviewable(self, request, *Args, **kwargs):
         query_set = Product.objects.raw("""
-        select product.* from rentlist_product as product
+        select distinct product.* from rentlist_product as product
         join rentlist_advertisement as ad on product.id = ad.product_id
         join rentlist_advertisementresponse as response on response.advertisement_id = ad.id
         where response.accepted=1 and response.owner_id = {0} and product.owner_id != {0}
         and (select count(*) from rentlist_product
 	         join rentlist_review on rentlist_product.id = rentlist_review.product_id
-             and rentlist_review.owner_id = (0)) = 0
+             and rentlist_review.owner_id = {0}) = 0
         """.format(request.user.id))
         serializer = self.get_serializer(data=query_set, many=True)
         serializer.is_valid()
