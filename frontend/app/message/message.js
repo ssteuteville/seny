@@ -23,6 +23,11 @@ angular.module('SENY.message', ['ngRoute', 'SenyData'])
 
 .controller('inboxController', ['$scope', 'SenyData', '$location', '$rootScope', function($scope, SenyData, $location, $rootScope){
         $scope.threads = [];
+        $scope.convertDate = function(date){
+            var d = new Date(date);
+
+            return d.toDateString() + " " + d.toLocaleTimeString();
+        };
         SenyData.senyRequest('threads/user/', 'GET', {})
             .success(function(data){
                 $scope.threads = data;
@@ -100,4 +105,21 @@ angular.module('SENY.message', ['ngRoute', 'SenyData'])
                         $location.path('/inbox/');
                     })
             }
+    }])
+    .controller('inboxPollController', ['SenyData', '$interval', '$rootScope',
+        function(SenyData, $interval, $rootScope){
+            $rootScope.new_messages = false;
+            (function wait(){
+                if($rootScope.user)
+                {
+                    console.log('owner initialized');
+                    SenyData.check_inbox().then($interval(SenyData.check_inbox, 60000));
+                }
+                else
+                {
+                    console.log('owner not initialized');
+                    setTimeout(wait, 100);
+                }
+            }());
+
     }])

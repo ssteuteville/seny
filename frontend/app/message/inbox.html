@@ -14,7 +14,9 @@
                 <accordion-heading>
                     <span ng-click="opened($index)" class="message-heading">
                         <span class="pull-left">
-                            <span ng-if="thread.new_messages > 0 && thread.messages[thread.messages.length - 1].source != $root.user.owner" class="badge label label-success">{{thread.new_messages}}</span>
+                            <span ng-if="thread.new_messages > 0 && thread.messages[thread.messages.length - 1].source != $root.user.owner" class="badge label label-success">
+                                {{thread.new_messages}}
+                            </span>
                             <span ng-if="thread.creator == $root.user.owner">{{thread.responder}}</span>
                             <span ng-if="thread.creator != $root.user.owner">{{thread.creator}}</span>
                         </span>
@@ -31,25 +33,36 @@
                     <accordion-group ng-repeat="message in thread.messages">
                         <accordion-heading>
                             <span class="message-heading">
+                                <span ng-if="message.response" class="glyphicon glyphicon-dashboard"></span>
                                 <span>{{message.source}}</span>
                                 <span style="margin-left: 25%">{{message.content.slice(0,30)}}...</span>
                                 <span class="pull-right">{{convertDate(message.created_at)}}</span>
                             </span>
 
                         </accordion-heading>
-                        <div class="well">
-                            <div>
+                        <div class="well col-sm-12">
+                            <div class="col-sm-12 row">
                                 {{message.content}}
                             </div>
-                            <div ng-if="message.response">
-                                <hr style="width: 100%;">
-                                <h5>
-                                    Advertisement Response:
-                                </h5>
-                                <button class="btn btn-sm btn-primary" ng-click="view_ad(message.response.advertisement)">View Advertisement</button>
-                                <button class="btn btn-sm btn-success" ng-if="message.response.advertisement_owner == $root.user.owner" ng-click="accept_response(message.response.id)">
-                                    Accept
-                                </button>
+                            <div ng-if="message.response" class='col-sm-12 row'>
+                                <hr class="col-sm-12">
+                                <div class="col-sm-12 row">
+                                    <label class="col-sm-4">
+                                        Advertisement Response:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <button class="btn btn-sm btn-primary" ng-click="view_ad(message.response.advertisement)">View Advertisement</button>
+                                        <button class="btn btn-sm btn-success" ng-if="message.response.advertisement_owner == $root.user.owner" ng-click="accept_response(message.response.id)">
+                                            Accept
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 row">
+                                    <label class='col-sm-2'>Deadline:</label>
+                                    <div class="col-sm-8">
+                                        {{convertDate(message.response.deadline)}}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div ng-if="message.destination == $root.user.owner">

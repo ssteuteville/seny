@@ -83,14 +83,29 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
         this.logout = function () {
             localStorageService.clearAll();
             var tokens = ['access', 'expiration', 'refresh', 'scope'];
+            cookies = ipCookie();
             for(i in tokens )
             {
                 ipCookie.remove('SENY-' + tokens[i]);
             }
             $rootScope.user = null;
             $rootScope.authorized = null;
+            $rootScope.new_messages = false;
+            $rootScope.owner = null;
         };
 
+        this.check_inbox = function() {
+            console.log('Checking Inbox');
+            return this.senyRequest('messages/user/', 'GET', {'new': 1, 'destination':$rootScope.user.owner})
+                .success(function(data){
+                    if(data.length){
+                        $rootScope.new_messages = true;
+                    }
+                    else{
+                        $rootScope.new_messages = false;
+                    }
+                })
+        };
         // HELPER FUNCTIONS \\
 
         function getToken(username, password)

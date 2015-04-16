@@ -107,6 +107,16 @@
     cursor: pointer;
 }
 
+.msg{
+    font-size: 20px;
+    color:#fff;
+}
+
+.new-msg{
+    /*Use shadows to slowly build up the glow. The first shadow should be the colour of the text. Subsequent shadows are the colour you want the glow to be, all with no x or y offset and with increasing amounts of blur (the number of shadows you use depends on how big you want the glow to be).*/
+    text-shadow:0 0 10px white, 0 0 20px white, 0 0 30px #92F060, 0 0 40px #8CE05E, 0 0 50px #6FE82E, 0 0 60px #6CF522, 0 0 70px #59FF00;
+}
+
 .badge
 {
     border-radius: 1em;

@@ -34,10 +34,10 @@
                     </ul>
                 </li>
             </ul>
-            <div class="col-sm-1 navbar-text">
-                <a ng-href="#/inbox" class="layout-icon">
+            <div ng-if="$root.authorized" class="col-sm-1 navbar-text" ng-controller="inboxPollController">
+                <a ng-href="#/inbox">
                     <!--<div class="glyphicon-envelope layout-icon" aria-hidden="true"></div>-->
-                    Inbox
+                    <span ng-class="{'new-msg': $root.new_messages, 'msg':true}">Inbox</span>
                 </a>
             </div>
             <div class="navbar-right">
