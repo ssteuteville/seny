@@ -68,6 +68,9 @@ class AdvertisementViewSet(SenyViewSet):
         ### User ###
             /api/version/advertisements/user
             Returns all advertisements of current user
+        ### Recent ###
+            /api/version/advertisements/recent
+            Returns the last advertisements that this user has accepted responses for
 
     """
     queryset = Advertisement.objects.all()
@@ -109,6 +112,17 @@ class AdvertisementViewSet(SenyViewSet):
         serializer.is_valid()
         return Response(serializer.data)
 
+    @list_route(methods=['GET'])
+    def recent(self, request, *args, **kwargs):
+        queryset = Advertisement.objects.raw("""
+        select advertisement.* from rentlist_advertisement as advertisement
+        join rentlist_advertisementresponse as response on response.advertisement_id = advertisement.id
+        where response.accepted=1 and response.owner_id={0}
+        limit 15
+        """.format(request.user.id))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
 
 class MessageViewSet(SenyViewSet):
     """
