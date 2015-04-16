@@ -61,10 +61,11 @@ class TagSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
+    product_title = serializers.ReadOnlyField(source='product.title')
 
     class Meta:
         model = Review
-        fields = ("id", "owner", "product", "rating", "title", "content", "created_at", "product")
+        fields = ("id", "owner", "product", "rating", "title", "content", "created_at", "product", "product_title")
         extra_kwargs = {}
 
     def create(self, validated_data):
