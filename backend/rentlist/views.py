@@ -387,8 +387,11 @@ class AdvertisementResponseViewSet(SenyViewSet):
             _response.save()
         response.accepted = True
         response.save()
+        response.advertisement.active = False
+        response.advertisement.save()
         serializer = self.get_serializer(response)
         return Response(serializer.data)
+
 
 
 
