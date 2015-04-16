@@ -354,10 +354,11 @@ class AdvertisementSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='product.owner.username')
     lat = serializers.FloatField(allow_null=True)
     lon = serializers.FloatField(allow_null=True)
+    accepted = serializers.SerializerMethodField()
 
     class Meta:
         model = Advertisement
-        fields = ('id', 'owner', 'start', 'end', 'active', 'zip', 'lat', 'lon', 'responses', 'product', 'product_id', 'distance')
+        fields = ('id', 'owner', 'start', 'end', 'active', 'zip', 'lat', 'lon', 'responses', 'product', 'product_id', 'distance', 'accepted')
         extra_kwargs = {}
 
     def create(self, validated_data):
@@ -386,6 +387,9 @@ class AdvertisementSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Start must be before end.")
         instance.save()
         return instance
+
+    def get_accepted(self, obj):
+        return obj.accepted()
 
 
 class SignUpSerializer(serializers.ModelSerializer):

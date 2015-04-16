@@ -115,6 +115,12 @@ class Advertisement(models.Model):
     class Meta:
         ordering = ("-start", "-end")
 
+    def accepted(self):
+        for response in self.responses.all():
+            if response.accepted:
+                return True
+        return False
+
 
 class Review(models.Model):
     owner = models.ForeignKey(User, related_name="reviews")
