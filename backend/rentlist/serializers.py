@@ -68,7 +68,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ("id", "owner", "product", "rating", "title", "content", "created_at", "product_id", "product_title", "product_owner")
+        fields = ("id", "owner", "rating", "title", "content", "created_at", "product_id", "product_title", "product_owner")
         extra_kwargs = {}
 
     def create(self, validated_data):
