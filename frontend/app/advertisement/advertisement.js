@@ -44,6 +44,7 @@ angular.module('SENY.advertisement', ['ngRoute', 'SenyData', 'ui.bootstrap'])
         };
 
         $scope.respond = function(){
+            $scope.close();
             $location.path('response/' + ad.id);
         };
         $scope.share_url = $location.absUrl().split('#')[0] + '#/advertisement/';

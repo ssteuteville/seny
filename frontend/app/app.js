@@ -11,6 +11,7 @@ angular.module('SENY', [
   'SENY.product',
   'SENY.profile',
   'SENY.response',
+  'SENY.review',
   'SENY.message',
   'SENY.version',
   'SenyData',

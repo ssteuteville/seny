@@ -49,6 +49,9 @@
     color: lime;
     font-size: 12px;
 }
+.main-panel{
+    margin-top:100px;
+}
 .seny-panel
 {
     background-color: rgba(30, 44, 44, 0.9);
@@ -151,6 +154,10 @@
     color: lime;
     background-color: darkslategray;
     border-color: #ddd;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: darkslategray;
 }
 
 .well {

@@ -1,0 +1,24 @@
+<div class="col-sm-8 col-sm-offset-2 seny-panel main-panel">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td><h3>User</h3></td>
+            <td><h3>Product Title</h3></td>
+            <td><h3>Image</h3></td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="product in products">
+            <td><a ng-href="#/user/{{product.owner}}">{{product.owner}}</a></td>
+            <td>{{product.title}}</td>
+            <td><img ng-src="{{product.display_image}}"> <span ng-if="!product.display_image"> N/A </span></td>
+            <td>
+                <div class="btn-group">
+                    <button class="btn btn-primary btn-small">View Product</button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
