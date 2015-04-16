@@ -10,7 +10,7 @@ from rest_framework.authentication import BasicAuthentication
 from django.http import JsonResponse
 from rest_framework import mixins, viewsets
 from rest_framework import status
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import HttpResponse
 
 from django.contrib.auth import authenticate
@@ -344,6 +344,12 @@ class AdvertisementResponseViewSet(SenyViewSet):
         ### User ###
             /api/version/advertisement-responses/user
             returns all responses to and from current user
+        ### Pending ###
+            /api/version/advertisement-responses/pending
+            returns all responses sent to this user that are pending acceptance
+        ### Accept ###
+            /api/version/advertisement-responses/pk/accept
+            Sets accepted to true for a specific response and makes sure all the rest are false.
     """
     queryset = AdvertisementResponse.objects.all()
     permission_classes = [SenyAuth, AdvertisementResponsePermissions]
@@ -352,11 +358,36 @@ class AdvertisementResponseViewSet(SenyViewSet):
                      'deadline__lte', 'deadline__gte']
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
+    def pending(self, request, *args, **kwargs):
+        queryset = AdvertisementResponse.objects.raw("""
+        SELECT response.* FROM rentlist_advertisementresponse as response
+        join rentlist_advertisement as advertisement on advertisement.id = response.advertisement_id
+        join rentlist_product as product on advertisement.product_id = product.id
+        where product.owner_id = {0}
+        and (select count(*) from rentlist_advertisementresponse
+	         where advertisement_id=advertisement.id and accepted=1) = 0
+	""".format(request.user.id))
+        serializer = self.get_serializer(data=queryset, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
+    @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
         queryset = self.get_queryset().filter(Q(owner=request.user) | Q(advertisement__product__owner=request.user)
         | Q(deadline__gte=datetime.now()))
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
+        return Response(serializer.data)
+
+    @detail_route(methods=['PUT', 'GET'])
+    def accept(self, request, pk=None):
+        response = self.get_object()
+        for _response in response.advertisement.responses.filter(~Q(id=response.id)):
+            _response.accepted = False
+            _response.save()
+        response.accepted = True
+        response.save()
+        serializer = self.get_serializer(response)
         return Response(serializer.data)
 
 
