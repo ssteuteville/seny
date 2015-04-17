@@ -1,29 +1,78 @@
-<form ng-controller="signupController">
-    <div class="form-group row">
-        <div class="col-md-8 col-md-offset-2">
-            <label>
-                Username
-            </label>
-            <input ng-required="true" type="text" ng-model="username" class="form-control">
+<div ng-controller="signupController">
+    <span ng-click="forward()"  ng-if="current < num_panels" class="lime" style="position: absolute;right:5%;top:30%;font-size:200px;cursor: pointer;">
+        ->
+    </span>
+    <span ng-click="backward()" ng-if="current != 0" class="lime" style="position: absolute;left:5%;top:30%;font-size:200px;cursor: pointer;">
+        <-
+    </span>
+    <div id='demo-0' class="signup main-panel demo">
+        <span ng-click="skip()" class="pull-right lime" style="cursor:pointer;">Sign Up Now!</span>
+        <h2>SENY<small>(Sharing Economy Near You)</small></h2>
+        <h3>What is SENY?</h3>
+        <div class="well">
+            <ul>
+                <li><span class="lime">SENY</span> is an appication that enables users to take part in a sharing economy!</li>
+                <li>Users of <span class="lime">SENY</span> are able to upload <i>products</i> and create <i>advertisements</i> for their products.</li>
+                <li>Other users will then <i>respond</i> to the <i>advertisement</i> and rent the <i>product</i>!</li>
+                <li>Want to rent something that isn't listed? Create a <i>demand advertisement</i>!</li>
+            </ul>
+
         </div>
     </div>
-    <div class="form-group row">
-        <div class="col-md-8 col-md-offset-2">
-            <label>
-                Email
-            </label>
-            <input ng-required="true" type="email" ng-model="email" class="form-control">
+    <div id='demo-1' class="signup main-panel demo demo-hidden">
+        <span ng-click="skip()" class="pull-right lime" style="cursor:pointer;">Sign Up Now!</span>
+        <h2>SENY<small>(Sharing Economy Near You)</small></h2>
+        <h3>Features:</h3>
+        <div class="well">
+            <h4>Reusable Products</h4>
+            <p class="cadet">Most of the information needed to create an <i>advertisement</i> is uploaded into what's called
+                a <i>product</i>. This allows for easily recreating <i>advertisements</i>!
+            </p>
+            <h4>Easy Image Uploading</h4>
+            <p class="cadet"><i>Images</i> can be uploaded and shared between <i>products</i>. Each product has it's own set of <i>images</i>
+                and one <i>display image</i>. This allows you to show your prospective clients what you've got!
+            </p>
+            <h4>In App Messaging</h4>
+            <p class="cadet">
+                No need to share your email or phone number to communicate with your clients!
+            </p>
+            <h4>Review</h4>
+            <p class="cadet">
+                The ability to review products will help you gain prestige while giving insight into the kind of people you are dealing with.
+            </p>
         </div>
     </div>
-    <div class="form-group row">
-        <div class="col-md-8 col-md-offset-2">
-            <label>Password</label>
-            <input ng-required="true" type="password" ng-model="password" class="form-control">
-        </div>
+    <div id='demo-2' class="signup main-panel demo demo-hidden">
+        <h2>SENY<small>(Sharing Economy Near You)</small></h2>
+        <p>Please login or sign up to start sharing!!</p>
+        <form ng-controller="signupController">
+            <div class="form-group row">
+                <div class="col-md-8 col-md-offset-2">
+                    <label>
+                        Username
+                    </label>
+                    <input ng-required="true" type="text" ng-model="username" class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-8 col-md-offset-2">
+                    <label>
+                        Email
+                    </label>
+                    <input ng-required="true" type="email" ng-model="email" class="form-control">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-8 col-md-offset-2">
+                    <label>Password</label>
+                    <input ng-required="true" type="password" ng-model="password" class="form-control">
+                </div>
+            </div>
+            <div class="row bottom-margin">
+                <div class="col-md-8 col-md-offset-2">
+                    <button ng-click="signup()" type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="row bottom-margin">
-        <div class="col-md-8 col-md-offset-2">
-            <button ng-click="signup()" type="submit" class="btn btn-primary">Sign Up</button>
-        </div>
-    </div>
-</form>
+</div>

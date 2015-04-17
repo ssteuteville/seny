@@ -1,8 +1,11 @@
 <div class="seny-panel main-panel col-sm-8 col-sm-offset-2">
-    <h2>Reviews</h2>
-    <hr/>
-    <div ng-if="!reviews.length">
-        You don't have any reviews yet.
+    <div ng-if="reviews.length">
+        <h2>Reviews</h2>
+        <hr/>
+    </div>
+    <div ng-if="!reviews.length" style="margin-top:10%; margin-left: 10%;">
+        <h2>You have no reviews...</h2>
+        <p>Post some advertisements to get reviews!</p>
     </div>
     <accordion close-others="true" class="select">
         <accordion-group ng-repeat="review in reviews">
@@ -10,10 +13,10 @@
                 <span class="message-heading">
                     <span>{{review.title}}</span>
                     <span style="margin-left:25%;">{{review.content.slice(0,40)}}...</span>
-                    <span ng-if="review.owner != $rootScope.user.owner" class="pull-right">
+                    <span ng-if="review.owner != $root.user.owner" class="pull-right">
                         {{review.owner}}
                     </span>
-                    <span ng-if="review.owner == $rootScope.user.owner" class="pull-right">
+                    <span ng-if="review.owner == $root.user.owner" class="pull-right">
                         {{review.product_owner}}
                     </span>
                 </span>
@@ -21,10 +24,10 @@
             <div class="well">
                 <div>{{review.content}}</div>
             </div>
-            <a ng-if="review.product_owner != $rootScope.user.owner" class="pull-left panel-link" ng-href="#/user/{{review.owner}}">
+            <a ng-if="review.owner != $root.user.owner" class="pull-left panel-link" ng-href="#/user/{{review.owner}}">
                 View {{review.owner}}'s profile
             </a>
-            <a ng-if="review.product_owner == $rootScope.user.owner" class="pull-left panel-link" ng-href="#/user/{{review.product_owner}}">
+            <a ng-if="review.owner == $root.user.owner" class="pull-left panel-link" ng-href="#/user/{{review.product_owner}}">
                 View {{review.product_owner}}'s profile
             </a>
         </accordion-group>

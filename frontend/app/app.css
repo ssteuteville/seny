@@ -1,5 +1,26 @@
 /* app css stylesheet */
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.cadet {
+    color: cadetblue;
+}
+
+.demo{
+    width:50%;
+    left:25%;
+    right:25%;
+    padding:10px 10px 10px 10px;
+    position:absolute;
+}
+
+.demo-hidden{
+    left:-75%;
+}
+
 .upload-drop-zone {
     height: 100px;
     border-width: 2px;

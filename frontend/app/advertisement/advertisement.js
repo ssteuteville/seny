@@ -16,6 +16,10 @@ angular.module('SENY.advertisement', ['ngRoute', 'SenyData', 'ui.bootstrap'])
                 templateUrl: 'advertisement/list.html',
                 controller: 'AdvertisementListController'
             })
+            .when('/advertisements/active', {
+                templateUrl: 'advertisement/list.html',
+                controller: 'AdvertisementListController'
+            })
     }])
     .controller('adModalController', ['$scope', '$modalInstance', 'ad', '$location', 'SenyData',
         function($scope, $modalInstance, ad, $location, SenyData){
@@ -193,70 +197,86 @@ angular.module('SENY.advertisement', ['ngRoute', 'SenyData', 'ui.bootstrap'])
             return obj.id;
         }
     }])
-    .controller('AdvertisementListController', ['$scope', 'SenyData', '$modal', function ($scope, SenyData, $modal) {
-        $scope.tag_query = "";
-        $scope.type = "all";
-
-        $scope.openAdDetail = function (ad) {
-            var modalInstance = $modal.open({
-                templateUrl: 'advertisement/modal.html',
-                controller: 'adModalController',
-                size: 'lg',
-                resolve: {
-                    ad: function(){
-                        return ad;
-                    }
-                }
-            });
-            modalInstance.result.then(function(){
-                $scope.update();
-
-            })
-        };
-
-        $scope.update = function(){
-            var query = {'active': 1, start: new Date().toISOString()};
-            if($scope.tag_query != "")
+    .controller('AdvertisementListController', ['$scope', 'SenyData', '$modal', '$location',
+        function ($scope, SenyData, $modal, $location) {
+            $scope.current_path = $location.path();
+            $scope.tag_query = "";
+            $scope.type = "all";
+            if($location.path() == '/advertisements')
             {
-                query.tags = $scope.tag_query.split(' ').join();
-            }
-            if($scope.type == 'all')
-            {
-                SenyData.senyRequest('advertisements/user/', 'get', query).then(function (promise) {
-                    $scope.advertisements = promise.data;
-                })
+                $scope.query = {'active': 1, start: new Date().toISOString()};
+                $scope.endpoint = 'advertisements/user/';
+                $scope.heading = "Your Advertisements";
+
             }
             else
             {
-                query.product__type = $scope.type;
-                SenyData.senyRequest('advertisements/user/', 'get', query)
-                    .then(function (promise) {
-                        $scope.advertisements = promise.data;
-                    })
+                $scope.endpoint = 'advertisements/recent/';
+                $scope.query = {end: new Date().toISOString()};
+                $scope.heading = "Recent Rentals";
             }
 
-        };
+            $scope.openAdDetail = function (ad) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'advertisement/modal.html',
+                    controller: 'adModalController',
+                    size: 'lg',
+                    resolve: {
+                        ad: function(){
+                            return ad;
+                        }
+                    }
+                });
+                modalInstance.result.then(function(){
+                    $scope.update();
 
-        $scope.update("all");
+                })
+            };
 
-        $scope.setType = function(type)
-        {
-            $scope.type = type;
-            $scope.update();
-        };
+            $scope.update = function(){
+                if($scope.tag_query != "")
+                {
+                    query.tags = $scope.tag_query.split(' ').join();
+                }
+                if($scope.type == 'all')
+                {
+                    SenyData.senyRequest($scope.endpoint, 'get', $scope.query).then(function (promise) {
+                        $scope.advertisements = promise.data;
+                    })
+                }
+                else
+                {
+                    $scope.query.product__type = $scope.type;
+                    SenyData.senyRequest($scope.endpoint, 'get', $scope.query)
+                        .then(function (promise) {
+                            $scope.advertisements = promise.data;
+                        })
+                }
 
-        $scope.hasImage = function(ad){
-            if(ad.product.display_image)
-                return true;
-            return false;
-        };
+            };
 
-        $scope.convertDate = function(date){
-            var d = new Date(date);
+            $scope.update("all");
 
-            return d.toDateString() + " " + d.toLocaleTimeString();
-        };
-    }])
+            $scope.setType = function(type)
+            {
+                $scope.type = type;
+                $scope.update();
+            };
+
+            $scope.hasImage = function(ad){
+                if(ad.product.display_image)
+                    return true;
+                return false;
+            };
+
+            $scope.convertDate = function(date){
+                var d = new Date(date);
+
+                return d.toDateString() + " " + d.toLocaleTimeString();
+            };
+
+        }
+    ])
 ;
 function getGroups(ad) {
     if(ad.product.reviews.length >= 5) {

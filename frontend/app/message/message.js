@@ -52,7 +52,7 @@ angular.module('SENY.message', ['ngRoute', 'SenyData'])
         $scope.accept_response = function(message) {
             if(confirm("Are you sure you want to accept this response?"))
             {
-                SenyData.senyRequest('advertisement-responses/' + message.response.id + '/', 'PATCH', {}, {accepted: 1})
+                SenyData.senyRequest('advertisement-responses/' + message.response.id + '/accept/', 'GET', {})
                     .success(function(data){
                         $scope.reply(message.thread);
                     })

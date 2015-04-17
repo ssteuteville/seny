@@ -27,12 +27,14 @@
                     </span>
                     <ul class="dropdown-menu drop-down">
                         <li class="dropdown-header">General</li>
-                        <li> <a href="#/home">Home</a></li>
+                        <li> <a href="#/home">Find Deals</a></li>
                         <li class="dropdown-header lime">Your Stuff</li>
                         <li> <a href="#/products">Products</a></li>
                         <li><a href="#/advertisements">Advertisements</a> </li>
                         <li><a href="#/products/reviewable">Pending Reviews</a></li>
+                        <li><a href="#/responses">Pending Responses</a></li>
                         <li><a href="#/reviews">Your Reviews</a></li>
+                        <li><a href="#/advertisements/active">Recent Rentals</a></li>
                     </ul>
                 </li>
             </ul>
@@ -58,9 +60,7 @@
   <![endif]-->
 
   <div ng-if="$root.authorized" ng-view></div>
-  <div ng-if="!$root.authorized" class="col-md-4 col-md-offset-4 signup main-panel">
-      <h2>SENY<small>(Sharing Economy Near You)</small></h2>
-      <p>Please login or sign up to start sharing!!</p>
+  <div ng-if="!$root.authorized">
       <div ng-include="'signup/signup.html'"></div>
   </div>
 

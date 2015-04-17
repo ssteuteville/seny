@@ -11,8 +11,12 @@ angular.module('SENY.review', ['ngRoute', 'SenyData'])
                 templateUrl: 'review/reviews.html',
                 controller: 'reviewListController'
             })
+            .when('/review/create/:id', {
+                templateUrl: 'review/create.html',
+                controller: 'reviewCreateController'
+            })
     }])
-.controller('reviewableController', ['$scope', 'SenyData', function($scope, SenyData){
+.controller('reviewableController', ['$scope', 'SenyData', '$location', function($scope, SenyData, $location){
         $scope.products = {};
         function getReviewable(){
             SenyData.senyRequest('products/reviewable/', 'GET', {})
@@ -21,6 +25,9 @@ angular.module('SENY.review', ['ngRoute', 'SenyData'])
                 });
         }
         getReviewable();
+        $scope.review = function(product){
+            $location.path('/review/create/' + product.id);
+        }
 
     }])
 .controller('reviewListController', ['$scope', 'SenyData', function($scope, SenyData){
@@ -33,3 +40,20 @@ angular.module('SENY.review', ['ngRoute', 'SenyData'])
         }
         getReviews();
     }])
+.controller('reviewCreateController', ['$scope', 'SenyData', '$routeParams', '$location',
+        function($scope, SenyData, $routeParams, $location){
+            $scope.product = {};
+            $scope.model = {}
+            SenyData.senyRequest('products/' + $routeParams.id + '/', 'GET', {})
+                .success(function(data){
+                    $scope.product = data;
+                    $scope.model.product_id = $scope.product.id;
+                });
+            $scope.send = function(){
+                SenyData.senyRequest('reviews/', 'POST', {}, $scope.model)
+                    .success(function(){
+                        $location.path('/products/reviewable')
+                    })
+
+            }
+        }])
