@@ -174,7 +174,6 @@ class ProductSerializer(serializers.ModelSerializer):
         return False
 
 
-ReviewSerializer
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
