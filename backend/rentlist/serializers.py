@@ -212,12 +212,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return profile
 
     def get_supply_reviews(self, obj):
-        serializer = ReviewSerializer(many=True, data=obj.get_supply_reviews())
+        serializer = ReviewSerializer(many=True, data=obj.get_supply_reviews()[0:5])
         serializer.is_valid()
         return serializer.data
 
     def get_demand_reviews(self, obj):
-        serializer = ReviewSerializer(many=True, data=obj.get_demand_reviews())
+        serializer = ReviewSerializer(many=True, data=obj.get_demand_reviews()[0:5])
         serializer.is_valid()
         return serializer.data
 
