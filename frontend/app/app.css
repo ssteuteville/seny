@@ -73,12 +73,15 @@ html, body {
 .main-panel{
     margin-top:100px;
 }
+
+.sub-panel{
+    margin-top:20px;
+}
 .seny-panel
 {
     background-color: rgba(30, 44, 44, 0.9);
     border-radius: 5px;
     /*margin-top: 10px;*/
-    min-height: 250px;
     font-family: 'Gloria Hallelujah', cursive;
     padding-bottom: 10px;
     padding-top: 10px;

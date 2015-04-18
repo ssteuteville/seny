@@ -4,8 +4,28 @@ angular.module('SENY.profile', ['ngRoute', 'SenyData'])
         $routeProvider.when('/profile-new', {
             templateUrl: 'profile/profile-new.html',
             controller: 'newProfileController'
-        });
+        })
+            .when('/user/:username', {
+                templateUrl: 'profile/profile.html',
+                controller: 'profileController'
+            });
     }])
+    .controller('profileController', ['$scope', 'SenyData', '$rootScope', '$location', '$routeParams',
+        function($scope, SenyData, $rootScope, $location, $routeParams){
+            $scope.max_rating = 5.0;
+            (function getProfile(){
+                SenyData.senyRequest('user-profiles/', 'GET', {owner: $routeParams.username})
+                    .success(function(data){
+                        $scope.model = data[0];
+                        var query = {'active': 1, start: new Date().toISOString()};
+                        SenyData.senyRequest('advertisements/user/', 'get', query)
+                            .success(function(data){
+                                $scope.model.advertisements = data;
+                            })
+                    })
+            }())
+
+        }])
 
     .controller('newProfileController', ['$scope', 'SenyData', '$rootScope', '$location', function($scope, SenyData, $rootScope, $location)
     {

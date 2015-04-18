@@ -1,0 +1,60 @@
+<div class="main-panel col-sm-8 col-sm-offset-2">
+    <h1 class="lime">{{model.owner}}'s Profile:</h1>
+</div>
+<div class="seny-panel sub-panel col-sm-8 col-sm-offset-2">
+    <h3 class="text-center">{{model.title}}</h3>
+</div>
+<div class="seny-panel sub-panel col-sm-8 col-sm-offset-2">
+    <h4 class="col-sm-12">About Me:</h4>
+    <hr class="col-sm-11">
+    <div class="col-sm-12 white-space">{{model.description}}</div>
+</div>
+
+<div class="seny-panel sub-panel col-sm-8 col-sm-offset-2">
+    <h4 class="col-sm-12">Reviews:</h4>
+    <hr class="col-sm-11">
+    <div class="col-sm-12" ng-if="model.supply_reviews.length || model.demand_reviews.length">
+        <div class="col-sm-12" ng-if="model.supply_reviews.length">
+            <h5><b>Supply</b> avg:<rating value="model.supply_rating" max="max_rating" readonly="isReadOnly" stateOff="'glyphicon-star-empty'"></rating>
+            </h5>
+            <accordion close-others="true">
+                <accordion-group ng-repeat="review in model.supply_reviews">
+                    <accordion-heading>
+                        {{review.title}}
+                    </accordion-heading>
+                    <div class="white-space">{{review.content}}</div>
+                    <a class="pull-right" ng-href="{{profile_url + review.owner + '/'}}">- {{review.owner}}</a>
+                </accordion-group>
+            </accordion>
+        </div>
+        <div class="col-sm-12" ng-if="model.demand_reviews.length">
+            <h5>Demand</h5>
+            <rating value="model.demand_rating" max="max_rating" readonly="isReadOnly" stateOff="'glyphicon-star-empty'"></rating>
+            <accordion close-others="true">
+                <accordion-group ng-repeat="review in model.demand_reviews">
+                    <accordion-heading>
+                        {{review.title}}
+                    </accordion-heading>
+                    <div class="white-space">{{review.content}}</div>
+                    <a class="pull-right" ng-href="{{profile_url + review.owner + '/'}}">- {{review.owner}}</a>
+                </accordion-group>
+            </accordion>
+        </div>
+    </div>
+    <div class="col-sm-12" ng-if="!model.supply_reviews.length && !model.demand_reviews.length">
+        <h3>{{model.owner}} does not have any reviews yet.</h3>
+    </div>
+</div>
+
+<div class="seny-panel sub-panel col-sm-8 col-sm-offset-2">
+    <h4 class="col-sm-10">Current Advertisements:</h4>
+    <h4 class="col-sm-2">
+        <a ng-href="#/advertisements/{{model.owner}}">View All</a>
+    </h4>
+    <hr class="col-sm-11">
+    <ul class="col-sm-8 col-sm-offset-2">
+        <li ng-repeat="ad in model.advertisements">
+            <a ng-href="#/advertisement/{{ad.id}}">{{ad.product.title}}</a>
+        </li>
+    </ul>
+</div>
