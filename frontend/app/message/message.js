@@ -115,11 +115,15 @@ angular.module('SENY.message', ['ngRoute', 'SenyData'])
     .controller('inboxPollController', ['SenyData', '$interval', '$rootScope',
         function(SenyData, $interval, $rootScope){
             $rootScope.new_messages = false;
+            function update_inbox (){
+                SenyData.check_inbox();
+            }
+
             (function wait(){
                 if($rootScope.user)
                 {
                     console.log('owner initialized');
-                    SenyData.check_inbox().then($interval(SenyData.check_inbox, 60000));
+                    SenyData.check_inbox().then($interval(update_inbox, 60000));
                 }
                 else
                 {
