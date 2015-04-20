@@ -13,14 +13,14 @@
             <accordion-group ng-repeat="thread in threads">
                 <accordion-heading>
                     <span ng-click="opened($index)" class="message-heading">
-                        <span class="pull-left">
+                        <span class="pull-left thread-preview">
                             <span ng-if="thread.new_messages > 0 && thread.messages[thread.messages.length - 1].source != $root.user.owner" class="badge label label-success">
                                 {{thread.new_messages}}
                             </span>
                             <span ng-if="thread.creator == $root.user.owner">{{thread.responder}}</span>
                             <span ng-if="thread.creator != $root.user.owner">{{thread.creator}}</span>
                         </span>
-                        <span class="" style="margin-left:25%">{{thread.title.slice(0, 40)}}</span>
+                        <span class="thread-preview">{{thread.title.slice(0, 40)}}</span>
                         <span class="pull-right" ng-if="thread.messages.length > 0">
                             {{convertDate(thread.messages[thread.messages.length - 1].created_at)}}
                         </span>
@@ -33,10 +33,12 @@
                     <accordion-group ng-repeat="message in thread.messages">
                         <accordion-heading>
                             <span class="message-heading">
-                                <span ng-if="message.response" class="glyphicon glyphicon-dashboard"></span>
-                                <span>{{message.source}}</span>
-                                <span style="margin-left: 25%">{{message.content.slice(0,30)}}...</span>
-                                <span class="pull-right">{{convertDate(message.created_at)}}</span>
+                                <span class="thread-preview pull-left">
+                                    <span ng-if="message.response" class="pull-left glyphicon glyphicon-dashboard"></span>
+                                    {{message.source}}
+                                </span>
+                                <span class="thread-preview">{{message.content.slice(0,30)}}...</span>
+                                <span class="thread-preview pull-right">{{convertDate(message.created_at)}}</span>
                             </span>
 
                         </accordion-heading>

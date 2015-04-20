@@ -133,6 +133,16 @@ html, body {
 .message-heading{
     cursor: pointer;
 }
+.message-heading span {
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.message-heading .thread-preview{
+    width:33%;
+}
+
 
 .msg{
     font-size: 20px;
