@@ -23,7 +23,7 @@
                         {{review.title}}
                     </accordion-heading>
                     <div class="white-space">{{review.content}}</div>
-                    <a class="pull-right" ng-href="{{profile_url + review.owner + '/'}}">- {{review.owner}}</a>
+                    <a class="pull-right" ng-href="#/user/{{review.owner}}">- {{review.owner}}</a>
                 </accordion-group>
             </accordion>
         </div>
@@ -36,7 +36,7 @@
                         {{review.title}}
                     </accordion-heading>
                     <div class="white-space">{{review.content}}</div>
-                    <a class="pull-right" ng-href="{{profile_url + review.owner + '/'}}">- {{review.owner}}</a>
+                    <a class="pull-right" ng-href="#/user/{{review.owner}}">- {{review.owner}}</a>
                 </accordion-group>
             </accordion>
         </div>

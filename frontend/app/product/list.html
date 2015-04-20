@@ -1,13 +1,17 @@
 <div class="seny-panel col-sm-6 col-sm-offset-3 main-panel">
     <form class="form-inline" style="margin-top: 10px;" ng-submit="query()">
-        <div class="form-group">
+        <div class="form-group col-sm-12">
             <label class="title" style="margin-right: 100px;">Products</label>
             <input type="search" class="form-control" placeholder="Search By Tag" ng-model="tag_query"/>
             <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
+            <h4 style="display: inline">
+                <a href="#/product/create" class="pull-right">Create</a>
+            </h4>
         </div>
-        <a href="#/product/create" class="pull-right">Create</a>
     </form>
-    <hr/>
+    <div style="margin-top:10px;">
+        <hr class="col-sm-11"/>
+    </div>
     <accordion close-others="true" class="select">
         <accordion-group ng-repeat="product in products">
             <accordion-heading>
