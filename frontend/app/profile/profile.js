@@ -17,8 +17,8 @@ angular.module('SENY.profile', ['ngRoute', 'SenyData'])
                 SenyData.senyRequest('user-profiles/', 'GET', {owner: $routeParams.username})
                     .success(function(data){
                         $scope.model = data[0];
-                        var query = {'active': 1, start: new Date().toISOString()};
-                        SenyData.senyRequest('advertisements/user/', 'get', query)
+                        var query = {'active': 1, start: new Date().toISOString(), 'product__owner': $scope.model.owner};
+                        SenyData.senyRequest('advertisements/', 'get', query)
                             .success(function(data){
                                 $scope.model.advertisements = data;
                             })
