@@ -1,16 +1,13 @@
 from rest_framework.decorators import detail_route, list_route
 from rentlist.serializers import *
 from rentlist.models import *
-from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from rest_framework.response import Response
 from rentlist.permissions import *
 from rentlist.viewsets import SenyViewSet
 from rest_framework import generics
-from rest_framework.authentication import BasicAuthentication
 from django.http import JsonResponse
-from rest_framework import mixins, viewsets
-from rest_framework import status
-from django.db.models import Q, Count
+from django.db.models import Q
 from django.http import HttpResponse
 
 from django.contrib.auth import authenticate
@@ -37,7 +34,11 @@ class UserProfileViewSet(SenyViewSet):
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(Q(owner=request.user))
+        page_size = self.request.QUERY_PARAMS.get('page_size', None)
+        page = self.request.QUERY_PARAMS.get('page', 0)
+        queryset = self.get_queryset(ignore_paging=True).filter(Q(owner=request.user))
+        if page_size:
+            queryset = Paginator(queryset, page_size).page(page)
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
         return Response(serializer.data)
@@ -90,7 +91,9 @@ class AdvertisementViewSet(SenyViewSet):
         return Response(serializer.data)
 
     def list(self, request, *args, **kwargs):
-        ads = self.get_queryset()
+        page_size = self.request.QUERY_PARAMS.get('page_size', None)
+        page = self.request.QUERY_PARAMS.get('page', 0)
+        ads = self.get_queryset(ignore_paging=True)
         if request.QUERY_PARAMS.get('lat_lon', False):
             lat, long = [float(val) for val in request.QUERY_PARAMS.get('lat_lon').split(',')]
         elif request.QUERY_PARAMS.get('zip_query', False):
@@ -100,14 +103,20 @@ class AdvertisementViewSet(SenyViewSet):
             lat, long = profile.lat, profile.long
         ads = ads.extra(select={'distance_from_source': DISTANCE_SELECT % (lat, long, lat)}).order_by('distance_from_source')
         distances = ads.values('distance_from_source')
-        for ad in zip(ads,distances):
+        for ad in zip(ads, distances):
             ad[0].distance = ad[1]['distance_from_source']
+        if page_size:
+            ads = Paginator(ads, page_size).page(page)
         serializer = AdvertisementSerializer(ads, many=True, context={'request': request})
         return Response(serializer.data)
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(Q(product__owner=request.user))
+        page_size = self.request.QUERY_PARAMS.get('page_size', None)
+        page = self.request.QUERY_PARAMS.get('page', 0)
+        queryset = self.get_queryset(ignore_paging=True).filter(Q(product__owner=request.user))
+        if page_size:
+            queryset = Paginator(queryset, page_size).page(page)
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
         return Response(serializer.data)
@@ -158,7 +167,11 @@ class MessageViewSet(SenyViewSet):
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(Q(source=request.user) | Q(destination=request.user))
+        page_size = self.request.QUERY_PARAMS.get('page_size', None)
+        page = self.request.QUERY_PARAMS.get('page', 0)
+        queryset = self.get_queryset(ignore_paging=True).filter(Q(source=request.user) | Q(destination=request.user))
+        if page_size:
+            queryset = Paginator(queryset, page_size).page(page)
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
         return Response(serializer.data)
@@ -204,7 +217,11 @@ class ImageViewSet(SenyViewSet):
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(Q(owner=request.user))
+        page_size = self.request.QUERY_PARAMS.get('page_size', None)
+        page = self.request.QUERY_PARAMS.get('page', 0)
+        queryset = self.get_queryset(ignore_paging=True).filter(Q(owner=request.user))
+        if page_size:
+            queryset = Paginator(queryset, page_size).page(page)
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
         return Response(serializer.data)
@@ -324,7 +341,11 @@ class ProductViewSet(SenyViewSet):
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(Q(owner=request.user))
+        page_size = self.request.QUERY_PARAMS.get('page_size', None)
+        page = self.request.QUERY_PARAMS.get('page', 0)
+        queryset = self.get_queryset(ignore_paging=True).filter(Q(owner=request.user))
+        if page_size:
+            queryset = Paginator(queryset, page_size).page(page)
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
         return Response(serializer.data)
@@ -387,8 +408,12 @@ class AdvertisementResponseViewSet(SenyViewSet):
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(Q(owner=request.user) | Q(advertisement__product__owner=request.user)
+        page_size = self.request.QUERY_PARAMS.get('page_size', None)
+        page = self.request.QUERY_PARAMS.get('page', 0)
+        queryset = self.get_queryset(ignore_paging=True).filter(Q(owner=request.user) | Q(advertisement__product__owner=request.user)
         | Q(deadline__gte=datetime.now()))
+        if page_size:
+            queryset = Paginator(queryset, page_size).page(page)
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
         return Response(serializer.data)
@@ -446,23 +471,35 @@ class ReviewViewSet(SenyViewSet):
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(Q(owner=request.user) | Q(product__owner=request.user))
+        page_size = self.request.QUERY_PARAMS.get('page_size', None)
+        page = self.request.QUERY_PARAMS.get('page', 0)
+        queryset = self.get_queryset(ignore_paging=True).filter(Q(owner=request.user) | Q(product__owner=request.user))
+        if page_size:
+            queryset = Paginator(queryset, page_size).page(page)
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
         return Response(serializer.data)
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user_supply(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter((Q(owner=request.user) | Q(product__owner=request.user) )
+        page_size = self.request.QUERY_PARAMS.get('page_size', None)
+        page = self.request.QUERY_PARAMS.get('page', 0)
+        queryset = self.get_queryset(ignore_paging=True).filter((Q(owner=request.user) | Q(product__owner=request.user) )
         & Q(product__type=0))
+        if page_size:
+            queryset = Paginator(queryset, page_size).page(page)
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
         return Response(serializer.data)
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user_demand(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter((Q(owner=request.user) | Q(product__owner=request.user))
+        page_size = self.request.QUERY_PARAMS.get('page_size', None)
+        page = self.request.QUERY_PARAMS.get('page', 0)
+        queryset = self.get_queryset(ignore_paging=True).filter((Q(owner=request.user) | Q(product__owner=request.user))
             & Q(product__type=2))
+        if page_size:
+            queryset = Paginator(queryset, page_size).page(page)
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
         return Response(serializer.data)
@@ -494,7 +531,11 @@ class MessageThreadViewSet(SenyViewSet):
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(Q(creator=request.user) | Q(responder=request.user))
+        page_size = self.request.QUERY_PARAMS.get('page_size', None)
+        page = self.request.QUERY_PARAMS.get('page', 0)
+        queryset = self.get_queryset(ignore_paging=True).filter(Q(creator=request.user) | Q(responder=request.user))
+        if page_size:
+            queryset = Paginator(queryset, page_size).page(page)
         serializer = self.get_serializer(data=queryset, many=True)
         serializer.is_valid()
         return Response(serializer.data)

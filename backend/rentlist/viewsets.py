@@ -20,7 +20,7 @@ class SenyViewSet(viewsets.ModelViewSet):
     filterable_by = None
     order_by = []
 
-    def get_queryset(self):
+    def get_queryset(self, ignore_paging=False):
         assert self.queryset is not None, (
             "'%s' should either include a `queryset` attribute, "
             "or override the `get_queryset()` method."
@@ -59,7 +59,7 @@ class SenyViewSet(viewsets.ModelViewSet):
 
             queryset = queryset.filter(**filters)
 
-            if page_size:
+            if page_size and not ignore_paging:
                 queryset = Paginator(queryset, page_size)
                 queryset = queryset.page(page)
 
