@@ -12,7 +12,11 @@ angular.module('SENY.home', ['ngRoute', 'SenyData'])
 .controller('HomeController', ['$scope', '$modal', 'SenyData', function($scope, $modal, SenyData) {
     $scope.tag_query = "";
     $scope.type = "all";
-
+    $scope.page = 1;
+    $scope.page_size = 10;
+    $scope.advertisements = [];
+    $scope.inProgress = false;
+    $scope.more = true;
     $scope.openAdDetail = function (ad) {
         var modalInstance = $modal.open({
             templateUrl: 'advertisement/modal.html',
@@ -32,40 +36,40 @@ angular.module('SENY.home', ['ngRoute', 'SenyData'])
     };
 
     $scope.update = function(){
-        var query = {'active': 1, start: new Date().toISOString()};
+        var query = {'active': 1, start: new Date().toISOString(), page:$scope.page, page_size:$scope.page_size};
         if($scope.tag_query != "")
         {
             query.tags = $scope.tag_query.split(' ').join();
         }
         if($scope.type == 'all')
         {
-                SenyData.senyRequest('advertisements/', 'get', query).then(function (promise) {
-                    $scope.advertisements = promise.data;
+            $scope.inProgress = true;
+            SenyData.senyRequest('advertisements/', 'get', query)
+                .success(function (data) {updateData(data);})
+                .error(function(data){
+                    $scope.inProgress = false;
+                    $scope.more = false;
                 })
         }
         else
         {
             query.product__type = $scope.type;
+            $scope.inProgress = true;
             SenyData.senyRequest('advertisements/', 'get', query)
-                .then(function (promise) {
-                $scope.advertisements = promise.data;
-            })
+                .success(function (data) {updateData(data);})
+                .error(function(data){
+                    $scope.inProgress = false;
+                    $scope.more = false;
+                })
         }
 
     };
-
-    $scope.update("all");
 
     $scope.setType = function(type)
     {
         $scope.type = type;
         $scope.update();
     };
-
-    //$scope.$watch("tag_query", function(old_val, new_val){
-    //    $scope.tag_query = new_val;
-    //    $scope.update();
-    //});
 
     $scope.hasImage = function(ad){
         if(ad.product.display_image)
@@ -78,5 +82,11 @@ angular.module('SENY.home', ['ngRoute', 'SenyData'])
 
         return d.toDateString() + " " + d.toLocaleTimeString();
     };
+
+    function updateData(data){
+        $scope.advertisements.push.apply($scope.advertisements, data);
+        $scope.page += 1;
+        $scope.inProgress = false;
+    }
 
 }]);

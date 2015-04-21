@@ -17,7 +17,8 @@ angular.module('SENY', [
   'SenyData',
   'ui.bootstrap',
   'angularFileUpload',
-  'angularjs-dropdown-multiselect'
+  'angularjs-dropdown-multiselect',
+  'infinite-scroll'
 
 ])
 
@@ -33,6 +34,33 @@ angular.module('SENY', [
         localStorageServiceProvider.setPrefix('SENY');
     }
 ])
+
+//.directive('infiniteScroll', function(){
+//        return function(scope, elm, attr){
+//            console.log("scrolled");
+//            var raw = elm[0];
+//            elm.bind('scroll', function(){
+//                if(raw.scrollTop + raw.offsetHeight >= raw.scrollHeight){
+//                    scope.$apply(attr.infiniteScroll);
+//                }
+//            })
+//        }
+//    });
+
+//.directive('infiniteScroll', [function(){
+//        return {
+//            restrict: 'ACE',
+//            link: function ($scope, element, attr, ctrl) {
+//                var raw = element[0];
+//                element.scroll(function(){
+//                    console.log('scroll event');
+//                    if(raw.scrollTop + raw.offsetHeight >= raw.scrollHeight){
+//                        $scope.$apply(attr.infiniteScroll);
+//                    }
+//                })
+//            }
+//        }
+//    }])
 
 
 function swapActive(element)
