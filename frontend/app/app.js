@@ -29,38 +29,9 @@ angular.module('SENY', [
         $routeProvider.when('/LoginView', {
             templateUrl: 'LoginView/LoginView.html'
         });
-        //$routeProvider.otherwise({redirectTo: '/home'});
-        //$locationProvider.hashPrefix('index.html#');
         localStorageServiceProvider.setPrefix('SENY');
     }
-])
-
-//.directive('infiniteScroll', function(){
-//        return function(scope, elm, attr){
-//            console.log("scrolled");
-//            var raw = elm[0];
-//            elm.bind('scroll', function(){
-//                if(raw.scrollTop + raw.offsetHeight >= raw.scrollHeight){
-//                    scope.$apply(attr.infiniteScroll);
-//                }
-//            })
-//        }
-//    });
-
-//.directive('infiniteScroll', [function(){
-//        return {
-//            restrict: 'ACE',
-//            link: function ($scope, element, attr, ctrl) {
-//                var raw = element[0];
-//                element.scroll(function(){
-//                    console.log('scroll event');
-//                    if(raw.scrollTop + raw.offsetHeight >= raw.scrollHeight){
-//                        $scope.$apply(attr.infiniteScroll);
-//                    }
-//                })
-//            }
-//        }
-//    }])
+]);
 
 
 function swapActive(element)

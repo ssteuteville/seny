@@ -4,7 +4,7 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
         var client_id = "";
         var client_secret = "";
         $rootScope.authorized = false;
-        var baseURL = 'https://52.10.64.129/backend/';
+        var baseURL = 'http://52.10.64.129/backend/';
         //var baseURL = 'http://127.0.0.1:8000/';
         var apiVersion = "alpha";
          var apiURL = baseURL + "api/" + apiVersion + "/";
