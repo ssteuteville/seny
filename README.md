@@ -3,7 +3,7 @@ This is my senior project!
 
 This application is meant to be a website where people can create supply and demand advertisements
 while others will either rent an item out to them or rent an item from them. Visit the site for more details!
-https://52.10.64.129
+http://52.10.64.129
 
 Note: I have not paid for an ssl certificate and your browser might complain about the connection to my server being insecure.
 
