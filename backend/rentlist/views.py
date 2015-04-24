@@ -32,7 +32,6 @@ class UserProfileViewSet(SenyViewSet):
     permission_classes = [SenyAuth, UserProfilePermissions]
     serializer_class = UserProfileSerializer
     filterable_by = [['owner', 'username', 'iexact']]
-    pagin
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
