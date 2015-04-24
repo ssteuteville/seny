@@ -75,13 +75,14 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
                         'display_image.title': $scope.display_image_title,
                         'deposit': $scope.model.deposit
                     },
-                    headers: {'Authorization': SenyData.header},
+                    headers: {'Authorization': $rootScope.header},
                     fileFormDataName: 'display_image.image'
 
                 })
                     .success(function(data, status, headers, config){
                         $scope.in_progress = false;
                         $rootScope.new_product = data;
+                        StatusService.update('success', 'Successfully uploaded image.')
                         $location.path('/product/detail/')
                     })
 
@@ -128,8 +129,8 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
 
     }])
 
-    .controller('ProductEditController', ['$scope', 'SenyData', '$routeParams', '$rootScope', '$location', '$upload',
-        function ($scope, SenyData, $routeParams, $rootScope, $location, $upload) {
+    .controller('ProductEditController', ['$scope', 'SenyData', '$routeParams', '$rootScope', '$location', '$upload', 'StatusService',
+        function ($scope, SenyData, $routeParams, $rootScope, $location, $upload, StatusService) {
             $scope.model = {};
             $scope.error = false;
             $scope.image_type = "upload";
@@ -164,7 +165,7 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
                             'title': $scope.upload_title,
                             'product': $scope.model.id
                         },
-                        headers: {'Authorization': SenyData.header},
+                        headers: {'Authorization': $rootScope.header},
                         fileFormDataName: 'image'
 
                     })
@@ -172,7 +173,7 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
                             $scope.in_progress = false;
                             $scope.upload_title = "";
                             $scope.image = null;
-                            $scope.alert.active = true;
+                            StatusService.update('success', 'Successfully uploaded image feel free to upload another.')
                         })
 
                         .progress(function(event){
@@ -202,13 +203,18 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
             $scope.types = [{name: "supply", val: 0}, {name: "demand", val: 2}];
     }])
 
-    .controller('ProductDeleteController', ['$scope', 'SenyData', function($scope, SenyData){
+    .controller('ProductDeleteController', ['$scope', 'SenyData', 'StatusService', function($scope, SenyData, StatusService){
         $scope.del = function(id){
-            SenyData.senyRequest('products/' + id + '/', 'DELETE', {})
-                .success(function(data, status, headers, config){
-                })
-                .error(function(data, status, headers, config){
+            if(confirm("Are you sure you want to delete that product?"))
+            {
+                SenyData.senyRequest('products/' + id + '/', 'DELETE', {})
+                    .success(function(data, status, headers, config){
+                        StatusService.update('success', 'You successfully deleted your product.')
+                    })
+                    .error(function(data, status, headers, config){
+                        StatusService.update('danger', 'Something went wrong. The product wasn\'t deleted.')
+                    })
+            }
 
-                })
         }
     }])

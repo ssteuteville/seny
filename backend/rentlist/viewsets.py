@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import exceptions
 import dateutil
 
+
 class SenyViewSet(viewsets.ModelViewSet):
     """
         filterable_by should be a list, or tuple. The elements in this iterable should either be lists

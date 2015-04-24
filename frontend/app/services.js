@@ -16,17 +16,19 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
             {
                 client_id = localStorageService.get('client_id');
                 client_secret = localStorageService.get('client_secret');
-                return getToken(username, password);
+                getToken(username, password);
+                $location.path('/home');
             }
             else
             {
                 return $http.post(baseURL + "login/", "username=" + username + ";password=" + password + ";")
                     .success(function (data, status, headers, config) {
-                        client_id = data['client_id']
-                        client_secret = data['client_secret']
-                        localStorageService.set('client_id', client_id)     // these will be in browser for 30 days
-                        localStorageService.set('client_secret', client_secret)
-                        return getToken(username, password);
+                        client_id = data['client_id'];
+                        client_secret = data['client_secret'];
+                        localStorageService.set('client_id', client_id);  // these will be in browser for 30 days
+                        localStorageService.set('client_secret', client_secret);
+                        getToken(username, password);
+                        $location.path('/home');
                     })
                     .error(function (data, status, headers, config) {
                         return status;
@@ -92,6 +94,7 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
             $rootScope.authorized = null;
             $rootScope.new_messages = false;
             $rootScope.owner = null;
+            $rootScope.header = null;
         };
 
         this.check_inbox = function() {
@@ -130,6 +133,7 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
                     $http.defaults.headers.common['Authorization'] = "Bearer " + data['access_token'];
                     this.header = "Bearer " + data['access_token'];
                     $rootScope.authorized = true;
+                    $rootScope.header = this.header;
                     return getUser()
 
                 })
@@ -187,4 +191,15 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
                 return 'supply';
             return 'demand'
         }
-    });
+    })
+    .service('StatusService', [function ($scope){
+        this.statuses = [];
+
+        this.update = function(type, text){
+            this.statuses.push({type:type, text:text});
+        };
+
+        this.remove = function(index){
+            this.statuses.splice(index, 1);
+        };
+    }]);

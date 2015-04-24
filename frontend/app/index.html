@@ -53,6 +53,15 @@
             </div>
         </div>
     </nav>
+    <div style="position:fixed; top:20%;" ng-controller="statusController">
+        <div class="alert alert-{{status.type}} alert-dismissible seny-status" role="alert" style="width:200px;"
+             ng-repeat="status in statusService.statuses">
+            <button type="button" class="close" ng-click="statusService.remove($index)">
+                <strong><span aria-hidden="true">X</span></strong>
+            </button>
+            {{status.text}}
+        </div>
+    </div>
 
 
   <!--[if lt IE 7]>

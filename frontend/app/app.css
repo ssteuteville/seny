@@ -558,3 +558,27 @@ html, body {
     40% {
         -webkit-transform: scale(1);
         transform: scale(1); } }
+
+.seny-status {
+    margin-top:1px;
+    margin-bottom:1px;
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    animation-name: status-intro;
+    -webkit-animation-name: status-intro;
+}
+
+@-webkit-keyframes status-intro {
+     from {margin-left: -200px;}
+     to {margin-left: 0}
+     from {opacity: 0}
+     to {opacity: 1}
+ }
+
+@keyframes status-intro {
+    from {margin-left: -200px;}
+    to {margin-left: 0}
+    from {opacity: 0}
+    to {opacity: 1}
+}
+

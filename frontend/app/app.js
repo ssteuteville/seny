@@ -31,8 +31,11 @@ angular.module('SENY', [
         });
         localStorageServiceProvider.setPrefix('SENY');
     }
-]);
+])
 
+.controller('statusController', ['$scope', 'StatusService', function($scope, StatusService){
+    $scope.statusService = StatusService
+}])
 
 function swapActive(element)
 {

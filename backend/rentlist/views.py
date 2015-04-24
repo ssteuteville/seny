@@ -9,6 +9,7 @@ from rest_framework import generics
 from django.http import JsonResponse
 from django.db.models import Q
 from django.http import HttpResponse
+from rest_framework import viewsets
 
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
@@ -31,6 +32,7 @@ class UserProfileViewSet(SenyViewSet):
     permission_classes = [SenyAuth, UserProfilePermissions]
     serializer_class = UserProfileSerializer
     filterable_by = [['owner', 'username', 'iexact']]
+    pagin
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):

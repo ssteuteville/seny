@@ -3,11 +3,11 @@ from rentlist.serializers import *
 
 
 class UserProfileFilter(django_filters.FilterSet):
-    username = django_filters.CharFilter(name="owner__username")
+    owner = django_filters.CharFilter(name="owner__username")
 
     class Meta:
         model = UserProfile
-        fields = ['username']
+        fields = ['owner']
 
 
 class ImageFilter(django_filters.FilterSet):
