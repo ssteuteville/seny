@@ -17,6 +17,9 @@ angular.module('SENY.LoginView', ['ngRoute', 'SenyData'])
             $scope.login = function()
             {
                 SenyData.login($scope.username, $scope.password)
+                    .success(function(){
+                        $location.path('/home');
+                    })
                     .error(function(){
                         StatusService.update('danger', 'Invalid Username or Password..')
                     })

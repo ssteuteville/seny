@@ -16,8 +16,7 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
             {
                 client_id = localStorageService.get('client_id');
                 client_secret = localStorageService.get('client_secret');
-                getToken(username, password);
-                $location.path('/home');
+                return getToken(username, password);
             }
             else
             {
@@ -27,8 +26,7 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
                         client_secret = data['client_secret'];
                         localStorageService.set('client_id', client_id);  // these will be in browser for 30 days
                         localStorageService.set('client_secret', client_secret);
-                        getToken(username, password);
-                        $location.path('/home');
+                        return getToken(username, password);
                     })
                     .error(function (data, status, headers, config) {
                         return status;
@@ -74,7 +72,7 @@ angular.module('SenyData', ['LocalStorageModule', 'ipCookie'])
                 if(date < exp)
                 {
                     $http.defaults.headers.common['Authorization'] = "Bearer " + access;
-                    this.header = "Bearer " + access;
+                    $rootScope.header = "Bearer " + access;
                     getUser();
                     $rootScope.authorized = true;
                 }

@@ -82,7 +82,6 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
                     .success(function(data, status, headers, config){
                         $scope.in_progress = false;
                         $rootScope.new_product = data;
-                        StatusService.update('success', 'Successfully uploaded image.')
                         $location.path('/product/detail/')
                     })
 
