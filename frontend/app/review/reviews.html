@@ -11,16 +11,19 @@
         <accordion-group ng-repeat="review in reviews">
             <accordion-heading>
                 <span class="message-heading">
-                    <span>{{review.title}}</span>
-                    <span style="margin-left:25%;">{{review.content.slice(0,40)}}...</span>
-                    <span ng-if="review.owner != $root.user.owner" class="pull-right">
+                    <span class="thread-preview pull-left">{{review.title.slice(0,25)}}</span>
+                    <span class="thread-preview">{{review.content.slice(0,20)}}...</span>
+                    <span ng-if="review.owner != $root.user.owner" class="thread-preview pull-right">
                         {{review.owner}}
                     </span>
-                    <span ng-if="review.owner == $root.user.owner" class="pull-right">
+                    <span ng-if="review.owner == $root.user.owner" class="thread-preview pull-right">
                         {{review.product_owner}}
                     </span>
                 </span>
             </accordion-heading>
+            <h3>
+                {{review.title}}
+            </h3>
             <div class="well">
                 <div>{{review.content}}</div>
             </div>

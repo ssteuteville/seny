@@ -134,7 +134,6 @@ angular.module('SENY.product', ['ngRoute', 'SenyData'])
             $scope.error = false;
             $scope.image_type = "upload";
             $scope.alert = {msg: 'Image Added! Feel free to upload another.', active: false };
-
             $scope.closeAlert = function(){
                 $scope.alert.active = false;
             };

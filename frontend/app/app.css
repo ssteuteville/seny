@@ -143,6 +143,9 @@ html, body {
     width:33%;
 }
 
+.warning {
+    color: red;
+}
 
 .msg{
     font-size: 20px;

@@ -1,18 +1,28 @@
-<form class="main-panel">
+<form class="main-panel" name="product" novalidate>
     <div class="seny-panel col-sm-6 col-sm-offset-3">
         <div class="form-group">
             <label>Title</label>
-            <input type="text" ng-model="model.title" class="form-control select" placeholder="Make your title count!" required>
+            <input type="text" name="title" ng-model="model.title" class="form-control select" placeholder="Make your title count!" required>
+            <span class="warning" ng-show="product.title.$invalid">
+                <span ng-show="product.title.$error.required">*Title is required.</span>
+            </span>
         </div>
         <div class="form-group">
             <label>Description</label>
-            <textarea class="form-control select" ng-model="model.description" rows="6" required placeholder="Put as many details here as you want."></textarea>
+            <textarea name="description" class="form-control select" ng-model="model.description" rows="6" required placeholder="Put as many details here as you want."></textarea>
+            <span class="warning" ng-show="product.description.$invalid">
+                <span ng-show="product.description.$error.required">*Description is required.</span>
+            </span>
         </div>
 
         <div class="form-group col-sm-12">
             <div class="col-sm-3">
                 <label>Price:</label>
-                $<input type="number" ng-model="model.price" class="form-control select" required>
+                $<input type="number" name="price" ng-model="model.price" class="form-control select" required>
+                <span class="warning" ng-show="product.price.$invalid">
+                    <span ng-show="product.price.$error.required">*Price is required.</span>
+                    <span ng-show="product.price.$error.number">*Must be a number.</span>
+                </span>
             </div>
             <div class="col-sm-3">
                 <label>Price Metric:</label>
@@ -24,7 +34,11 @@
             </div>
             <div class="col-sm-3">
                 <label>Deposit:</label>
-                $<input type="number" ng-model="model.deposit" class="form-control select">
+                $<input name="deposit" type="number" ng-model="model.deposit" class="form-control select">
+                <span class="warning" ng-show="product.deposit.$invalid">
+                    <span ng-show="product.deposit.$error.required">*Deposit is required.</span>
+                    <span ng-show="product.deposit.$error.number">*Must be a number.</span>
+                </span>
             </div>
         </div>
 
@@ -32,13 +46,13 @@
 
         <h3> Image: </h3>
         <div class="btn-group col-sm-offset-3" role="group">
-            <button ng-class="{'btn btn-success': image_type == 'upload', 'btn btn-primary': image_type != 'upload'}" ng-click="image_type = 'upload'">
+            <button formnovalidate ng-class="{'btn btn-success': image_type == 'upload', 'btn btn-primary': image_type != 'upload'}" ng-click="image_type = 'upload'">
                 New Image
             </button>
-            <button ng-class="{'btn btn-success': image_type == 'exist', 'btn btn-primary': image_type != 'exist'}" ng-click="image_type = 'exist'">
+            <button formnovalidate ng-class="{'btn btn-success': image_type == 'exist', 'btn btn-primary': image_type != 'exist'}" ng-click="image_type = 'exist'">
                 Existing Image
             </button>
-            <button ng-class="{'btn btn-success': image_type == 'none', 'btn btn-primary': image_type != 'none'}" ng-click="image_type = 'none'">
+            <button formnovalidate ng-class="{'btn btn-success': image_type == 'none', 'btn btn-primary': image_type != 'none'}" ng-click="image_type = 'none'">
                 No Image
             </button>
         </div>
@@ -49,7 +63,10 @@
             <div class="col-sm-12 bottom-margin">
                 <div  class="col-sm-4 col-sm-offset-4">
                     <label>Image Title:</label>
-                    <input type="text" class="form-control select" ng-model="$parent.display_image_title" required>
+                    <input name="image_title" type="text" class="form-control select" ng-model="$parent.display_image_title" required>
+                    <span class="warning" ng-show="product.image_title.$invalid">
+                        <span ng-show="product.image_title.$error.required">*Title is required.</span>
+                    </span>
                 </div>
             </div>
 
@@ -79,7 +96,7 @@
         <hr class="col-sm-11"/>
         <div class="col-sm-8 col-sm-offset-5">
             <button type="submit" ng-click="upload()" ng-if="image_type=='upload'" class="btn btn-lg btn-primary">Create</button>
-                <button type="submit" ng-click="create()" ng-if="image_type!='upload'" class="btn btn-lg btn-primary">Create</button>
+            <button ng-click="create()" ng-if="image_type!='upload'" class="btn btn-lg btn-primary">Create</button>
         </div>
     </div>
 </form>

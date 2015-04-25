@@ -1,18 +1,28 @@
-<form>
+<form name="product">
     <div class="seny-panel col-sm-6 col-sm-offset-3 main-panel">
         <div class="form-group">
             <label>Title</label>
-            <input type="text" ng-model="model.title" class="form-control select" placeholder="Make your title count!" required>
+            <input name="title" type="text" ng-model="model.title" class="form-control select" placeholder="Make your title count!" required>
+            <span class="warning" ng-show="product.title.$invalid">
+                <span ng-show="product.title.$error.required">*Title is required.</span>
+            </span>
         </div>
         <div class="form-group">
             <label>Description</label>
-            <textarea class="form-control select" ng-model="model.description" rows="6" required placeholder="Put as many details here as you want."></textarea>
+            <textarea name="description" class="form-control select" ng-model="model.description" rows="6" required placeholder="Put as many details here as you want."></textarea>
+            <span class="warning" ng-show="product.description.$invalid">
+                <span ng-show="product.description.$error.required">*Description is required.</span>
+            </span>
         </div>
 
         <div class="form-group col-sm-12">
             <div class="col-sm-3">
                 <label>Price:</label>
-                $<input type="number" ng-model="model.price" class="form-control select" required>
+                $<input name="price" type="number" ng-model="model.price" class="form-control select" required>
+                <span class="warning" ng-show="product.price.$invalid">
+                    <span ng-show="product.price.$error.required">*Price is required.</span>
+                    <span ng-show="product.price.$error.number">*Must be a number.</span>
+                </span>
             </div>
             <div class="col-sm-3">
                 <label>Price Metric:</label>
@@ -24,7 +34,11 @@
             </div>
             <div class="col-sm-3">
                 <label>Deposit:</label>
-                $<input type="number" ng-model="model.deposit" class="form-control select">
+                $<input name="deposit" type="number" ng-model="model.deposit" class="form-control select">
+                <span class="warning" ng-show="product.deposit.$invalid">
+                    <span ng-show="product.deposit.$error.required">*Deposit is required.</span>
+                    <span ng-show="product.deposit.$error.number">*Must be a number.</span>
+                </span>
             </div>
         </div>
 
@@ -76,7 +90,7 @@
                     <div ng-if="in_progress">Uploading..</div>
                 </div>
                 <div class="col-sm-4 col-sm-offset-1">
-                    <button class="btn btn-primary" ng-click="upload()">Upload</button>
+                    <button ng-disabled="!$parent.file || upload_title==''" class="btn btn-primary" ng-click="upload()">Upload</button>
                 </div>
             </div>
         </div>
