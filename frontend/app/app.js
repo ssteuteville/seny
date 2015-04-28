@@ -3,6 +3,7 @@
 // Declare app level module which depends on views, and components
 angular.module('SENY', [
   'ngRoute',
+  'ngAnimate',
   'SENY.LoginView',
   'SENY.home',
   'SENY.signup',
@@ -35,6 +36,20 @@ angular.module('SENY', [
 
 .controller('statusController', ['$scope', 'StatusService', function($scope, StatusService){
     $scope.statusService = StatusService
+}])
+
+.animation('.slide', [function() {
+    return {
+        // make note that other events (like addClass/removeClass)
+        // have different function input parameters
+        enter: function(element, doneFn) {
+            jQuery(element).fadeIn(1000, doneFn);
+        },
+
+        leave: function(element, doneFn) {
+            jQuery(element).fadeOut(500, doneFn);
+        }
+    }
 }])
 
 function swapActive(element)

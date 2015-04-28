@@ -25,6 +25,7 @@
         })
     </script>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular-animate.min.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="app.js"></script>
     <script src="LoginView/LoginView.js"></script>
@@ -105,7 +106,9 @@
   <![endif]-->
 
   <div ng-if="$root.authorized" ng-view></div>
-  <div ng-if="!$root.authorized">
+    <!--<div ng-if="$root.authorized" ng-view class="slide main"></div>-->
+
+    <div ng-if="!$root.authorized">
       <div ng-include="'signup/signup.html'"></div>
   </div>
 

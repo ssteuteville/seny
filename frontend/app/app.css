@@ -585,3 +585,17 @@ html, body {
     to {opacity: 1}
 }
 
+/*.slide {*/
+    /*opacity: 0;*/
+    /*-webkit-animation: slide_in 2s forwards;*/
+/*}*/
+
+/*.slide.ng-enter.ng-active{*/
+    /*-webkit-animation: slide_in 2s forwards;*/
+/*}*/
+
+/*@-webkit-keyframes slide_in {*/
+    /*from { left: -100% }*/
+    /*to { left: 0% }*/
+ /*}*/
+
