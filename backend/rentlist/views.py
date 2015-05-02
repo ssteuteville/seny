@@ -9,7 +9,7 @@ from rest_framework import generics
 from django.http import JsonResponse
 from django.db.models import Q
 from django.http import HttpResponse
-from rest_framework import viewsets
+from rest_framework import filters
 
 from django.contrib.auth import authenticate
 from django.views.decorators.csrf import csrf_exempt
@@ -134,10 +134,13 @@ class AdvertisementViewSet(SenyViewSet):
         serializer.is_valid()
         return Response(serializer.data)
 
+
 class MessageViewSet(SenyViewSet):
     """
         ## Filterable by: ##
         + new - 1 for true 0 for false
+        + source/destination - username
+        + search - checks if title, content, source, destination contain given query string
 
         ## Special Endpoints ##
         ### new ###
@@ -154,6 +157,8 @@ class MessageViewSet(SenyViewSet):
     permission_classes = [SenyAuth, MessagePermissions]
     serializer_class = MessageSerializer
     filterable_by = ['new', ['destination', 'username'], ['source', 'username']]
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('destination__username', 'source__username', 'thread__title', 'content')
 
     def get_serializer_class(self):
         if self.action in ['new']:
@@ -529,6 +534,8 @@ class MessageThreadViewSet(SenyViewSet):
     serializer_class = MessageThreadSerializer
     filterable_by = ['created_at__lte', 'created_at__gte', ['responder', 'username'], ['title', 'icontains'],
                     ['creator', 'username']]
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('title', 'creator__username', 'responder__username')
 
     @list_route(methods=['GET'], permission_classes=permission_classes)
     def user(self, request, *args, **kwargs):
