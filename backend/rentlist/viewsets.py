@@ -31,7 +31,8 @@ class SenyViewSet(viewsets.ModelViewSet):
         assert self.filterable_by is not None, (
             "'%s' should include a 'filterable_by' iterable attribute" % self.__class__.__name__
         )
-        queryset = self.queryset
+        queryset = self.filter_queryset(self.queryset)
+
         if isinstance(queryset, QuerySet):
             queryset = queryset.all()
             page_size = self.request.QUERY_PARAMS.get('page_size', None)
