@@ -65,11 +65,23 @@ angular.module('SENY.home', ['ngRoute', 'SenyData'])
 
     };
 
+    $scope.filter = function(){
+        reset();
+        $scope.update();
+    }
+
     $scope.setType = function(type)
     {
         $scope.type = type;
+        reset();
         $scope.update();
     };
+
+    function reset()
+    {
+        $scope.page = 1;
+        $scope.advertisements = [];
+    }
 
     $scope.hasImage = function(ad){
         if(ad.product.display_image)

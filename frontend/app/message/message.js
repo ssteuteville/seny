@@ -23,15 +23,23 @@ angular.module('SENY.message', ['ngRoute', 'SenyData'])
 
 .controller('inboxController', ['$scope', 'SenyData', '$location', '$rootScope', function($scope, SenyData, $location, $rootScope){
         $scope.threads = [];
+        $scope.search_query = "";
         $scope.convertDate = function(date){
             var d = new Date(date);
 
             return d.toDateString() + " " + d.toLocaleTimeString();
         };
-        SenyData.senyRequest('threads/user/', 'GET', {})
-            .success(function(data){
-                $scope.threads = data;
-            });
+
+        $scope.update = function(){
+            console.log('calling update');
+            SenyData.senyRequest('threads/user/', 'GET', {search:$scope.search_query})
+                .success(function(data){
+                    $scope.threads = data;
+                });
+        };
+
+        $scope.update();
+
 
         $scope.opened = function(index){
             var thread = $scope.threads[index];
