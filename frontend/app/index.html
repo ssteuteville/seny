@@ -84,7 +84,7 @@
             <div class="navbar-right">
                 <div ng-if="!$root.authorized" ng-include="'LoginView/LoginView.html'"></div>
                 <div ng-if="$root.authorized" class="title username" ng-controller="logoutController">
-                    Logged in: <a ng-href="#/profile/{{$root.user.owner}}">{{ $root.user.owner }}</a>
+                    Logged in: <a ng-href="#/user/{{$root.user.owner}}">{{ $root.user.owner }}</a>
                     <button class="btn btn-primary btn-logout btn-xs" ng-click="logout()">Logout</button>
                 </div>
             </div>
