@@ -91,7 +91,7 @@ class UserProfile(models.Model):
         return Review.objects.filter(product__owner=self.owner, product__type=0)
 
     def get_demand_reviews(self):
-        return self.owner.reviews.filter(product__type=2, product__owner=self.owner)
+        return Review.objects.filter(product__type=2, product__owner=self.owner)
 
     def __str__(self):
         return self.owner.username
