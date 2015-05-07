@@ -365,7 +365,8 @@ class ProductViewSet(SenyViewSet):
         where response.accepted=1 and response.owner_id = {0} and product.owner_id != {0}
         and (select count(*) from rentlist_product
 	         join rentlist_review on rentlist_product.id = rentlist_review.product_id
-             and rentlist_review.owner_id = {0}) = 0
+             where rentlist_review.owner_id = {0}
+             and product.id = rentlist_review.product_id) = 0
         """.format(request.user.id))
         serializer = self.get_serializer(data=query_set, many=True)
         serializer.is_valid()
