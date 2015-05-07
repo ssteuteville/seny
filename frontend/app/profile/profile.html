@@ -15,7 +15,7 @@
     <hr class="col-sm-11">
     <div class="col-sm-12" ng-if="model.supply_reviews.length || model.demand_reviews.length">
         <div class="col-sm-12" ng-if="model.supply_reviews.length">
-            <h5><b>Supply</b> avg:<rating value="model.supply_rating" max="max_rating" readonly="isReadOnly" stateOff="'glyphicon-star-empty'"></rating>
+            <h5><b>Supply</b> avg:<rating value="model.supply_rating" max="max_rating" readonly="true" stateOff="'glyphicon-star-empty'"></rating>
             </h5>
             <accordion close-others="true">
                 <accordion-group ng-repeat="review in model.supply_reviews">
@@ -28,8 +28,8 @@
             </accordion>
         </div>
         <div class="col-sm-12" ng-if="model.demand_reviews.length">
-            <h5>Demand</h5>
-            <rating value="model.demand_rating" max="max_rating" readonly="isReadOnly" stateOff="'glyphicon-star-empty'"></rating>
+            <h5><b>Demand</b> avg:<rating value="model.demand_rating" max="max_rating" readonly="true" stateOff="'glyphicon-star-empty'"></rating>
+            </h5>
             <accordion close-others="true">
                 <accordion-group ng-repeat="review in model.demand_reviews">
                     <accordion-heading>
