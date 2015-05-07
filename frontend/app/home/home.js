@@ -81,6 +81,7 @@ angular.module('SENY.home', ['ngRoute', 'SenyData'])
     {
         $scope.page = 1;
         $scope.advertisements = [];
+        $scope.more = true;
     }
 
     $scope.hasImage = function(ad){
